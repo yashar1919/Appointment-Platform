@@ -16,14 +16,14 @@ export function StaffCard({ staff, isSelected, onSelect }: StaffCardProps) {
       className={cn(
         "group relative p-4 rounded-2xl bg-[#14161c] border transition-all duration-200 cursor-pointer text-right flex flex-col justify-between",
         isSelected
-          ? "border-[var(--theme-primary)] ring-2 ring-[var(--theme-primary)]/30 bg-[#1a1d25] shadow-[0_4px_20px_rgb(var(--theme-primary-rgb)_/_0.15)]"
-          : "border-[#2d313b]/80 hover:border-[var(--theme-primary)]/40 hover:bg-[#181b22]",
+          ? "border-(--theme-primary) ring-2 ring-(--theme-primary)/30 bg-[#1a1d25] shadow-[0_4px_20px_rgb(var(--theme-primary-rgb)/0.15)]"
+          : "border-[#2d313b]/80 hover:border-(--theme-primary)/40 hover:bg-[#181b22]",
       )}
     >
       <div className="space-y-3">
         <div className="flex items-center gap-3">
           {/* Avatar Slot */}
-          <div className="relative w-14 h-14 rounded-full overflow-hidden border border-[var(--theme-primary)]/30 bg-[#21242c] shrink-0">
+          <div className="relative w-14 h-14 rounded-full overflow-hidden border border-(--theme-primary)/30 bg-[#21242c] shrink-0">
             <img
               src={staff.avatar}
               alt={staff.name}
@@ -39,12 +39,12 @@ export function StaffCard({ staff, isSelected, onSelect }: StaffCardProps) {
                 {staff.name}
               </h4>
               {isSelected && (
-                <div className="w-5 h-5 rounded-full bg-[var(--theme-primary)] text-[#0b0c0f] flex items-center justify-center shrink-0">
+                <div className="w-5 h-5 rounded-full bg-(--theme-primary) text-[#0b0c0f] flex items-center justify-center shrink-0">
                   <Check className="w-3 h-3 stroke-3" />
                 </div>
               )}
             </div>
-            <p className="text-[11px] text-[var(--theme-primary)] font-medium truncate mt-0.5">
+            <p className="text-[11px] text-(--theme-primary) font-medium truncate mt-0.5">
               {staff.role}
             </p>
           </div>
@@ -74,7 +74,7 @@ export function StaffCard({ staff, isSelected, onSelect }: StaffCardProps) {
       <div className="mt-4 pt-3 border-t border-[#262934] flex items-center justify-between text-xs text-[#8e8779]">
         {staff.rating && (
           <div className="flex items-center gap-1 text-[#e5dfd5]">
-            <Star className="w-3.5 h-3.5 fill-[var(--theme-primary)] text-[var(--theme-primary)]" />
+            <Star className="w-3.5 h-3.5 fill-(--theme-primary) text-(--theme-primary)" />
             <span className="font-semibold text-[#f7f4ed]">
               {toPersianDigits(staff.rating)}
             </span>
@@ -83,7 +83,7 @@ export function StaffCard({ staff, isSelected, onSelect }: StaffCardProps) {
 
         {staff.experienceYears && (
           <span className="flex items-center gap-1 text-[11px]">
-            <Sparkles className="w-3 h-3 text-[var(--theme-primary)]" />
+            <Sparkles className="w-3 h-3 text-(--theme-primary)" />
             {toPersianDigits(staff.experienceYears)} سال تجربه تخصصی
           </span>
         )}

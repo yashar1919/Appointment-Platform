@@ -45,7 +45,7 @@ export function ServiceCategoryScroller({
               className={cn(
                 "min-h-11 px-4 py-2 text-xs sm:text-sm font-medium rounded-xl whitespace-nowrap transition-all duration-200 cursor-pointer select-none shrink-0 flex items-center gap-1.5",
                 isActive
-                  ? "bg-[var(--theme-primary)] text-[#0b0c0f] font-bold shadow-[0_2px_12px_rgb(var(--theme-primary-rgb)_/_0.25)]"
+                  ? "bg-(--theme-primary) text-[#0b0c0f] font-bold shadow-[0_2px_12px_rgb(var(--theme-primary-rgb)/0.25)]"
                   : "bg-[#181a22] text-[#b5ada0] hover:text-[#f7f4ed] hover:bg-[#222530] border border-[#2d313b]/60",
               )}
             >

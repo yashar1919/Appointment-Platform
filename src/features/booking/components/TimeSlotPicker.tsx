@@ -45,10 +45,10 @@ export function TimeSlotPicker({
                 className={cn(
                   "h-12 min-h-11 px-3 rounded-xl flex items-center justify-between text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer select-none border",
                   isSelected &&
-                    "bg-[var(--theme-primary)] text-[#0b0c0f] border-[var(--theme-primary)] ring-2 ring-[var(--theme-primary)]/40 shadow-[0_4px_16px_rgb(var(--theme-primary-rgb)_/_0.25)] scale-[1.02]",
+                    "bg-(--theme-primary) text-[#0b0c0f] border-(--theme-primary) ring-2 ring-(--theme-primary)/40 shadow-[0_4px_16px_rgb(var(--theme-primary-rgb)/0.25)] scale-[1.02]",
                   isAvailable &&
                     !isSelected &&
-                    "bg-[#14161c] text-[#f7f4ed] border-[#2d313b] hover:border-[var(--theme-primary)]/40 hover:bg-[#1b1e27]",
+                    "bg-[#14161c] text-[#f7f4ed] border-[#2d313b] hover:border-(--theme-primary)/40 hover:bg-[#1b1e27]",
                   !isAvailable &&
                     "bg-[#0f1015] text-[#555a68] border-[#1d2028] opacity-35 cursor-not-allowed line-through",
                 )}
@@ -77,7 +77,7 @@ export function TimeSlotPicker({
     <div className="space-y-5 text-right">
       <div className="flex items-center justify-between">
         <h3 className="text-sm sm:text-base font-bold text-[#f7f4ed] flex items-center gap-2">
-          <Clock className="w-4 h-4 text-[var(--theme-primary)]" />
+          <Clock className="w-4 h-4 text-(--theme-primary)" />
           <span>انتخاب ساعت مراجعه</span>
         </h3>
         <span className="text-[11px] text-[#8e8779]">

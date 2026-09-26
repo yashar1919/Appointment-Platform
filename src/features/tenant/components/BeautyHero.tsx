@@ -11,8 +11,8 @@ export function BeautyHero({ business, onExploreServices }: BeautyHeroProps) {
   return (
     <section className="relative overflow-hidden pt-4 pb-8 sm:pt-8 sm:pb-14 border-b border-[#2d313b]/40">
       {/* Background radial glow */}
-      <div className="absolute top-0 right-1/4 -translate-y-1/2 w-96 h-96 bg-[var(--theme-primary)]/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute top-1/2 left-0 w-72 h-72 bg-[var(--theme-accent)]/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-0 right-1/4 -translate-y-1/2 w-96 h-96 bg-(--theme-primary)/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/2 left-0 w-72 h-72 bg-(--theme-accent)/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
@@ -20,7 +20,7 @@ export function BeautyHero({ business, onExploreServices }: BeautyHeroProps) {
           <div className="lg:col-span-7 space-y-4 sm:space-y-6 text-right">
             {/* Editorial Kicker & Location (No pills) */}
             <div className="flex justify-between lg:justify-start items-center gap-2 text-xs text-[#c5baa9] tracking-wide">
-              <span className="text-[var(--theme-primary)] font-semibold flex items-center gap-1">
+              <span className="text-(--theme-primary) font-semibold flex items-center gap-1">
                 <Sparkles className="w-3.5 h-3.5" />
                 آرایش دائم و طراحی آناتومیک چهره
               </span>
@@ -47,7 +47,7 @@ export function BeautyHero({ business, onExploreServices }: BeautyHeroProps) {
             {/* Social Proof adjacency */}
             <div className="flex w-full md:w-9/10 md:mx-auto lg:mx-0 items-center text-center border-y text-xs text-[#a09a8e] py-3">
               <div className="flex flex-1 items-center justify-center gap-1.5 px-3 text-[#e5dfd5]">
-                <div className="flex items-center text-[var(--theme-primary)]">
+                <div className="flex items-center text-(--theme-primary)">
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} className="w-3.5 h-3.5 fill-current" />
                   ))}
@@ -59,7 +59,7 @@ export function BeautyHero({ business, onExploreServices }: BeautyHeroProps) {
               <span className="flex flex-1 items-center justify-center border-r px-3">
                 {toPersianDigits(business.reviewsCount)} تجربه موفق
               </span>
-              <span className="flex flex-1 items-center justify-center border-r px-3 text-[var(--theme-primary)]">
+              <span className="flex flex-1 items-center justify-center border-r px-3 text-(--theme-primary)">
                 رنگ‌های ایمن
               </span>
             </div>
@@ -68,7 +68,7 @@ export function BeautyHero({ business, onExploreServices }: BeautyHeroProps) {
             <div className="pt-2 sm:pt-4 flex flex-wrap items-center gap-3">
               <button
                 onClick={onExploreServices}
-                className="inline-flex w-full lg:w-9/10 items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-[var(--theme-primary)] hover:bg-[var(--theme-primary-light)] text-[#0b0c0f] font-bold text-sm transition-all duration-200 shadow-[0_4px_20px_-2px_rgb(var(--theme-primary-rgb)_/_0.35)] active:scale-98 min-h-12 cursor-pointer"
+                className="inline-flex w-full lg:w-9/10 items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-(--theme-primary) hover:bg-(--theme-primary-light) text-[#0b0c0f] font-bold text-sm transition-all duration-200 shadow-[0_4px_20px_-2px_rgb(var(--theme-primary-rgb)/0.35)]"
               >
                 <span>انتخاب خدمت و رزرو آنلاین</span>
                 <ArrowDown className="w-4 h-4 animate-bounce" />
@@ -86,7 +86,7 @@ export function BeautyHero({ business, onExploreServices }: BeautyHeroProps) {
 
           {/* Visual Showcase Card */}
           <div className="lg:col-span-5 relative">
-            <div className="relative mx-auto lg:max-w-none rounded-2xl overflow-hidden border border-[var(--theme-primary)]/20 bg-[#161820] shadow-[0_16px_40px_-10px_rgba(0,0,0,0.8)] aspect-16/10 sm:aspect-4/3">
+            <div className="relative mx-auto lg:max-w-none rounded-2xl overflow-hidden border border-(--theme-primary)/20 bg-[#161820] shadow-[0_16px_40px_-10px_rgba(0,0,0,0.8)] aspect-16/10 sm:aspect-4/3">
               <img
                 src={business.coverImage}
                 alt={business.name}
@@ -96,12 +96,12 @@ export function BeautyHero({ business, onExploreServices }: BeautyHeroProps) {
               <div className="absolute inset-0 bg-gradient-to-t from-[#0b0c0f] via-transparent to-black/20" />
 
               {/* Subtle caption bottom */}
-              <div className="absolute bottom-3 right-3 left-3 flex items-center justify-between p-3 rounded-xl bg-[#0b0c0f]/80 backdrop-blur-md border border-[var(--theme-primary)]/20">
+              <div className="absolute bottom-3 right-3 left-3 flex items-center justify-between p-3 rounded-xl bg-[#0b0c0f]/80 backdrop-blur-md border border-(--theme-primary)/20">
                 <div className="text-right">
                   <p className="text-xs font-bold text-[#f7f4ed]">
                     {business.name}
                   </p>
-                  <p className="text-[11px] text-[var(--theme-primary)]">
+                  <p className="text-[11px] text-(--theme-primary)">
                     طراحی هارمونی و فرم چهره بدون دگرگونی رنگ
                   </p>
                 </div>

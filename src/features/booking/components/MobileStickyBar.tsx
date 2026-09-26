@@ -41,7 +41,7 @@ export function MobileStickyBar({
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 sm:hidden bg-[#0c0e13]/95 backdrop-blur-md border-t border-[var(--theme-primary)]/20 px-4 py-2.5 shadow-[0_-8px_30px_rgba(0,0,0,0.8)] pb-safe">
+    <div className="fixed bottom-0 left-0 right-0 z-40 sm:hidden bg-[#0c0e13]/95 backdrop-blur-md border-t border-(--theme-primary)/20 px-4 py-2.5 shadow-[0_-8px_30px_rgba(0,0,0,0.8)] pb-safe">
       <div className="flex items-center justify-between gap-3">
         {/* Dynamic summary */}
         <div className="min-w-0 text-right space-y-0.5">
@@ -53,7 +53,7 @@ export function MobileStickyBar({
             <span aria-hidden="true" className="text-[#555a68]">
               ·
             </span>
-            <span className="font-bold text-[var(--theme-primary)]">
+            <span className="font-bold text-(--theme-primary)">
               {formatCurrency(service.price, currency)}
             </span>
           </div>
@@ -64,7 +64,7 @@ export function MobileStickyBar({
           type="button"
           disabled={!canContinue}
           onClick={onContinue}
-          className="h-11 px-5 rounded-xl bg-[var(--theme-primary)] hover:bg-[var(--theme-primary-light)] disabled:opacity-40 disabled:pointer-events-none text-xs font-bold text-[#0b0c0f] flex items-center gap-1.5 shrink-0 shadow-[0_2px_12px_rgb(var(--theme-primary-rgb)_/_0.3)] cursor-pointer active:scale-95 transition-all"
+          className="h-11 px-5 rounded-xl bg-(--theme-primary) hover:bg-(--theme-primary-light) disabled:opacity-40 disabled:pointer-events-none text-xs font-bold text-[#0b0c0f] flex items-center gap-1.5 shrink-0 shadow-[0_2px_12px_rgb(var(--theme-primary-rgb)/0.3)] cursor-pointer active:scale-95 transition-all"
         >
           <span>{getActionLabel()}</span>
           <ArrowLeft className="w-3.5 h-3.5" />

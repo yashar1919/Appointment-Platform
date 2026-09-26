@@ -52,7 +52,6 @@
 /* Theme palettes use Tailwind's built-in color variables. Change data-theme to switch the full accent system. */
 [data-theme="gold"] {
   --theme-primary: #cbb38d;
-  /* --theme-primary: #dfbd69; */
   --theme-primary-light: #ddc5a2;
   --theme-accent: #8e6559;
   --theme-primary-rgb: 203 179 141;

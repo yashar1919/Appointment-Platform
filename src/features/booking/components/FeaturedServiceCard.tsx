@@ -23,8 +23,8 @@ export function FeaturedServiceCard({
       className={cn(
         "group relative overflow-hidden rounded-2xl bg-[#151720] border transition-all duration-300 cursor-pointer text-right",
         isSelected
-          ? "border-[var(--theme-primary)] ring-2 ring-[var(--theme-primary)]/40 shadow-[0_0_24px_rgb(var(--theme-primary-rgb)_/_0.2)]"
-          : "border-[#2d313b] hover:border-[var(--theme-primary)]/50 hover:bg-[#191c26]",
+          ? "border-(--theme-primary) ring-2 ring-(--theme-primary)/40 shadow-[0_0_24px_rgb(var(--theme-primary-rgb)/0.2)]"
+          : "border-[#2d313b] hover:border-(--theme-primary)/50 hover:bg-[#191c26]",
       )}
     >
       <div className="grid grid-cols-1 md:grid-cols-12 gap-0">
@@ -39,7 +39,7 @@ export function FeaturedServiceCard({
           <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-l from-[#151720] via-transparent to-black/20" />
 
           {/* Top signature mark (no pill box, clean editorial text with subtle background) */}
-          <div className="absolute top-3 right-3 flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#0b0c0f]/80 backdrop-blur-md border border-[var(--theme-primary)]/30 text-xs font-semibold text-[var(--theme-primary)]">
+          <div className="absolute top-3 right-3 flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#0b0c0f]/80 backdrop-blur-md border border-(--theme-primary)/30 text-xs font-semibold text-(--theme-primary)">
             <Sparkles className="w-3.5 h-3.5" />
             <span>خدمت ویژه و پرطرفدار آکادمی</span>
           </div>
@@ -49,11 +49,11 @@ export function FeaturedServiceCard({
         <div className="md:col-span-7 p-5 sm:p-6 flex flex-col justify-between space-y-4">
           <div className="space-y-2">
             <div className="flex items-start justify-between gap-3">
-              <h3 className="text-lg sm:text-xl font-bold text-[#f7f4ed] group-hover:text-[var(--theme-primary)] transition-colors">
+              <h3 className="text-lg sm:text-xl font-bold text-[#f7f4ed] group-hover:text-(--theme-primary) transition-colors">
                 {service.name}
               </h3>
               {isSelected && (
-                <div className="w-7 h-7 rounded-full bg-[var(--theme-primary)] text-[#0b0c0f] flex items-center justify-center shrink-0 shadow-md">
+                <div className="w-7 h-7 rounded-full bg-(--theme-primary) text-[#0b0c0f] flex items-center justify-center shrink-0 shadow-md">
                   <Check className="w-4 h-4 stroke-3" />
                 </div>
               )}
@@ -71,7 +71,7 @@ export function FeaturedServiceCard({
                     key={i}
                     className="flex items-center gap-2 text-xs text-[#a09a8e]"
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--theme-primary)]" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-(--theme-primary)" />
                     <span>{item}</span>
                   </div>
                 ))}
@@ -83,7 +83,7 @@ export function FeaturedServiceCard({
           <div className="pt-3 border-t border-[#262a34] flex items-center justify-between gap-4">
             <div className="space-y-0.5">
               <div className="flex items-center gap-1.5 text-xs text-[#8e8779]">
-                <Clock className="w-3.5 h-3.5 text-[var(--theme-primary)]" />
+                <Clock className="w-3.5 h-3.5 text-(--theme-primary)" />
                 <span>{formatDuration(service.durationMinutes)}</span>
               </div>
               <div className="text-base sm:text-lg font-bold text-[#f7f4ed]">
@@ -96,8 +96,8 @@ export function FeaturedServiceCard({
               className={cn(
                 "min-h-11 px-5 py-2 text-xs sm:text-sm font-semibold rounded-xl transition-all duration-200 select-none flex items-center gap-2 cursor-pointer",
                 isSelected
-                  ? "bg-[var(--theme-primary)] text-[#0b0c0f]"
-                  : "bg-[#222530] text-[#ded8cb] hover:bg-[var(--theme-primary)] hover:text-[#0b0c0f] border border-[var(--theme-primary)]/20",
+                  ? "bg-(--theme-primary) text-[#0b0c0f]"
+                  : "bg-[#222530] text-[#ded8cb] hover:bg-(--theme-primary) hover:text-[#0b0c0f] border border-(--theme-primary)/20",
               )}
             >
               {isSelected ? (

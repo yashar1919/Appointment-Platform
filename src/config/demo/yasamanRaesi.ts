@@ -215,7 +215,7 @@ export const yasamanRaesiConfig: BusinessConfig = {
       id: "loc-zaferanieh",
       name: "شعبه مرکزی معالی آباد",
       address:
-        "تهران، معالی آباد، خیابان آصف، برج تجاری پارامیس، طبقه ۵، واحد ۵۰۲",
+        "شیراز، معالی آباد، بعد از خیابان پزشکان، ساختمان اوتانا 1، طبقه 2، واحد 201",
       city: "تهران",
       postalCode: "۱۹۸۸۶۱۴۳۲۱",
       directions:

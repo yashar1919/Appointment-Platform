@@ -53,7 +53,7 @@ export function Dialog({
       {/* Modal Dialog Content */}
       <div
         className={cn(
-          "relative w-full max-w-lg bg-[#14161c] border border-[var(--theme-primary)]/25 rounded-t-3xl sm:rounded-2xl p-6 shadow-2xl z-10 max-h-[90vh] overflow-y-auto text-right text-[#f7f4ed]",
+          "relative w-full max-w-lg bg-[#14161c] border border-(--theme-primary)/25 rounded-t-3xl sm:rounded-2xl p-6 shadow-2xl z-10 max-h-[90vh] overflow-y-auto text-right text-[#f7f4ed]",
           className,
         )}
       >

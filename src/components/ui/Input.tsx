@@ -23,7 +23,9 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             className="block text-xs font-medium text-[#c5baa9] mb-2 select-none"
           >
             {label}
-            {props.required && <span className="text-[var(--theme-primary)] mr-1">*</span>}
+            {props.required && (
+              <span className="text-(--theme-primary) mr-1">*</span>
+            )}
           </label>
         )}
         <div className="relative">
@@ -32,7 +34,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             type={type}
             ref={ref}
             className={cn(
-              "w-full h-12 px-4 rounded-xl bg-[#14161c] border border-[#2d313b] text-[#f7f4ed] placeholder-[#717786] text-sm text-right transition-all duration-200 focus:outline-none focus:border-[var(--theme-primary)] focus:ring-1 focus:ring-[var(--theme-primary)]/50 disabled:opacity-50 disabled:cursor-not-allowed",
+              "w-full h-12 px-4 rounded-xl bg-[#14161c] border border-[#2d313b] text-[#f7f4ed] placeholder-[#717786] text-sm text-right transition-all duration-200 focus:outline-none focus:border-(--theme-primary) focus:ring-1 focus:ring-(--theme-primary)/50 disabled:opacity-50 disabled:cursor-not-allowed",
               error &&
                 "border-red-500/70 focus:border-red-500 focus:ring-red-500/40",
               className,
