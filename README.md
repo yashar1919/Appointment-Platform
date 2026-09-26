@@ -95,6 +95,18 @@ src/
 ۲. کلید اسلاگ آن (مثلاً `clinic-aria`) را به دیکشنری `DEMO_TENANTS` در `src/config/demo/index.ts` بیفزایید.
 ۳. اکنون مسیر `/booking/clinic-aria` به صورت خودکار خدمات، تم و متخصصین آن کسب‌وکار را لود می‌کند.
 
+### تغییر تم رنگی
+
+تم هر کسب‌وکار با یک فلگ از پالت‌های `gold` (تم پیش‌فرض فعلی)، `sky`، `amber`، `rose`، `teal`، `lime`، `indigo`، `violet` و `fuchsia` انتخاب می‌شود:
+
+```ts
+theme: {
+   palette: "rose",
+},
+```
+
+این انتخاب به صورت سراسری روی رنگ اصلی، رنگ تأکیدی، حالت hover، border، ring، shadow و gradient اعمال می‌شود.
+
 ---
 
 ## ۷. لایه ماندگاری و آمادگی اتصال به API (Storage & Backend Ready)

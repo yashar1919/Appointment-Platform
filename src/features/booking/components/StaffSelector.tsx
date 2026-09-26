@@ -40,12 +40,12 @@ export function StaffSelector({
         className={cn(
           "p-4 rounded-2xl bg-[#14161c] border transition-all duration-200 cursor-pointer flex items-center justify-between gap-4",
           allowAnyStaff
-            ? "border-[#cbb38d] ring-2 ring-[#cbb38d]/30 bg-[#1a1d25]"
-            : "border-[#2d313b]/80 hover:border-[#cbb38d]/40 hover:bg-[#181b22]",
+            ? "border-[var(--theme-primary)] ring-2 ring-[var(--theme-primary)]/30 bg-[#1a1d25]"
+            : "border-[#2d313b]/80 hover:border-[var(--theme-primary)]/40 hover:bg-[#181b22]",
         )}
       >
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-full bg-[#21242c] border border-[#cbb38d]/20 flex items-center justify-center text-[#cbb38d]">
+          <div className="w-12 h-12 rounded-full bg-[#21242c] border border-[var(--theme-primary)]/20 flex items-center justify-center text-[var(--theme-primary)]">
             <Users className="w-5 h-5" />
           </div>
           <div>
@@ -59,7 +59,7 @@ export function StaffSelector({
         </div>
 
         {allowAnyStaff && (
-          <div className="w-6 h-6 rounded-full bg-[#cbb38d] text-[#0b0c0f] flex items-center justify-center shrink-0">
+          <div className="w-6 h-6 rounded-full bg-[var(--theme-primary)] text-[#0b0c0f] flex items-center justify-center shrink-0">
             <Check className="w-3.5 h-3.5 stroke-3" />
           </div>
         )}
@@ -91,7 +91,7 @@ export function StaffSelector({
           type="button"
           disabled={!isSelected}
           onClick={onContinue}
-          className="min-h-12 px-7 py-2.5 rounded-xl bg-[#cbb38d] hover:bg-[#ddc5a2] disabled:opacity-40 disabled:cursor-not-allowed text-xs sm:text-sm font-bold text-[#0b0c0f] transition-all shadow-[0_4px_16px_rgba(203,179,141,0.25)] cursor-pointer"
+          className="min-h-12 px-7 py-2.5 rounded-xl bg-[var(--theme-primary)] hover:bg-[var(--theme-primary-light)] disabled:opacity-40 disabled:cursor-not-allowed text-xs sm:text-sm font-bold text-[#0b0c0f] transition-all shadow-[0_4px_16px_rgb(var(--theme-primary-rgb)_/_0.25)] cursor-pointer"
         >
           انتخاب زمان و ساعت نوبت
         </button>

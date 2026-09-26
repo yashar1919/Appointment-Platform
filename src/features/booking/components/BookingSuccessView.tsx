@@ -36,14 +36,14 @@ export function BookingSuccessView({
       <div className="text-center space-y-4">
         <div className="relative inline-flex items-center justify-center">
           {/* Subtle pulsating gold ring */}
-          <div className="absolute w-24 h-24 rounded-full bg-[#cbb38d]/20 animate-ping opacity-30" />
-          <div className="relative w-20 h-20 rounded-full bg-gradient-to-tr from-[#cbb38d] to-[#f4e2c8] text-[#0b0c0f] flex items-center justify-center shadow-[0_0_40px_rgba(203,179,141,0.5)]">
+          <div className="absolute w-24 h-24 rounded-full bg-[var(--theme-primary)]/20 animate-ping opacity-30" />
+          <div className="relative w-20 h-20 rounded-full bg-gradient-to-tr from-[var(--theme-primary)] to-[var(--theme-primary-light)] text-[#0b0c0f] flex items-center justify-center shadow-[0_0_40px_rgb(var(--theme-primary-rgb)_/_0.5)]">
             <Check className="w-10 h-10 stroke-[2.5]" />
           </div>
         </div>
 
         <div className="space-y-1.5">
-          <span className="text-xs font-semibold text-[#cbb38d] tracking-wide flex items-center justify-center gap-1.5">
+          <span className="text-xs font-semibold text-[var(--theme-primary)] tracking-wide flex items-center justify-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5" />
             رزرو شما با موفقیت قطعی شد
           </span>
@@ -61,10 +61,10 @@ export function BookingSuccessView({
       </div>
 
       {/* Reference Code Card */}
-      <div className="p-4 rounded-2xl bg-[#14161c] border border-[#cbb38d]/40 flex items-center justify-between shadow-xl">
+      <div className="p-4 rounded-2xl bg-[#14161c] border border-[var(--theme-primary)]/40 flex items-center justify-between shadow-xl">
         <div className="space-y-0.5">
           <span className="text-[11px] text-[#8e8779]">کد پیگیری اختصاصی:</span>
-          <div className="text-lg sm:text-xl font-mono font-bold text-[#cbb38d] tracking-widest">
+          <div className="text-lg sm:text-xl font-mono font-bold text-[var(--theme-primary)] tracking-widest">
             {appointment.referenceCode}
           </div>
         </div>
@@ -72,7 +72,7 @@ export function BookingSuccessView({
         <button
           type="button"
           onClick={handleCopyCode}
-          className="px-3.5 py-2 text-xs rounded-xl bg-[#21242c] hover:bg-[#2d313c] border border-[#cbb38d]/20 text-[#ded8cb] transition-colors cursor-pointer"
+          className="px-3.5 py-2 text-xs rounded-xl bg-[#21242c] hover:bg-[#2d313c] border border-[var(--theme-primary)]/20 text-[#ded8cb] transition-colors cursor-pointer"
         >
           کپی کد
         </button>
@@ -95,7 +95,7 @@ export function BookingSuccessView({
             <h3 className="text-base font-bold text-[#f7f4ed]">
               {appointment.service.name}
             </h3>
-            <p className="text-xs text-[#cbb38d]">
+            <p className="text-xs text-[var(--theme-primary)]">
               متخصص:{" "}
               {appointment.staff
                 ? appointment.staff.name
@@ -107,9 +107,9 @@ export function BookingSuccessView({
         {/* Date and Time */}
         <div className="p-5 space-y-2">
           <div className="flex items-center gap-2 text-sm sm:text-base font-bold text-[#f7f4ed]">
-            <Calendar className="w-4 h-4 text-[#cbb38d]" />
+            <Calendar className="w-4 h-4 text-[var(--theme-primary)]" />
             <span>{appointment.dateFormatted}</span>
-            <span className="text-[#cbb38d]">
+            <span className="text-[var(--theme-primary)]">
               · ساعت {appointment.timeSlot}
             </span>
           </div>
@@ -133,7 +133,7 @@ export function BookingSuccessView({
             <span className="text-[11px] text-[#8e8779]">
               مبلغ قابل پرداخت در آکادمی:
             </span>
-            <p className="text-base sm:text-lg font-bold text-[#cbb38d]">
+            <p className="text-base sm:text-lg font-bold text-[var(--theme-primary)]">
               {formatCurrency(appointment.totalPrice, appointment.currency)}
             </p>
           </div>
@@ -142,7 +142,7 @@ export function BookingSuccessView({
         {/* Preparation Guidelines */}
         {appointment.service.careInstructions && (
           <div className="p-5 bg-[#171a22] text-xs text-[#ded8cb] space-y-1">
-            <span className="font-semibold text-[#cbb38d] block">
+            <span className="font-semibold text-[var(--theme-primary)] block">
               نکات مهم پیش از مراجعه:
             </span>
             <p className="leading-relaxed text-[#b5ada0]">
@@ -157,7 +157,7 @@ export function BookingSuccessView({
         <button
           type="button"
           onClick={onStartAgain}
-          className="w-full sm:flex-1 min-h-12 px-6 py-3 rounded-xl bg-[#cbb38d] hover:bg-[#ddc5a2] text-xs sm:text-sm font-bold text-[#0b0c0f] transition-all shadow-[0_4px_16px_rgba(203,179,141,0.25)] flex items-center justify-center gap-2 cursor-pointer active:scale-98"
+          className="w-full sm:flex-1 min-h-12 px-6 py-3 rounded-xl bg-[var(--theme-primary)] hover:bg-[var(--theme-primary-light)] text-xs sm:text-sm font-bold text-[#0b0c0f] transition-all shadow-[0_4px_16px_rgb(var(--theme-primary-rgb)_/_0.25)] flex items-center justify-center gap-2 cursor-pointer active:scale-98"
         >
           <RefreshCw className="w-4 h-4" />
           <span>رزرو مجدد نوبت دیگر</span>

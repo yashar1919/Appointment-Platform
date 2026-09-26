@@ -20,7 +20,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             className="block text-xs font-medium text-[#c5baa9] mb-2 select-none"
           >
             {label}
-            {props.required && <span className="text-[#cbb38d] mr-1">*</span>}
+            {props.required && <span className="text-[var(--theme-primary)] mr-1">*</span>}
           </label>
         )}
         <textarea
@@ -28,7 +28,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           ref={ref}
           rows={rows}
           className={cn(
-            "w-full px-4 py-3 rounded-xl bg-[#14161c] border border-[#2d313b] text-[#f7f4ed] placeholder-[#717786] text-sm text-right transition-all duration-200 focus:outline-none focus:border-[#cbb38d] focus:ring-1 focus:ring-[#cbb38d]/50 disabled:opacity-50 disabled:cursor-not-allowed resize-none",
+            "w-full px-4 py-3 rounded-xl bg-[#14161c] border border-[#2d313b] text-[#f7f4ed] placeholder-[#717786] text-sm text-right transition-all duration-200 focus:outline-none focus:border-[var(--theme-primary)] focus:ring-1 focus:ring-[var(--theme-primary)]/50 disabled:opacity-50 disabled:cursor-not-allowed resize-none",
             error &&
               "border-red-500/70 focus:border-red-500 focus:ring-red-500/40",
             className,

@@ -8,9 +8,7 @@ export const yasamanRaesiConfig: BusinessConfig = {
   description:
     "ما با به‌روزترین متدهای جهانی، چهره‌ای طبیعی و ماندگار برای شما خلق می‌کنیم.",
   logo: "/src/assets/images/logo256x256-min.png",
-  // logo: "/src/assets/images/yasaman1.jpg",
-  // coverImage: "/src/assets/images/hero_yasaman_studio_1790400851165.jpg",
-  coverImage: "/src/assets/images/yasaman3.jpeg",
+  coverImage: "/src/assets/images/yasaman1.jpg",
   phone: "09128777749",
   phoneDisplay: "۰۹۱۲ ۸۷۷ ۷۷۷۴۹",
   instagram: "yasamanraesi.beauty",
@@ -26,11 +24,7 @@ export const yasamanRaesiConfig: BusinessConfig = {
   reviewsCount: 384,
 
   theme: {
-    primary: "#cbb38d",
-    secondary: "#21242c",
-    accent: "#8e6559",
-    background: "#0c0d10",
-    foreground: "#f7f4ed",
+    palette: "gold",
   },
 
   booking: {

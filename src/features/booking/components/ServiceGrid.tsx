@@ -68,7 +68,7 @@ export function ServiceGrid({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="جستجوی خدمت یا تکنیک..."
-              className="w-full h-11 pr-10 pl-3 rounded-xl bg-[#14161c] border border-[#2d313b] text-xs text-[#f7f4ed] placeholder-[#717786] focus:outline-none focus:border-[#cbb38d] focus:ring-1 focus:ring-[#cbb38d]"
+              className="w-full h-11 pr-10 pl-3 rounded-xl bg-[#14161c] border border-[#2d313b] text-xs text-[#f7f4ed] placeholder-[#717786] focus:outline-none focus:border-[var(--theme-primary)] focus:ring-1 focus:ring-[var(--theme-primary)]"
             />
             <Search className="w-4 h-4 text-[#717786] absolute right-3.5 top-1/2 -translate-y-1/2" />
           </div>
@@ -85,7 +85,7 @@ export function ServiceGrid({
       {/* Featured Service Card (if available) */}
       {featuredService && (
         <div className="space-y-2">
-          <div className="flex items-center gap-1.5 text-xs font-semibold text-[#cbb38d]">
+          <div className="flex items-center gap-1.5 text-xs font-semibold text-[var(--theme-primary)]">
             <Sparkles className="w-3.5 h-3.5" />
             <span>خدمت منتخب و ویژه ماه</span>
           </div>
@@ -124,7 +124,7 @@ export function ServiceGrid({
               setSearchQuery("");
               setActiveCategoryId("all");
             }}
-            className="text-xs text-[#cbb38d] hover:underline cursor-pointer"
+            className="text-xs text-[var(--theme-primary)] hover:underline cursor-pointer"
           >
             مشاهده همه خدمات
           </button>

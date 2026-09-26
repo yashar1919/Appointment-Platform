@@ -104,7 +104,7 @@ export function CustomerForm({
         </div>
 
         <div className="flex items-start gap-2.5 p-3 rounded-xl bg-[#1b1e28] text-xs text-[#a09a8e]">
-          <ShieldAlert className="w-4 h-4 text-[#cbb38d] shrink-0 mt-0.5" />
+          <ShieldAlert className="w-4 h-4 text-[var(--theme-primary)] shrink-0 mt-0.5" />
           <p className="leading-relaxed">
             اطلاعات شما کاملاً محرمانه بوده و تنها برای هماهنگی و مشاوره نوبت
             استفاده خواهد شد.
@@ -124,7 +124,7 @@ export function CustomerForm({
 
         <button
           type="submit"
-          className="min-h-12 px-7 py-2.5 rounded-xl bg-[#cbb38d] hover:bg-[#ddc5a2] text-xs sm:text-sm font-bold text-[#0b0c0f] transition-all shadow-[0_4px_16px_rgba(203,179,141,0.25)] cursor-pointer"
+          className="min-h-12 px-7 py-2.5 rounded-xl bg-[var(--theme-primary)] hover:bg-[var(--theme-primary-light)] text-xs sm:text-sm font-bold text-[#0b0c0f] transition-all shadow-[0_4px_16px_rgb(var(--theme-primary-rgb)_/_0.25)] cursor-pointer"
         >
           بررسی و تایید نهایی
         </button>

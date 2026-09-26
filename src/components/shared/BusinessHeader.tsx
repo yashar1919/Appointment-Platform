@@ -27,7 +27,7 @@ export function BusinessHeader({
             />
             <a
               href={`/booking/${business.slug}`}
-              className="hidden lg:block text-base sm:text-lg font-bold tracking-tight text-[#f7f4ed] hover:text-[#cbb38d] transition-colors whitespace-nowrap"
+              className="hidden lg:block text-base sm:text-lg font-bold tracking-tight text-[#f7f4ed] hover:text-[var(--theme-primary)] transition-colors whitespace-nowrap"
             >
               {business.name}
             </a>
@@ -68,7 +68,7 @@ export function BusinessHeader({
             {onViewAppointments && (
               <button
                 onClick={onViewAppointments}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs text-[#cbb38d] hover:text-white rounded-lg hover:bg-[#21242c] transition-colors min-h-10 cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs text-[var(--theme-primary)] hover:text-white rounded-lg hover:bg-[#21242c] transition-colors min-h-10 cursor-pointer"
                 title="مشاهده نوبت‌های ثبت‌شده"
               >
                 <CalendarCheck className="w-4 h-4" />
@@ -78,7 +78,7 @@ export function BusinessHeader({
 
             <a
               href={`tel:${business.phone}`}
-              className="inline-flex items-center gap-2 p-3 text-xs font-semibold text-[#0b0c0f] bg-[#cbb38d] hover:bg-[#ddc5a2] rounded-full sm:rounded-xl transition-all shadow-[0_2px_12px_rgba(203,179,141,0.25)] whitespace-nowrap cursor-pointer active:scale-95"
+              className="inline-flex items-center gap-2 p-3 text-xs font-semibold text-[#0b0c0f] bg-[var(--theme-primary)] hover:bg-[var(--theme-primary-light)] rounded-full sm:rounded-xl transition-all shadow-[0_2px_12px_rgb(var(--theme-primary-rgb)_/_0.25)] whitespace-nowrap cursor-pointer active:scale-95"
             >
               <Phone className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">تماس تلفنی</span>

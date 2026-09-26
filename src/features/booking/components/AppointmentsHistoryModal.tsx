@@ -73,7 +73,7 @@ export function AppointmentsHistoryModal({
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div>
-                      <span className="text-[10px] font-mono text-[#cbb38d]">
+                      <span className="text-[10px] font-mono text-[var(--theme-primary)]">
                         کد پیگیری: {apt.referenceCode}
                       </span>
                       <h4 className="text-sm font-bold text-[#f7f4ed]">
@@ -97,12 +97,12 @@ export function AppointmentsHistoryModal({
 
                   <div className="flex items-center gap-3 text-xs text-[#b5ada0] pt-1">
                     <span className="flex items-center gap-1">
-                      <Calendar className="w-3.5 h-3.5 text-[#cbb38d]" />
+                      <Calendar className="w-3.5 h-3.5 text-[var(--theme-primary)]" />
                       {apt.dateFormatted}
                     </span>
                     <span>·</span>
                     <span className="flex items-center gap-1">
-                      <Clock className="w-3.5 h-3.5 text-[#cbb38d]" />
+                      <Clock className="w-3.5 h-3.5 text-[var(--theme-primary)]" />
                       ساعت {apt.timeSlot}
                     </span>
                   </div>

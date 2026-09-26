@@ -139,7 +139,7 @@ export function BookingPage() {
     return (
       <div className="min-h-screen bg-[#0b0c0f] flex items-center justify-center p-4">
         <div className="text-center space-y-3">
-          <div className="w-10 h-10 border-2 border-[#cbb38d] border-t-transparent rounded-full animate-spin mx-auto" />
+          <div className="w-10 h-10 border-2 border-[var(--theme-primary)] border-t-transparent rounded-full animate-spin mx-auto" />
           <p className="text-xs text-[#a09a8e]">
             در حال بارگذاری اطلاعات آکادمی...
           </p>
@@ -177,7 +177,8 @@ export function BookingPage() {
   return (
     <div
       ref={containerRef}
-      className="min-h-screen bg-[#0b0c0f] text-[#f7f4ed] pb-24 sm:pb-16 selection:bg-[#cbb38d]/25"
+      data-theme={currentTenant.theme.palette ?? "gold"}
+      className="min-h-screen bg-[#0b0c0f] text-[#f7f4ed] pb-24 sm:pb-16 selection:bg-[var(--theme-primary)]/25"
     >
       {/* Universal Top Bar */}
       <BusinessHeader
@@ -269,7 +270,7 @@ export function BookingPage() {
                 type="button"
                 disabled={!selectedDate || !selectedTimeSlot}
                 onClick={() => setStep("customer")}
-                className="min-h-12 px-7 py-2.5 rounded-xl bg-[#cbb38d] hover:bg-[#ddc5a2] disabled:opacity-40 disabled:cursor-not-allowed text-xs sm:text-sm font-bold text-[#0b0c0f] transition-all shadow-[0_4px_16px_rgba(203,179,141,0.25)] cursor-pointer"
+                className="min-h-12 px-7 py-2.5 rounded-xl bg-[var(--theme-primary)] hover:bg-[var(--theme-primary-light)] disabled:opacity-40 disabled:cursor-not-allowed text-xs sm:text-sm font-bold text-[#0b0c0f] transition-all shadow-[0_4px_16px_rgb(var(--theme-primary-rgb)_/_0.25)] cursor-pointer"
               >
                 ثبت اطلاعات تماس
               </button>

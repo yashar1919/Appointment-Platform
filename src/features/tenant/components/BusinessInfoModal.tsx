@@ -33,7 +33,7 @@ export function BusinessInfoModal({
       <div className="space-y-5 text-sm text-[#ded8cb]">
         {/* Address and directions */}
         <div className="flex items-start gap-3 p-3.5 rounded-xl bg-[#1a1d24] border border-[#2d313b]">
-          <MapPin className="w-5 h-5 text-[#cbb38d] shrink-0 mt-0.5" />
+          <MapPin className="w-5 h-5 text-[var(--theme-primary)] shrink-0 mt-0.5" />
           <div className="space-y-1">
             <h4 className="font-semibold text-[#f7f4ed] text-xs">
               آدرس و موقعیت
@@ -51,7 +51,7 @@ export function BusinessInfoModal({
 
         {/* Working Hours */}
         <div className="flex items-start gap-3 p-3.5 rounded-xl bg-[#1a1d24] border border-[#2d313b]">
-          <Clock className="w-5 h-5 text-[#cbb38d] shrink-0 mt-0.5" />
+          <Clock className="w-5 h-5 text-[var(--theme-primary)] shrink-0 mt-0.5" />
           <div className="space-y-1">
             <h4 className="font-semibold text-[#f7f4ed] text-xs">
               ساعات کاری و پذیرش
@@ -70,7 +70,7 @@ export function BusinessInfoModal({
 
         {/* Hygiene and Safety protocols */}
         <div className="flex items-start gap-3 p-3.5 rounded-xl bg-[#1a1d24] border border-[#2d313b]">
-          <ShieldCheck className="w-5 h-5 text-[#cbb38d] shrink-0 mt-0.5" />
+          <ShieldCheck className="w-5 h-5 text-[var(--theme-primary)] shrink-0 mt-0.5" />
           <div className="space-y-1">
             <h4 className="font-semibold text-[#f7f4ed] text-xs">
               پروتکل‌های بهداشتی استریل
@@ -86,9 +86,9 @@ export function BusinessInfoModal({
         <div className="pt-2 flex flex-wrap items-center gap-3">
           <a
             href={`tel:${business.phone}`}
-            className="flex-1 min-h-11 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#21242c] hover:bg-[#2c303b] border border-[#cbb38d]/20 text-xs font-medium text-[#f7f4ed] transition-colors"
+            className="flex-1 min-h-11 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#21242c] hover:bg-[#2c303b] border border-[var(--theme-primary)]/20 text-xs font-medium text-[#f7f4ed] transition-colors"
           >
-            <Phone className="w-4 h-4 text-[#cbb38d]" />
+            <Phone className="w-4 h-4 text-[var(--theme-primary)]" />
             <span>تماس: {business.phoneDisplay}</span>
           </a>
 
@@ -97,16 +97,16 @@ export function BusinessInfoModal({
               href={`https://instagram.com/${business.instagram}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 min-h-11 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#21242c] hover:bg-[#2c303b] border border-[#cbb38d]/20 text-xs font-medium text-[#f7f4ed] transition-colors"
+              className="flex-1 min-h-11 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#21242c] hover:bg-[#2c303b] border border-[var(--theme-primary)]/20 text-xs font-medium text-[#f7f4ed] transition-colors"
             >
-              <Instagram className="w-4 h-4 text-[#cbb38d]" />
+              <Instagram className="w-4 h-4 text-[var(--theme-primary)]" />
               <span>اینستاگرام آکادمی</span>
             </a>
           )}
         </div>
 
         <div className="text-center pt-1">
-          <span className="inline-flex items-center gap-1.5 text-[11px] text-[#cbb38d]/80">
+          <span className="inline-flex items-center gap-1.5 text-[11px] text-[var(--theme-primary)]/80">
             <Sparkles className="w-3.5 h-3.5" />
             مجوز رسمی وزارت بهداشت و سرتیفیکیت فیبروز اروپا
           </span>

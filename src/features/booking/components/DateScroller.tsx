@@ -31,7 +31,7 @@ export function DateScroller({
     <div className="space-y-3 text-right">
       <div className="flex items-center justify-between">
         <h3 className="text-sm sm:text-base font-bold text-[#f7f4ed] flex items-center gap-2">
-          <Calendar className="w-4 h-4 text-[#cbb38d]" />
+          <Calendar className="w-4 h-4 text-[var(--theme-primary)]" />
           <span>انتخاب روز مراجعه</span>
         </h3>
         <span className="text-[11px] text-[#8e8779]">
@@ -60,10 +60,10 @@ export function DateScroller({
                 className={cn(
                   "relative flex flex-col items-center justify-between py-3 px-3.5 min-w-19 sm:min-w-21 h-23 rounded-2xl transition-all duration-200 cursor-pointer select-none shrink-0 border text-center",
                   isSelected &&
-                    "bg-[#cbb38d] text-[#0b0c0f] border-[#cbb38d] ring-2 ring-[#cbb38d]/40 shadow-[0_4px_16px_rgba(203,179,141,0.3)] scale-[1.03]",
+                    "bg-[var(--theme-primary)] text-[#0b0c0f] border-[var(--theme-primary)] ring-2 ring-[var(--theme-primary)]/40 shadow-[0_4px_16px_rgb(var(--theme-primary-rgb)_/_0.3)] scale-[1.03]",
                   isAvailable &&
                     !isSelected &&
-                    "bg-[#14161c] text-[#ded8cb] border-[#2d313b]/80 hover:border-[#cbb38d]/40 hover:bg-[#1b1e27]",
+                    "bg-[#14161c] text-[#ded8cb] border-[#2d313b]/80 hover:border-[var(--theme-primary)]/40 hover:bg-[#1b1e27]",
                   !isAvailable &&
                     "bg-[#101217] text-[#555a68] border-[#22252e] opacity-40 cursor-not-allowed",
                 )}
@@ -110,8 +110,8 @@ export function DateScroller({
                     className={cn(
                       "absolute -top-1 right-2 text-[9px] px-1.5 py-0.2 rounded-full font-semibold",
                       isSelected
-                        ? "bg-[#0b0c0f] text-[#cbb38d]"
-                        : "bg-[#cbb38d] text-[#0b0c0f]",
+                        ? "bg-[#0b0c0f] text-[var(--theme-primary)]"
+                        : "bg-[var(--theme-primary)] text-[#0b0c0f]",
                     )}
                   >
                     امروز

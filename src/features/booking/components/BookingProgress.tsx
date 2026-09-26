@@ -34,7 +34,7 @@ export function BookingProgress({
         {/* Mobile View: Clean compact step counter & title */}
         <div className="flex sm:hidden items-center justify-between text-xs">
           <div className="flex items-center gap-2">
-            <span className="w-5 h-5 rounded-full bg-[#cbb38d] text-[#0b0c0f] font-bold flex items-center justify-center text-[10px]">
+            <span className="w-5 h-5 rounded-full bg-[var(--theme-primary)] text-[#0b0c0f] font-bold flex items-center justify-center text-[10px]">
               {currentIndex + 1}
             </span>
             <span className="font-semibold text-[#f7f4ed]">
@@ -49,7 +49,7 @@ export function BookingProgress({
         {/* Mobile thin progress line */}
         <div className="w-full bg-[#21242c] h-1 rounded-full mt-2 sm:hidden overflow-hidden">
           <div
-            className="h-full bg-gradient-to-l from-[#cbb38d] to-[#ddc5a2] transition-all duration-300"
+            className="h-full bg-gradient-to-l from-[var(--theme-primary)] to-[var(--theme-primary-light)] transition-all duration-300"
             style={{ width: `${((currentIndex + 1) / steps.length) * 100}%` }}
           />
         </div>
@@ -80,9 +80,9 @@ export function BookingProgress({
                   <div
                     className={cn(
                       "w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-all shrink-0",
-                      isCompleted && "bg-[#cbb38d] text-[#0b0c0f]",
+                      isCompleted && "bg-[var(--theme-primary)] text-[#0b0c0f]",
                       isCurrent &&
-                        "bg-[#cbb38d] text-[#0b0c0f] ring-4 ring-[#cbb38d]/20 shadow-[0_0_12px_rgba(203,179,141,0.5)]",
+                        "bg-[var(--theme-primary)] text-[#0b0c0f] ring-4 ring-[var(--theme-primary)]/20 shadow-[0_0_12px_rgb(var(--theme-primary-rgb)_/_0.5)]",
                       !isCompleted &&
                         !isCurrent &&
                         "bg-[#21242c] text-[#717786] border border-[#2d313b]",
@@ -112,7 +112,7 @@ export function BookingProgress({
                   <div
                     className={cn(
                       "flex-1 h-[1.5px] mx-3 transition-colors",
-                      index < currentIndex ? "bg-[#cbb38d]/80" : "bg-[#21242c]",
+                      index < currentIndex ? "bg-[var(--theme-primary)]/80" : "bg-[#21242c]",
                     )}
                   />
                 )}

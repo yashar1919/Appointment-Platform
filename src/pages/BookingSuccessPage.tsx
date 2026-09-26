@@ -48,14 +48,14 @@ export function BookingSuccessPage() {
     return (
       <div className="min-h-screen bg-[#0b0c0f] text-[#f7f4ed] flex items-center justify-center p-4 text-right">
         <div className="max-w-md w-full p-6 rounded-2xl bg-[#14161c] border border-[#2d313b] text-center space-y-4">
-          <AlertCircle className="w-12 h-12 text-[#cbb38d] mx-auto" />
+          <AlertCircle className="w-12 h-12 text-[var(--theme-primary)] mx-auto" />
           <h2 className="text-lg font-bold">اطلاعات نوبت یافت نشد</h2>
           <p className="text-xs text-[#a09a8e] leading-relaxed">
             ممکن است این نوبت منقضی شده یا در این دستگاه ثبت نشده باشد.
           </p>
           <button
             onClick={() => navigate(`/booking/${tenantSlug}`)}
-            className="w-full h-11 rounded-xl bg-[#cbb38d] text-[#0b0c0f] font-bold text-xs cursor-pointer hover:bg-[#ddc5a2] transition-colors"
+            className="w-full h-11 rounded-xl bg-[var(--theme-primary)] text-[#0b0c0f] font-bold text-xs cursor-pointer hover:bg-[var(--theme-primary-light)] transition-colors"
           >
             بازگشت به صفحه رزرو نوبت
           </button>
@@ -65,7 +65,10 @@ export function BookingSuccessPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0b0c0f] text-[#f7f4ed] selection:bg-[#cbb38d]/25">
+    <div
+      data-theme={currentTenant?.theme.palette ?? "gold"}
+      className="min-h-screen bg-[#0b0c0f] text-[#f7f4ed] selection:bg-[var(--theme-primary)]/25"
+    >
       {currentTenant && <BusinessHeader business={currentTenant} />}
       <main className="max-w-4xl mx-auto px-4 sm:px-6">
         <BookingSuccessView

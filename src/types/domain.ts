@@ -56,12 +56,19 @@ export interface WorkingHours {
   slotDurationMinutes: number; // e.g. 30 or 60
 }
 
+export type ThemePalette =
+  | "gold"
+  | "sky"
+  | "amber"
+  | "rose"
+  | "teal"
+  | "lime"
+  | "indigo"
+  | "violet"
+  | "fuchsia";
+
 export interface TenantTheme {
-  primary: string;
-  secondary: string;
-  accent: string;
-  background: string;
-  foreground: string;
+  palette: ThemePalette;
 }
 
 export interface TenantBookingConfig {

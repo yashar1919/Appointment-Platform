@@ -71,16 +71,16 @@ export function BookingReview({
         </p>
       </div>
 
-      <div className="bg-[#14161c] rounded-2xl border border-[#cbb38d]/30 overflow-hidden shadow-2xl">
+      <div className="bg-[#14161c] rounded-2xl border border-[var(--theme-primary)]/30 overflow-hidden shadow-2xl">
         {/* Header Ribbon */}
         <div className="bg-gradient-to-r from-[#21242c] via-[#2a2e3a] to-[#21242c] p-4 border-b border-[#2d313b] flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-[#cbb38d]" />
+            <Sparkles className="w-4 h-4 text-[var(--theme-primary)]" />
             <span className="text-xs sm:text-sm font-bold text-[#f7f4ed]">
               خلاصه اطلاعات نوبت شما در {business.name}
             </span>
           </div>
-          <span className="text-xs text-[#cbb38d]">آماده تایید</span>
+          <span className="text-xs text-[var(--theme-primary)]">آماده تایید</span>
         </div>
 
         <div className="p-4 sm:p-6 space-y-5 divide-y divide-[#232732]">
@@ -103,7 +103,7 @@ export function BookingReview({
                   {service.name}
                 </h4>
                 <div className="flex items-center gap-2 text-xs text-[#a09a8e]">
-                  <Clock className="w-3.5 h-3.5 text-[#cbb38d]" />
+                  <Clock className="w-3.5 h-3.5 text-[var(--theme-primary)]" />
                   <span>
                     مدت تقریبی: {formatDuration(service.durationMinutes)}
                   </span>
@@ -114,7 +114,7 @@ export function BookingReview({
             <button
               type="button"
               onClick={() => onEditSection("service")}
-              className="text-xs text-[#cbb38d] hover:text-[#ddc5a2] inline-flex items-center gap-1 min-h-10 px-2 cursor-pointer font-medium"
+              className="text-xs text-[var(--theme-primary)] hover:text-[var(--theme-primary-light)] inline-flex items-center gap-1 min-h-10 px-2 cursor-pointer font-medium"
             >
               <Edit3 className="w-3.5 h-3.5" />
               <span>تغییر</span>
@@ -124,7 +124,7 @@ export function BookingReview({
           {/* Section 2: Staff */}
           <div className="flex items-start justify-between gap-4 pt-4">
             <div className="flex items-start gap-3.5">
-              <div className="w-12 h-12 rounded-full overflow-hidden bg-[#21242c] shrink-0 border border-[#cbb38d]/25 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-full overflow-hidden bg-[#21242c] shrink-0 border border-[var(--theme-primary)]/25 flex items-center justify-center">
                 {staff?.avatar ? (
                   <img
                     src={staff.avatar}
@@ -133,7 +133,7 @@ export function BookingReview({
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <User className="w-6 h-6 text-[#cbb38d]" />
+                  <User className="w-6 h-6 text-[var(--theme-primary)]" />
                 )}
               </div>
               <div className="space-y-0.5">
@@ -150,7 +150,7 @@ export function BookingReview({
             <button
               type="button"
               onClick={() => onEditSection("staff")}
-              className="text-xs text-[#cbb38d] hover:text-[#ddc5a2] inline-flex items-center gap-1 min-h-10 px-2 cursor-pointer font-medium"
+              className="text-xs text-[var(--theme-primary)] hover:text-[var(--theme-primary-light)] inline-flex items-center gap-1 min-h-10 px-2 cursor-pointer font-medium"
             >
               <Edit3 className="w-3.5 h-3.5" />
               <span>تغییر</span>
@@ -164,9 +164,9 @@ export function BookingReview({
                 زمان مراجعه حضوری:
               </span>
               <div className="flex items-center gap-2 text-sm sm:text-base font-bold text-[#f7f4ed]">
-                <Calendar className="w-4 h-4 text-[#cbb38d]" />
+                <Calendar className="w-4 h-4 text-[var(--theme-primary)]" />
                 <span>{formatFullJalaliDate(date)}</span>
-                <span className="text-[#cbb38d]">· ساعت {timeSlot.time}</span>
+                <span className="text-[var(--theme-primary)]">· ساعت {timeSlot.time}</span>
               </div>
               <p className="text-xs text-[#a09a8e] flex items-center gap-1">
                 <MapPin className="w-3.5 h-3.5 text-[#9a9488]" />
@@ -177,7 +177,7 @@ export function BookingReview({
             <button
               type="button"
               onClick={() => onEditSection("datetime")}
-              className="text-xs text-[#cbb38d] hover:text-[#ddc5a2] inline-flex items-center gap-1 min-h-10 px-2 cursor-pointer font-medium"
+              className="text-xs text-[var(--theme-primary)] hover:text-[var(--theme-primary-light)] inline-flex items-center gap-1 min-h-10 px-2 cursor-pointer font-medium"
             >
               <Edit3 className="w-3.5 h-3.5" />
               <span>تغییر</span>
@@ -192,7 +192,7 @@ export function BookingReview({
                 {customer.fullName}
               </h4>
               <p className="text-xs text-[#a09a8e] flex items-center gap-2 font-mono">
-                <Phone className="w-3.5 h-3.5 text-[#cbb38d]" />
+                <Phone className="w-3.5 h-3.5 text-[var(--theme-primary)]" />
                 <span>{formatPhoneNumber(customer.phone)}</span>
               </p>
               {customer.notes && (
@@ -208,7 +208,7 @@ export function BookingReview({
             <button
               type="button"
               onClick={() => onEditSection("customer")}
-              className="text-xs text-[#cbb38d] hover:text-[#ddc5a2] inline-flex items-center gap-1 min-h-10 px-2 cursor-pointer font-medium"
+              className="text-xs text-[var(--theme-primary)] hover:text-[var(--theme-primary-light)] inline-flex items-center gap-1 min-h-10 px-2 cursor-pointer font-medium"
             >
               <Edit3 className="w-3.5 h-3.5" />
               <span>تغییر</span>
@@ -219,7 +219,7 @@ export function BookingReview({
           <div className="pt-4 flex items-center justify-between">
             <div>
               <span className="text-xs text-[#8e8779]">مبلغ کل خدمت:</span>
-              <div className="text-xl sm:text-2xl font-black text-[#cbb38d] mt-0.5">
+              <div className="text-xl sm:text-2xl font-black text-[var(--theme-primary)] mt-0.5">
                 {formatCurrency(service.price, business.currency)}
               </div>
             </div>
@@ -235,7 +235,7 @@ export function BookingReview({
 
         {/* Guarantee Banner */}
         <div className="p-3.5 bg-[#171a22] border-t border-[#262934] flex items-center gap-2 text-xs text-[#ded8cb]">
-          <ShieldCheck className="w-4 h-4 text-[#cbb38d] shrink-0" />
+          <ShieldCheck className="w-4 h-4 text-[var(--theme-primary)] shrink-0" />
           <span>
             امکان لغو یا تغییر زمان نوبت تا {business.booking.minNoticeHours}{" "}
             ساعت قبل از طریق پیامک یا تماس امکان‌پذیر است.
@@ -257,7 +257,7 @@ export function BookingReview({
           type="button"
           disabled={isSubmitting}
           onClick={onConfirmBooking}
-          className="min-h-12 px-8 py-3 rounded-xl bg-[#cbb38d] hover:bg-[#ddc5a2] text-xs sm:text-sm font-bold text-[#0b0c0f] transition-all shadow-[0_4px_20px_rgba(203,179,141,0.35)] cursor-pointer flex items-center gap-2"
+          className="min-h-12 px-8 py-3 rounded-xl bg-[var(--theme-primary)] hover:bg-[var(--theme-primary-light)] text-xs sm:text-sm font-bold text-[#0b0c0f] transition-all shadow-[0_4px_20px_rgb(var(--theme-primary-rgb)_/_0.35)] cursor-pointer flex items-center gap-2"
         >
           {isSubmitting ? (
             <span>در حال ثبت نوبت...</span>
