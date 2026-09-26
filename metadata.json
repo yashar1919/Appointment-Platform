@@ -1,0 +1,6 @@
+{
+  "name": "یاسمن رئیسی | رزرو آنلاین نوبت خدمات زیبایی",
+  "description": "تجربه رزرو لوکس و اختصاصی خدمات آرایش دائم، میکروبلیدینگ، شیدینگ لب و خط چشم یاسمن رئیسی",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
