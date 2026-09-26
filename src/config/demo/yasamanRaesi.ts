@@ -1,4 +1,9 @@
 import { BusinessConfig } from "@/src/types/domain";
+import logoImage from "@/src/assets/images/logo256x256-min.png";
+import lipBlushImage from "@/src/assets/images/service_lip_blush_1790400872703.jpg";
+import microbladingImage from "@/src/assets/images/service_microblading_1790400861725.jpg";
+import eyelinerImage from "@/src/assets/images/service_permanent_eyeliner_1790400882769.jpg";
+import yasamanImage from "@/src/assets/images/yasaman1.jpg";
 
 export const yasamanRaesiConfig: BusinessConfig = {
   id: "tenant-yasaman-raesi-01",
@@ -7,8 +12,8 @@ export const yasamanRaesiConfig: BusinessConfig = {
   headline: "زیبایی ماندگار، با ظرافتی طبیعی",
   description:
     "ما با به‌روزترین متدهای جهانی، چهره‌ای طبیعی و ماندگار برای شما خلق می‌کنیم.",
-  logo: "/src/assets/images/logo256x256-min.png",
-  coverImage: "/src/assets/images/yasaman1.jpg",
+  logo: logoImage,
+  coverImage: yasamanImage,
   phone: "09128777749",
   phoneDisplay: "۰۹۱۲ ۸۷۷ ۷۷۷۴۹",
   instagram: "yasamanraesi.beauty",
@@ -82,7 +87,7 @@ export const yasamanRaesiConfig: BusinessConfig = {
       price: 4500000,
       isFeatured: true,
       isPopular: true,
-      image: "/src/assets/images/service_microblading_1790400861725.jpg",
+      image: microbladingImage,
       includedItems: [
         "طراحی و متقارن‌سازی هندسی با کولیس دیجیتال",
         "استفاده از کیت یک‌بار مصرف استریل و اختصاصی",
@@ -102,7 +107,7 @@ export const yasamanRaesiConfig: BusinessConfig = {
       price: 3800000,
       isFeatured: false,
       isPopular: true,
-      image: "/src/assets/images/service_lip_blush_1790400872703.jpg",
+      image: lipBlushImage,
       includedItems: [
         "خنثی‌سازی اولیه پیگمنت تیرگی لب در صورت نیاز",
         "ترکیب رنگ سفارشی هماهنگ با ته‌رنگ پوست شما",
@@ -121,7 +126,7 @@ export const yasamanRaesiConfig: BusinessConfig = {
       price: 3200000,
       isFeatured: false,
       isPopular: false,
-      image: "/src/assets/images/service_permanent_eyeliner_1790400882769.jpg",
+      image: eyelinerImage,
       includedItems: [
         "قرینه‌سازی مینیاتوری و قرینه‌سازی زاویه چشم",
         "بدون پخش‌شدگی رنگ در بافت حساس پلک",
@@ -138,7 +143,7 @@ export const yasamanRaesiConfig: BusinessConfig = {
       price: 4800000,
       isFeatured: true,
       isPopular: false,
-      image: "/src/assets/images/service_microblading_1790400861725.jpg",
+      image: microbladingImage,
       includedItems: [
         "مناسب انواع پوست مخصوصاً پوست‌های چرب و منافذدار",
         "بدون ایجاد اسکار و آسیب به ریشه تارهای موی طبیعی",
@@ -154,7 +159,7 @@ export const yasamanRaesiConfig: BusinessConfig = {
       price: 2600000,
       isFeatured: false,
       isPopular: false,
-      image: "/src/assets/images/service_lip_blush_1790400872703.jpg",
+      image: lipBlushImage,
     },
     {
       id: "srv-face-consultation",
@@ -166,7 +171,7 @@ export const yasamanRaesiConfig: BusinessConfig = {
       price: 500000,
       isFeatured: false,
       isPopular: false,
-      image: "/src/assets/images/yasaman1.jpg",
+      image: yasamanImage,
       includedItems: [
         "طراحی غیرماندگار موقت برای مشاهده نتیجه احتمالی",
         "هزینه در صورت انجام خدمت در فاکتور کسر می‌گردد",
@@ -179,7 +184,7 @@ export const yasamanRaesiConfig: BusinessConfig = {
       id: "staff-yasaman",
       name: "یاسمن رئیسی",
       role: "مستر رسمی آکادمی فی اروپا و بنیان‌گذار آکادمی",
-      avatar: "/src/assets/images/yasaman1.jpg",
+      avatar: yasamanImage,
       bio: "بیش از ۹ سال سابقه تخصصی در زمینه میکروبلیدینگ و میکروپیگمنتیشن با بیش از ۶,۰۰۰ پیگمنت‌گذاری موفق در ایران و دبی.",
       experienceYears: 9,
       rating: 4.98,
@@ -190,7 +195,7 @@ export const yasamanRaesiConfig: BusinessConfig = {
       id: "staff-nastaran",
       name: "نسترن کمالی",
       role: "آرتیست ارشد آرایش دائم و میکروپیگمنتیشن",
-      avatar: "/src/assets/images/service_microblading_1790400861725.jpg",
+      avatar: microbladingImage,
       bio: "فارغ‌التحصیل آکادمی S-Brows، متخصص در پیاده‌سازی خطوط تار به تار فوق‌العاده ظریف و شیدینگ سایه‌ای.",
       experienceYears: 6,
       rating: 4.92,
@@ -201,7 +206,7 @@ export const yasamanRaesiConfig: BusinessConfig = {
       id: "staff-mona",
       name: "مونا شایسته",
       role: "متخصص شیدینگ و ترکیب رنگ ارگانیک لب",
-      avatar: "/src/assets/images/service_lip_blush_1790400872703.jpg",
+      avatar: lipBlushImage,
       bio: "استاد ترکیب رنگ و خنثی‌سازی پیگمنت‌های دودی، طراح لب‌های آمبره طبیعی بدون کادربندی تیز.",
       experienceYears: 5,
       rating: 4.9,
