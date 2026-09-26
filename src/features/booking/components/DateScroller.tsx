@@ -35,7 +35,7 @@ export function DateScroller({
           <span>انتخاب روز مراجعه</span>
         </h3>
         <span className="text-[11px] text-[#8e8779]">
-          ۱۴ روز آینده قابل رزرو است
+          {days.length} روز آینده قابل رزرو است
         </span>
       </div>
 

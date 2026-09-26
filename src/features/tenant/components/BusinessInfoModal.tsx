@@ -57,27 +57,27 @@ export function BusinessInfoModal({
               ساعات کاری و پذیرش
             </h4>
             <p className="text-xs text-[#b5ada0]">
-              شنبه تا پنج‌شنبه از ساعت{" "}
+              روزهای کاری از ساعت{" "}
               {toPersianDigits(business.workingHours.openTime)} الی{" "}
-              {toPersianDigits(business.workingHours.closeTime)} (جمعه‌ها تعطیل)
+              {toPersianDigits(business.workingHours.closeTime)}
             </p>
             <p className="text-[11px] text-[#8e8779]">
-              حداقل زمان اطلاع جهت جابجایی یا کنسلی:{" "}
+              حداقل زمان اطلاع برای تغییر یا لغو:{" "}
               {toPersianDigits(business.booking.minNoticeHours)} ساعت قبل
             </p>
           </div>
         </div>
 
-        {/* Hygiene and Safety protocols */}
+        {/* Tenant-configured policy */}
         <div className="flex items-start gap-3 p-3.5 rounded-xl bg-[#1a1d24] border border-[#2d313b]">
           <ShieldCheck className="w-5 h-5 text-(--theme-primary) shrink-0 mt-0.5" />
           <div className="space-y-1">
             <h4 className="font-semibold text-[#f7f4ed] text-xs">
-              پروتکل‌های بهداشتی استریل
+              سیاست‌های کسب‌وکار
             </h4>
             <p className="text-xs text-[#b5ada0] leading-relaxed">
-              تمامی پک‌های بلیدینگ، تیغه‌های نانو و سری‌های دستگاه به صورت
-              یک‌بار مصرف و در حضور زیباجو آنباکس می‌گردند.
+              {business.content?.policies?.arrival ||
+                "لطفاً پیش از زمان تعیین‌شده در محل حاضر شوید."}
             </p>
           </div>
         </div>
@@ -105,7 +105,9 @@ export function BusinessInfoModal({
               className="flex-1 min-h-11 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#21242c] hover:bg-[#2c303b] border border-(--theme-primary)/20 text-xs font-medium text-[#f7f4ed] transition-colors"
             >
               <Instagram className="w-4 h-4 text-(--theme-primary)" />
-              <span>اینستاگرام آکادمی</span>
+              <span>
+                {business.content?.contact?.socialLabel || "شبکه اجتماعی"}
+              </span>
             </a>
           )}
         </div>
@@ -113,7 +115,8 @@ export function BusinessInfoModal({
         <div className="text-center pt-1">
           <span className="inline-flex items-center gap-1.5 text-[11px] text-(--theme-primary)/80">
             <Sparkles className="w-3.5 h-3.5" />
-            مجوز رسمی وزارت بهداشت و سرتیفیکیت فیبروز اروپا
+            {business.content?.policies?.privacy ||
+              "اطلاعات شما فقط برای مدیریت نوبت استفاده می‌شود."}
           </span>
         </div>
       </div>

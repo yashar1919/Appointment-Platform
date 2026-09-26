@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { User, Phone, Mail, FileText, ShieldAlert } from "lucide-react";
+import { ShieldAlert } from "lucide-react";
 import { customerFormSchema, CustomerFormData } from "../schemas/bookingSchema";
 import { Input } from "@/src/components/ui/Input";
 import { Textarea } from "@/src/components/ui/Textarea";
@@ -47,8 +47,7 @@ export function CustomerForm({
           مشخصات تماس و رزرو
         </h2>
         <p className="text-xs sm:text-sm text-[#a09a8e]">
-          پیامک تایید نوبت، آدرس دقیق آکادمی و توصیه‌های قبل از مراجعه به این
-          شماره ارسال خواهد شد.
+          اطلاعات تماس شما فقط برای هماهنگی و مدیریت نوبت استفاده خواهد شد.
         </p>
       </div>
 
@@ -95,9 +94,9 @@ export function CustomerForm({
         {/* Notes (Optional) */}
         <div className="space-y-1">
           <Textarea
-            label="توضیحات، سابقه تاتو یا داروی خاص (اختیاری)"
+            label="یادداشت یا توضیحات (اختیاری)"
             rows={3}
-            placeholder="در صورت داشتن تاتوی قدیمی، حساسیت پوستی، بارداری یا مصرف داروهای خاص، لطفاً اینجا یادداشت فرمایید."
+            placeholder="اگر نکته‌ای درباره نوبت وجود دارد، اینجا بنویسید."
             error={errors.notes?.message}
             {...register("notes")}
           />

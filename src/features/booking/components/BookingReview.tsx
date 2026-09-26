@@ -52,12 +52,12 @@ export function BookingReview({
   onBack,
 }: BookingReviewProps) {
   const staffDisplayName = allowAnyStaff
-    ? "اولین متخصص در دسترس آکادمی"
-    : staff?.name || "یاسمن رئیسی";
+    ? "اولین ارائه‌دهنده در دسترس"
+    : staff?.name || "ارائه‌دهنده تخصیص داده نشده";
 
   const staffRole = allowAnyStaff
     ? "تخصیص هوشمند توسط مدیریت سالن"
-    : staff?.role || "مستر رسمی آرایش دائم";
+    : staff?.role || "ارائه‌دهنده خدمت";
 
   return (
     <div className="space-y-6 text-right">
@@ -138,7 +138,7 @@ export function BookingReview({
               </div>
               <div className="space-y-0.5">
                 <span className="text-[11px] text-[#8e8779]">
-                  متخصص و پیگمنتر:
+                  ارائه‌دهنده خدمت:
                 </span>
                 <h4 className="text-sm sm:text-base font-bold text-[#f7f4ed]">
                   {staffDisplayName}
@@ -233,9 +233,13 @@ export function BookingReview({
 
             <div className="text-left text-xs text-[#8e8779]">
               <span className="block text-[#4ade80] font-medium mb-1">
-                تسویه در آکادمی
+                {business.content?.policies?.payment ||
+                  "نحوه پرداخت توسط کسب‌وکار اعلام می‌شود."}
               </span>
-              <span>بدون نیاز به پیش‌پرداخت اینترنتی</span>
+              <span>
+                {business.content?.policies?.cancellation ||
+                  "شرایط تغییر یا لغو را بررسی کنید."}
+              </span>
             </div>
           </div>
         </div>

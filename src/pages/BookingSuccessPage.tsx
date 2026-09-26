@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useBookingStore } from "@/src/features/booking/store/useBookingStore";
 import { useTenantStore } from "@/src/features/tenant/store/useTenantStore";
-import { appointmentStorage } from "@/src/services/storage/appointmentStorage";
+import { appointmentService } from "@/src/services/appointments/appointmentService";
 import { Appointment } from "@/src/types/domain";
 import { BookingSuccessView } from "@/src/features/booking/components/BookingSuccessView";
 import { BusinessHeader } from "@/src/components/shared/BusinessHeader";
 import { AlertCircle } from "lucide-react";
 
 export function BookingSuccessPage() {
-  const { tenantSlug = "yasaman-raesi", appointmentId } = useParams<{
+  const { tenantSlug, appointmentId } = useParams<{
     tenantSlug: string;
     appointmentId: string;
   }>();
@@ -22,12 +22,14 @@ export function BookingSuccessPage() {
   );
 
   useEffect(() => {
-    loadTenant(tenantSlug);
+    if (tenantSlug) loadTenant(tenantSlug);
   }, [tenantSlug, loadTenant]);
 
   useEffect(() => {
     if (appointmentId) {
-      const apt = appointmentStorage.getAppointmentById(appointmentId);
+      const apt = tenantSlug
+        ? appointmentService.getById(tenantSlug, appointmentId)
+        : null;
       if (apt) {
         setAppointment(apt);
       }

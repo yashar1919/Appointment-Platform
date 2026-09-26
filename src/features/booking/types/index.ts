@@ -14,6 +14,7 @@ export type BookingStep =
   | "review";
 
 export interface BookingState {
+  tenantSlug: string | null;
   currentStep: BookingStep;
   selectedService: Service | null;
   selectedStaff: Staff | null;
@@ -26,6 +27,7 @@ export interface BookingState {
 
   // Actions
   setStep: (step: BookingStep) => void;
+  startSession: (tenantSlug: string) => void;
   selectService: (service: Service | null) => void;
   selectStaff: (staff: Staff | null, anyStaff?: boolean) => void;
   selectDate: (date: string | null) => void;

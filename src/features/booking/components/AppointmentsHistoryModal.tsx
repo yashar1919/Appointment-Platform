@@ -1,15 +1,8 @@
 import { useState, useEffect } from "react";
-import {
-  Calendar,
-  Clock,
-  MapPin,
-  XCircle,
-  AlertCircle,
-  Sparkles,
-} from "lucide-react";
+import { Calendar, Clock, XCircle } from "lucide-react";
 import { Dialog } from "@/src/components/ui/Dialog";
 import { Appointment } from "@/src/types/domain";
-import { appointmentStorage } from "@/src/services/storage/appointmentStorage";
+import { appointmentService } from "@/src/services/appointments/appointmentService";
 import { formatCurrency } from "@/src/lib/formatting/currency";
 
 interface AppointmentsHistoryModalProps {
@@ -26,7 +19,7 @@ export function AppointmentsHistoryModal({
   const [appointments, setAppointments] = useState<Appointment[]>([]);
 
   const loadList = () => {
-    const list = appointmentStorage.getAppointments(tenantSlug);
+    const list = appointmentService.list(tenantSlug);
     setAppointments(list);
   };
 
@@ -38,7 +31,7 @@ export function AppointmentsHistoryModal({
 
   const handleCancel = (id: string) => {
     if (window.confirm("آیا از لغو این نوبت رزرو اطمینان دارید؟")) {
-      appointmentStorage.cancelAppointment(id);
+      appointmentService.cancel(tenantSlug, id);
       loadList();
     }
   };
@@ -48,7 +41,7 @@ export function AppointmentsHistoryModal({
       isOpen={isOpen}
       onClose={onClose}
       title="نوبت‌های ثبت‌شده شما"
-      description="تاریخچه و وضعیت نوبت‌های رزرو شده در این آکادمی"
+      description="تاریخچه و وضعیت نوبت‌های رزرو شده در این کسب‌وکار"
     >
       <div className="space-y-4 text-right">
         {appointments.length === 0 ? (

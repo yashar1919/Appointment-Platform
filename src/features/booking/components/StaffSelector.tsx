@@ -26,11 +26,11 @@ export function StaffSelector({
     <div className="space-y-6 text-right">
       <div className="space-y-1">
         <h2 className="text-xl sm:text-2xl font-bold text-[#f7f4ed]">
-          انتخاب متخصص زیبایی
+          انتخاب ارائه‌دهنده خدمت
         </h2>
         <p className="text-xs sm:text-sm text-[#a09a8e]">
-          آرتیست مورد نظر خود را انتخاب نمایید یا اجازه دهید سیستم اولین نوبت
-          خالی را برای شما رزرو کند.
+          ارائه‌دهنده مورد نظر خود را انتخاب کنید یا اولین زمان خالی را رزرو
+          کنید.
         </p>
       </div>
 

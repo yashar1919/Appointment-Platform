@@ -41,7 +41,7 @@ export function FeaturedServiceCard({
           {/* Top signature mark (no pill box, clean editorial text with subtle background) */}
           <div className="absolute top-3 right-3 flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#0b0c0f]/80 backdrop-blur-md border border-(--theme-primary)/30 text-xs font-semibold text-(--theme-primary)">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>خدمت ویژه و پرطرفدار آکادمی</span>
+            <span>خدمت منتخب</span>
           </div>
         </div>
 

@@ -15,18 +15,26 @@ export const useTenantStore = create<TenantState>((set) => ({
   error: null,
 
   loadTenant: async (slug: string) => {
-    set({ isLoading: true, error: null });
+    set({ currentTenant: null, isLoading: true, error: null });
     try {
       // In the future this will be: const res = await fetch(`/api/v1/public/${slug}`);
       const tenant = getTenantBySlug(slug);
       if (!tenant) {
-        set({ error: "کسب‌وکار مورد نظر یافت نشد.", isLoading: false });
+        set({
+          currentTenant: null,
+          error: "کسب‌وکار مورد نظر یافت نشد.",
+          isLoading: false,
+        });
         return null;
       }
       set({ currentTenant: tenant, isLoading: false });
       return tenant;
     } catch {
-      set({ error: "خطا در بارگذاری اطلاعات کسب‌وکار.", isLoading: false });
+      set({
+        currentTenant: null,
+        error: "خطا در بارگذاری اطلاعات کسب‌وکار.",
+        isLoading: false,
+      });
       return null;
     }
   },

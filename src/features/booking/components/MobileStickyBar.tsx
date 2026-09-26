@@ -1,4 +1,4 @@
-import { ArrowLeft, Check } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Service } from "@/src/types/domain";
 import { formatCurrency } from "@/src/lib/formatting/currency";
 import { formatDuration } from "@/src/lib/formatting/dateTime";

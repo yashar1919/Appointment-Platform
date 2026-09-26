@@ -1,16 +1,24 @@
 import { Appointment } from "@/src/types/domain";
 
-const APPOINTMENTS_STORAGE_KEY = "yasaman_booking_appointments_v1";
+const APPOINTMENTS_STORAGE_KEY = "appointments";
+
+const getStorageKey = (tenantSlug: string) =>
+  `${APPOINTMENTS_STORAGE_KEY}:${tenantSlug}`;
 
 export const appointmentStorage = {
   saveAppointment(appointment: Appointment): Appointment {
     try {
-      const existing = appointmentStorage.getAppointments();
+      const existing = appointmentStorage.getAppointments(
+        appointment.tenantSlug,
+      );
       const updated = [
         appointment,
         ...existing.filter((a) => a.id !== appointment.id),
       ];
-      localStorage.setItem(APPOINTMENTS_STORAGE_KEY, JSON.stringify(updated));
+      localStorage.setItem(
+        getStorageKey(appointment.tenantSlug),
+        JSON.stringify(updated),
+      );
       return appointment;
     } catch (e) {
       console.error("Failed to save appointment to storage:", e);
@@ -18,12 +26,11 @@ export const appointmentStorage = {
     }
   },
 
-  getAppointments(tenantSlug?: string): Appointment[] {
+  getAppointments(tenantSlug: string): Appointment[] {
     try {
-      const data = localStorage.getItem(APPOINTMENTS_STORAGE_KEY);
+      const data = localStorage.getItem(getStorageKey(tenantSlug));
       if (!data) return [];
       const parsed: Appointment[] = JSON.parse(data);
-      if (!tenantSlug) return parsed;
       return parsed.filter((a) => a.tenantSlug === tenantSlug);
     } catch (e) {
       console.error("Failed to load appointments from storage:", e);
@@ -31,9 +38,9 @@ export const appointmentStorage = {
     }
   },
 
-  getAppointmentById(id: string): Appointment | null {
+  getAppointmentById(id: string, tenantSlug: string): Appointment | null {
     try {
-      const appointments = appointmentStorage.getAppointments();
+      const appointments = appointmentStorage.getAppointments(tenantSlug);
       return appointments.find((a) => a.id === id) || null;
     } catch (e) {
       console.error("Failed to get appointment by id:", e);
@@ -41,13 +48,13 @@ export const appointmentStorage = {
     }
   },
 
-  cancelAppointment(id: string): boolean {
+  cancelAppointment(id: string, tenantSlug: string): boolean {
     try {
-      const appointments = appointmentStorage.getAppointments();
+      const appointments = appointmentStorage.getAppointments(tenantSlug);
       const updated = appointments.map((a) =>
         a.id === id ? { ...a, status: "cancelled" as const } : a,
       );
-      localStorage.setItem(APPOINTMENTS_STORAGE_KEY, JSON.stringify(updated));
+      localStorage.setItem(getStorageKey(tenantSlug), JSON.stringify(updated));
       return true;
     } catch (e) {
       console.error("Failed to cancel appointment in storage:", e);
@@ -55,9 +62,9 @@ export const appointmentStorage = {
     }
   },
 
-  clearAppointments(): void {
+  clearAppointments(tenantSlug: string): void {
     try {
-      localStorage.removeItem(APPOINTMENTS_STORAGE_KEY);
+      localStorage.removeItem(getStorageKey(tenantSlug));
     } catch (e) {
       console.error("Failed to clear appointments from storage:", e);
     }

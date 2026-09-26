@@ -15,6 +15,7 @@ export interface ServiceCategory {
 export interface Service {
   id: string;
   categoryId: string;
+  slug?: string;
   name: string;
   description: string;
   durationMinutes: number;
@@ -22,6 +23,9 @@ export interface Service {
   isFeatured?: boolean;
   isPopular?: boolean;
   image: string;
+  active?: boolean;
+  sortOrder?: number;
+  staffIds?: string[];
   includedItems?: string[];
   careInstructions?: string;
 }
@@ -36,6 +40,8 @@ export interface Staff {
   rating?: number;
   specialties?: string[];
   isAvailable?: boolean;
+  active?: boolean;
+  serviceIds?: string[];
 }
 
 export interface BusinessLocation {
@@ -47,6 +53,8 @@ export interface BusinessLocation {
   latitude?: number;
   longitude?: number;
   directions?: string;
+  phone?: string;
+  workingHours?: WorkingHours;
 }
 
 export interface WorkingHours {
@@ -69,6 +77,7 @@ export type ThemePalette =
 
 export interface TenantTheme {
   palette: ThemePalette;
+  fontFamily?: string;
 }
 
 export interface TenantBookingConfig {
@@ -79,6 +88,63 @@ export interface TenantBookingConfig {
   minNoticeHours: number;
   maxAdvanceDays: number;
   allowAnyStaff: boolean;
+  flow?: BookingFlowDefinition;
+  customerFields?: CustomerFieldConfig[];
+}
+
+export interface BookingFlowDefinition {
+  showServiceSelection?: boolean;
+  showStaffSelection?: boolean;
+  showDateSelection?: boolean;
+  showTimeSelection?: boolean;
+  showCustomerDetails?: boolean;
+  showReview?: boolean;
+  allowServiceSearch?: boolean;
+  allowCategoryNavigation?: boolean;
+}
+
+export type CustomerFieldName = "fullName" | "phone" | "email" | "notes";
+
+export interface CustomerFieldConfig {
+  name: CustomerFieldName;
+  required: boolean;
+  label?: string;
+  helpText?: string;
+  placeholder?: string;
+}
+
+export interface TenantLocalization {
+  locale: string;
+  timezone: string;
+  currency: string;
+  currencySymbol: string;
+  direction: "rtl" | "ltr";
+  phoneCountry?: string;
+}
+
+export interface TenantContent {
+  hero?: {
+    eyebrow?: string;
+    ctaLabel?: string;
+    availabilityLabel?: string;
+  };
+  labels?: {
+    servicesTitle?: string;
+    servicesDescription?: string;
+    staffTitle?: string;
+    staffDescription?: string;
+    historyDescription?: string;
+  };
+  policies?: {
+    payment?: string;
+    cancellation?: string;
+    arrival?: string;
+    privacy?: string;
+  };
+  contact?: {
+    infoTitle?: string;
+    socialLabel?: string;
+  };
 }
 
 export interface BusinessConfig {
@@ -104,6 +170,8 @@ export interface BusinessConfig {
 
   theme: TenantTheme;
   booking: TenantBookingConfig;
+  localization?: TenantLocalization;
+  content?: TenantContent;
 
   categories: ServiceCategory[];
   services: Service[];

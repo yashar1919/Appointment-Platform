@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useTenantStore } from "@/src/features/tenant/store/useTenantStore";
 import { useBookingStore } from "@/src/features/booking/store/useBookingStore";
 import { BusinessHeader } from "@/src/components/shared/BusinessHeader";
-import { BeautyHero } from "@/src/features/tenant/components/BeautyHero";
+import { BusinessHero } from "@/src/features/tenant/components/BusinessHero";
 import { BookingProgress } from "@/src/features/booking/components/BookingProgress";
 import { ServiceGrid } from "@/src/features/booking/components/ServiceGrid";
 import { StaffSelector } from "@/src/features/booking/components/StaffSelector";
@@ -14,13 +14,11 @@ import { BookingReview } from "@/src/features/booking/components/BookingReview";
 import { MobileStickyBar } from "@/src/features/booking/components/MobileStickyBar";
 import { AppointmentsHistoryModal } from "@/src/features/booking/components/AppointmentsHistoryModal";
 import { availabilityService } from "@/src/services/availability/availabilityService";
-import { appointmentStorage } from "@/src/services/storage/appointmentStorage";
-import { Appointment, Service, Customer } from "@/src/types/domain";
-import { formatFullJalaliDate } from "@/src/lib/formatting/dateTime";
-import { toPersianDigits } from "@/src/lib/formatting/persianNumbers";
+import { appointmentService } from "@/src/services/appointments/appointmentService";
+import { Service, Customer } from "@/src/types/domain";
 
 export function BookingPage() {
-  const { tenantSlug = "yasaman-raesi" } = useParams<{ tenantSlug: string }>();
+  const { tenantSlug } = useParams<{ tenantSlug: string }>();
   const navigate = useNavigate();
 
   const { currentTenant, isLoading, loadTenant } = useTenantStore();
@@ -33,6 +31,7 @@ export function BookingPage() {
     selectedTimeSlot,
     customer,
     isSubmitting,
+    startSession,
     setStep,
     selectService,
     selectStaff,
@@ -47,8 +46,19 @@ export function BookingPage() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!tenantSlug) return;
+    startSession(tenantSlug);
     loadTenant(tenantSlug);
-  }, [tenantSlug, loadTenant]);
+  }, [tenantSlug, loadTenant, startSession]);
+
+  useEffect(() => {
+    if (!currentTenant) return;
+    const localization = currentTenant.localization;
+    document.documentElement.lang =
+      localization?.locale || currentTenant.locale;
+    document.documentElement.dir = localization?.direction || "rtl";
+    document.title = currentTenant.name;
+  }, [currentTenant]);
 
   const availableDates = useMemo(() => {
     if (!currentTenant) return [];
@@ -69,19 +79,50 @@ export function BookingPage() {
   }, [availableDates, selectedDate, selectDate]);
 
   const timeSlots = useMemo(() => {
-    if (!selectedDate) return [];
+    if (!currentTenant || !selectedDate) return [];
     return availabilityService.getAvailableTimeSlots(
+      currentTenant,
       selectedDate,
       selectedStaff?.id,
       selectedService?.id,
     );
   }, [selectedDate, selectedStaff, selectedService]);
 
+  const activeServices = useMemo(
+    () =>
+      currentTenant?.services.filter((service) => service.active !== false) ||
+      [],
+    [currentTenant],
+  );
+
+  useEffect(() => {
+    if (
+      !currentTenant ||
+      currentStep !== "service" ||
+      activeServices.length !== 1
+    ) {
+      return;
+    }
+    selectService(activeServices[0]);
+    setStep(
+      currentTenant.booking.flow?.showStaffSelection !== false &&
+        currentTenant.booking.requireStaffSelection &&
+        currentTenant.staff.length > 1
+        ? "staff"
+        : "datetime",
+    );
+  }, [activeServices, currentStep, currentTenant, selectService, setStep]);
+
   const handleSelectService = (service: Service) => {
     selectService(service);
     if (
+      currentTenant?.booking.flow?.showStaffSelection !== false &&
       currentTenant?.booking.requireStaffSelection &&
-      currentTenant.staff.length > 1
+      currentTenant.staff.filter(
+        (staff) =>
+          staff.active !== false &&
+          (!service.staffIds || service.staffIds.includes(staff.id)),
+      ).length > 1
     ) {
       setStep("staff");
     } else {
@@ -104,53 +145,71 @@ export function BookingPage() {
 
     setSubmitting(true);
 
-    const randomSuffix = Math.floor(10000 + Math.random() * 90000);
-    const referenceCode = `YR-${toPersianDigits(randomSuffix)}`;
-    const appointmentId = `apt-${Date.now()}`;
-
-    const newAppointment: Appointment = {
-      id: appointmentId,
-      referenceCode,
-      tenantSlug: currentTenant.slug,
-      businessName: currentTenant.name,
-      businessPhone: currentTenant.phone,
-      businessAddress: currentTenant.address,
-      service: selectedService,
-      staff: allowAnyStaff ? undefined : selectedStaff || undefined,
-      date: selectedDate,
-      dateFormatted: formatFullJalaliDate(selectedDate),
-      timeSlot: selectedTimeSlot.time,
-      customer,
-      createdAt: new Date().toISOString(),
-      status: "confirmed",
-      totalPrice: selectedService.price,
-      currency: currentTenant.currency,
-    };
-
     setTimeout(() => {
-      appointmentStorage.saveAppointment(newAppointment);
+      const newAppointment = appointmentService.create({
+        tenant: currentTenant,
+        service: selectedService,
+        staff: selectedStaff,
+        allowAnyStaff,
+        date: selectedDate,
+        timeSlot: selectedTimeSlot,
+        customer,
+      });
       setLastConfirmedAppointment(newAppointment);
       setSubmitting(false);
-      navigate(`/booking/${currentTenant.slug}/success/${appointmentId}`);
+      navigate(`/booking/${currentTenant.slug}/success/${newAppointment.id}`);
     }, 600);
   };
 
-  if (isLoading || !currentTenant) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-[#0b0c0f] flex items-center justify-center p-4">
         <div className="text-center space-y-3">
           <div className="w-10 h-10 border-2 border-(--theme-primary) border-t-transparent rounded-full animate-spin mx-auto" />
           <p className="text-xs text-[#a09a8e]">
-            در حال بارگذاری اطلاعات آکادمی...
+            در حال بارگذاری اطلاعات کسب‌وکار...
           </p>
         </div>
       </div>
     );
   }
 
+  if (!currentTenant) {
+    return (
+      <div className="min-h-screen bg-[#0b0c0f] text-[#f7f4ed] flex items-center justify-center p-4 text-right">
+        <div className="max-w-md w-full p-6 rounded-2xl bg-[#14161c] border border-[#2d313b] text-center space-y-4">
+          <h1 className="text-xl font-bold">کسب‌وکار مورد نظر یافت نشد</h1>
+          <p className="text-sm text-[#a09a8e]">
+            این لینک رزرو معتبر نیست یا دیگر در دسترس نیست.
+          </p>
+          <button
+            type="button"
+            onClick={() => navigate("/")}
+            className="min-h-11 px-5 rounded-xl bg-(--theme-primary) text-[#0b0c0f] font-bold text-xs cursor-pointer"
+          >
+            بازگشت
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   const requireStaff =
+    currentTenant.booking.flow?.showStaffSelection !== false &&
     currentTenant.booking.requireStaffSelection &&
-    currentTenant.staff.length > 1;
+    currentTenant.staff.filter(
+      (staff) =>
+        staff.active !== false &&
+        (!selectedService?.staffIds ||
+          selectedService.staffIds.includes(staff.id)),
+    ).length > 1;
+
+  const eligibleStaff = currentTenant.staff.filter(
+    (staff) =>
+      staff.active !== false &&
+      (!selectedService?.staffIds ||
+        selectedService.staffIds.includes(staff.id)),
+  );
 
   // Determine if mobile sticky button can advance
   const canAdvance =
@@ -188,7 +247,7 @@ export function BookingPage() {
 
       {/* Hero Section shown on the initial discovery step */}
       {currentStep === "service" && (
-        <BeautyHero
+        <BusinessHero
           business={currentTenant}
           onExploreServices={() => {
             const el = document.getElementById("booking-flow-container");
@@ -213,17 +272,19 @@ export function BookingPage() {
         {currentStep === "service" && (
           <ServiceGrid
             categories={currentTenant.categories}
-            services={currentTenant.services}
+            services={activeServices}
             selectedService={selectedService}
             onSelectService={handleSelectService}
             currency={currentTenant.currency}
+            title={currentTenant.content?.labels?.servicesTitle}
+            description={currentTenant.content?.labels?.servicesDescription}
           />
         )}
 
         {/* Step 2: Staff Selection */}
         {currentStep === "staff" && (
           <StaffSelector
-            staffList={currentTenant.staff}
+            staffList={eligibleStaff}
             selectedStaff={selectedStaff}
             allowAnyStaff={allowAnyStaff}
             onSelectStaff={(staff, anyStaff) => selectStaff(staff, anyStaff)}

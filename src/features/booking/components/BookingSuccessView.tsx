@@ -1,15 +1,10 @@
 import {
   Check,
   Calendar,
-  Clock,
   MapPin,
-  User,
-  Phone,
   Sparkles,
   RefreshCw,
   ArrowRight,
-  Share2,
-  Download,
 } from "lucide-react";
 import { Appointment } from "@/src/types/domain";
 import { formatCurrency } from "@/src/lib/formatting/currency";
@@ -99,7 +94,7 @@ export function BookingSuccessView({
               متخصص:{" "}
               {appointment.staff
                 ? appointment.staff.name
-                : "اولین متخصص در دسترس آکادمی"}
+                : "اولین ارائه‌دهنده در دسترس"}
             </p>
           </div>
         </div>
@@ -131,7 +126,7 @@ export function BookingSuccessView({
 
           <div className="text-left space-y-0.5">
             <span className="text-[11px] text-[#8e8779]">
-              مبلغ قابل پرداخت در آکادمی:
+              مبلغ قابل پرداخت:
             </span>
             <p className="text-base sm:text-lg font-bold text-[var(--theme-primary)]">
               {formatCurrency(appointment.totalPrice, appointment.currency)}
@@ -169,7 +164,7 @@ export function BookingSuccessView({
           className="w-full sm:flex-1 min-h-12 px-6 py-3 rounded-xl bg-[#21242c] hover:bg-[#2c303b] border border-[#2d313b] text-xs sm:text-sm font-medium text-[#ded8cb] transition-colors flex items-center justify-center gap-2 cursor-pointer"
         >
           <ArrowRight className="w-4 h-4" />
-          <span>بازگشت به صفحه معرفی آکادمی</span>
+          <span>بازگشت به صفحه معرفی کسب‌وکار</span>
         </button>
       </div>
     </div>

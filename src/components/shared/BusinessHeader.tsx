@@ -45,7 +45,7 @@ export function BusinessHeader({
               onClick={() => setIsInfoOpen(true)}
               className="hover:text-[#f7f4ed] transition-colors whitespace-nowrap cursor-pointer"
             >
-              اطلاعات آکادمی و ساعت کاری
+              اطلاعات کسب‌وکار و ساعت کاری
             </button>
             <a
               href={`tel:${business.phone}`}
@@ -60,7 +60,7 @@ export function BusinessHeader({
             <button
               onClick={() => setIsInfoOpen(true)}
               className="p-2 text-[#c5baa9] hover:text-[#f7f4ed] hover:bg-[#1a1c23] rounded-lg transition-colors min-h-11 min-w-11 flex items-center justify-center cursor-pointer md:hidden"
-              aria-label="اطلاعات سالن و تماس"
+              aria-label="اطلاعات کسب‌وکار و تماس"
             >
               <Info className="w-5 h-5" />
             </button>

@@ -112,67 +112,34 @@ export function getNextDays(
   return days;
 }
 
-export function generateDailyTimeSlots(): TimeSlot[] {
-  return [
-    {
-      id: "10:00",
-      time: toPersianDigits("10:00"),
-      period: "morning",
-      isAvailable: true,
-    },
-    {
-      id: "11:00",
-      time: toPersianDigits("11:00"),
-      period: "morning",
-      isAvailable: true,
-    },
-    {
-      id: "12:00",
-      time: toPersianDigits("12:00"),
-      period: "morning",
-      isAvailable: false,
-    },
-    {
-      id: "13:00",
-      time: toPersianDigits("13:00"),
-      period: "morning",
-      isAvailable: true,
-    },
-    {
-      id: "15:00",
-      time: toPersianDigits("15:00"),
-      period: "afternoon",
-      isAvailable: true,
-    },
-    {
-      id: "16:00",
-      time: toPersianDigits("16:00"),
-      period: "afternoon",
-      isAvailable: true,
-    },
-    {
-      id: "17:00",
-      time: toPersianDigits("17:00"),
-      period: "afternoon",
-      isAvailable: false,
-    },
-    {
-      id: "18:00",
-      time: toPersianDigits("18:00"),
-      period: "evening",
-      isAvailable: true,
-    },
-    {
-      id: "19:00",
-      time: toPersianDigits("19:00"),
-      period: "evening",
-      isAvailable: true,
-    },
-    {
-      id: "20:00",
-      time: toPersianDigits("20:00"),
-      period: "evening",
-      isAvailable: true,
-    },
-  ];
+export function generateDailyTimeSlots(
+  openTime = "10:00",
+  closeTime = "20:00",
+  slotDurationMinutes = 30,
+  serviceDurationMinutes = slotDurationMinutes,
+): TimeSlot[] {
+  const toMinutes = (value: string) => {
+    const [hours, minutes] = value.split(":").map(Number);
+    return hours * 60 + minutes;
+  };
+  const open = toMinutes(openTime);
+  const close = toMinutes(closeTime);
+  const slots: TimeSlot[] = [];
+
+  for (
+    let start = open;
+    start + serviceDurationMinutes <= close;
+    start += slotDurationMinutes
+  ) {
+    const hours = Math.floor(start / 60)
+      .toString()
+      .padStart(2, "0");
+    const minutes = (start % 60).toString().padStart(2, "0");
+    const id = `${hours}:${minutes}`;
+    const period =
+      start < 12 * 60 ? "morning" : start < 17 * 60 ? "afternoon" : "evening";
+    slots.push({ id, time: toPersianDigits(id), period, isAvailable: true });
+  }
+
+  return slots;
 }

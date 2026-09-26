@@ -11,6 +11,8 @@ interface ServiceGridProps {
   selectedService: Service | null;
   onSelectService: (service: Service) => void;
   currency?: string;
+  title?: string;
+  description?: string;
 }
 
 export function ServiceGrid({
@@ -19,6 +21,8 @@ export function ServiceGrid({
   selectedService,
   onSelectService,
   currency = "تومان",
+  title = "انتخاب خدمت",
+  description = "خدمت مورد نظر خود را انتخاب کنید تا زمان‌های قابل رزرو را ببینید.",
 }: ServiceGridProps) {
   const [activeCategoryId, setActiveCategoryId] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -53,11 +57,10 @@ export function ServiceGrid({
         <div className="flex items-center justify-between flex-wrap gap-2">
           <div>
             <h2 className="text-xl sm:text-2xl font-bold text-[#f7f4ed]">
-              انتخاب خدمت زیبایی
+              {title}
             </h2>
             <p className="text-xs sm:text-sm text-[#a09a8e] mt-1">
-              خدمت مورد نظر خود را انتخاب کنید تا زمان و شرایط رزرو را مشاهده
-              فرمایید.
+              {description}
             </p>
           </div>
 

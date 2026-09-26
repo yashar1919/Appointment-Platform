@@ -9,6 +9,7 @@ import {
 } from "@/src/types/domain";
 
 export const useBookingStore = create<BookingState>((set) => ({
+  tenantSlug: null,
   currentStep: "service",
   selectedService: null,
   selectedStaff: null,
@@ -20,6 +21,20 @@ export const useBookingStore = create<BookingState>((set) => ({
   isSubmitting: false,
 
   setStep: (step: BookingStep) => set({ currentStep: step }),
+
+  startSession: (tenantSlug: string) =>
+    set({
+      tenantSlug,
+      currentStep: "service",
+      selectedService: null,
+      selectedStaff: null,
+      allowAnyStaff: false,
+      selectedDate: null,
+      selectedTimeSlot: null,
+      customer: null,
+      lastConfirmedAppointment: null,
+      isSubmitting: false,
+    }),
 
   selectService: (service: Service | null) =>
     set({
@@ -50,6 +65,7 @@ export const useBookingStore = create<BookingState>((set) => ({
 
   resetBooking: () =>
     set({
+      tenantSlug: null,
       currentStep: "service",
       selectedService: null,
       selectedStaff: null,
@@ -57,6 +73,7 @@ export const useBookingStore = create<BookingState>((set) => ({
       selectedDate: null,
       selectedTimeSlot: null,
       customer: null,
+      lastConfirmedAppointment: null,
       isSubmitting: false,
     }),
 }));
