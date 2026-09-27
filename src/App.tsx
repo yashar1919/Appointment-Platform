@@ -1,6 +1,7 @@
 import { useLayoutEffect } from "react";
 import { BrowserRouter, useLocation } from "react-router-dom";
 import { AppRouter } from "@/src/app/router/AppRouter";
+import { PWAInstallBanner } from "@/src/components/PWAInstallBanner";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -32,6 +33,7 @@ export default function App() {
     <BrowserRouter>
       <ScrollToTop />
       <AppRouter />
+      <PWAInstallBanner />
     </BrowserRouter>
   );
 }
