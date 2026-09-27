@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTenantStore } from "@/src/features/tenant/store/useTenantStore";
 import { useBookingStore } from "@/src/features/booking/store/useBookingStore";
@@ -407,9 +407,12 @@ export function BookingPage() {
               <button
                 type="button"
                 onClick={() => setStep(getFirstBookingStep(currentTenant))}
-                className="min-h-12 px-5 py-2.5 rounded-xl border border-[#2d313b] hover:bg-[#21242c] text-xs sm:text-sm font-medium text-[#ded8cb] transition-colors cursor-pointer"
+                className="min-h-12 px-5 py-2 rounded-xl border border-[#2d313b] hover:bg-[#21242c] text-xs sm:text-sm font-medium text-[#ded8cb] transition-colors cursor-pointer"
               >
-                مرحله قبل
+                <span className="flex items-center gap-2">
+                  <ArrowRight className="w-4 h-4" />
+                  مرحله قبل
+                </span>
               </button>
               <button
                 type="button"
@@ -419,9 +422,12 @@ export function BookingPage() {
                     getNextBookingStep(currentTenant, "datetime") || "review",
                   )
                 }
-                className="min-h-12 px-7 py-2.5 rounded-xl bg-(--theme-primary) hover:bg-(--theme-primary-light) disabled:opacity-40 disabled:cursor-not-allowed text-xs sm:text-sm font-bold text-[#0b0c0f] transition-all shadow-[0_4px_16px_rgb(var(--theme-primary-rgb)/0.25)] cursor-pointer"
+                className="min-h-12 px-5 py-2 rounded-xl bg-(--theme-primary) hover:bg-(--theme-primary-light) disabled:opacity-40 disabled:cursor-not-allowed text-xs sm:text-sm font-bold text-[#0b0c0f] transition-all shadow-[0_4px_16px_rgb(var(--theme-primary-rgb)/0.25)] cursor-pointer"
               >
-                ثبت اطلاعات تماس
+                <span className="flex items-center gap-2">
+                  مرحله بعد
+                  <ArrowLeft className="w-4 h-4" />
+                </span>
               </button>
             </div>
           </div>

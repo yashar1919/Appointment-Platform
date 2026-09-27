@@ -2,6 +2,7 @@ import { AvailableDay, TimeSlot } from "@/src/types/domain";
 import {
   getNextDays,
   generateDailyTimeSlots,
+  getCurrentTimeInTimeZone,
 } from "@/src/lib/formatting/dateTime";
 import type { AppointmentRepository } from "../appointments/appointmentService";
 import type { TenantRepository } from "../tenant/tenantRepository";
@@ -57,6 +58,8 @@ export class DemoAvailabilityRepository implements AvailabilityRepository {
       tenant.workingHours.slotDurationMinutes,
       service?.durationMinutes || tenant.workingHours.slotDurationMinutes,
     );
+    const currentTime = getCurrentTimeInTimeZone(tenant.timezone);
+    const isToday = currentTime.dateString === dateString;
     const appointments = await this.appointmentRepository.list(tenant.slug);
     const bookedTimeSlots = new Set(
       appointments
@@ -75,7 +78,14 @@ export class DemoAvailabilityRepository implements AvailabilityRepository {
     return slots.map((slot) => ({
       ...slot,
       isAvailable:
-        !bookedTimeSlots.has(slot.id) && !bookedTimeSlots.has(slot.time),
+        (!isToday || getSlotMinutes(slot.id) > currentTime.minutes) &&
+        !bookedTimeSlots.has(slot.id) &&
+        !bookedTimeSlots.has(slot.time),
     }));
   }
+}
+
+function getSlotMinutes(slotId: string): number {
+  const [hours, minutes] = slotId.split(":").map(Number);
+  return hours * 60 + minutes;
 }

@@ -7,6 +7,8 @@ import {
   ShieldCheck,
   MapPin,
   Sparkles,
+  ArrowRight,
+  Check,
 } from "lucide-react";
 import {
   Service,
@@ -264,7 +266,10 @@ export function BookingReview({
           onClick={onBack}
           className="min-h-12 px-5 py-2.5 rounded-xl border border-[#2d313b] hover:bg-[#21242c] text-xs sm:text-sm font-medium text-[#ded8cb] transition-colors cursor-pointer"
         >
-          مرحله قبل (مشخصات)
+         <span className="flex items-center gap-2">
+            <ArrowRight className="w-4 h-4" />
+            مرحله قبل
+          </span>
         </button>
 
         <button
@@ -277,7 +282,7 @@ export function BookingReview({
             <span>در حال ثبت نوبت...</span>
           ) : (
             <>
-              <Sparkles className="w-4 h-4" />
+              <Check className="w-5 h-5" />
               <span>تایید نهایی و ثبت رزرو نوبت</span>
             </>
           )}

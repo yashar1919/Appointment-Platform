@@ -19,7 +19,7 @@ interface BookingSuccessViewProps {
 
 export function BookingSuccessView({
   appointment,
-  onStartAgain,
+  //onStartAgain,
   onGoHome,
 }: BookingSuccessViewProps) {
   const handleCopyCode = () => {
@@ -38,7 +38,7 @@ export function BookingSuccessView({
           </div>
         </div>
 
-        <div className="space-y-1.5">
+        <div className="space-y-3">
           <span className="text-xs font-semibold text-(--theme-primary) tracking-wide flex items-center justify-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5" />
             رزرو شما با موفقیت قطعی شد
@@ -47,10 +47,12 @@ export function BookingSuccessView({
             نوبت شما در {appointment.businessName} ثبت شد
           </h1>
           <p className="text-xs sm:text-sm text-[#b5ada0] max-w-md mx-auto leading-relaxed">
-            پیامک حاوی جزئیات نوبت، لوکیشن و نکات قبل از مراجعه به شماره{" "}
-            <span className="font-mono text-[#f7f4ed]">
+            پیامک حاوی جزئیات نوبت، لوکیشن و نکات قبل از مراجعه به شماره
+            <br />
+            <span className="text-[#f7f4ed] text-sm" dir="ltr">
               {formatPhoneNumber(appointment.customer.phone)}
-            </span>{" "}
+            </span>
+            <br />
             ارسال گردید.
           </p>
         </div>
@@ -75,7 +77,7 @@ export function BookingSuccessView({
       </div>
 
       {/* Comprehensive Appointment Summary Card */}
-      <div className="bg-[#14161c] rounded-2xl border border-[#2d313b] overflow-hidden divide-y divide-[#232732] shadow-xl">
+      <div className="bg-[#14161c] rounded-2xl border border-(--theme-primary)/40 overflow-hidden divide-y divide-[#232732] shadow-xl">
         {/* Service & Staff */}
         <div className="p-5 flex items-start gap-4">
           <div className="w-14 h-14 rounded-xl overflow-hidden bg-[#21242c] shrink-0 border border-[#2d313b]">
@@ -150,22 +152,22 @@ export function BookingSuccessView({
 
       {/* Action Buttons: Return Home or Start Again */}
       <div className="pt-2 flex flex-col sm:flex-row items-center gap-3">
-        <button
+        {/* <button
           type="button"
           onClick={onStartAgain}
           className="w-full sm:flex-1 min-h-12 px-6 py-3 rounded-xl bg-(--theme-primary) hover:bg-(--theme-primary-light) text-xs sm:text-sm font-bold text-[#0b0c0f] transition-all shadow-[0_4px_16px_rgb(var(--theme-primary-rgb)/0.25)] flex items-center justify-center gap-2 cursor-pointer active:scale-98"
         >
           <RefreshCw className="w-4 h-4" />
           <span>رزرو مجدد نوبت دیگر</span>
-        </button>
+        </button> */}
 
         <button
           type="button"
           onClick={onGoHome}
-          className="w-full sm:flex-1 min-h-12 px-6 py-3 rounded-xl bg-[#21242c] hover:bg-[#2c303b] border border-[#2d313b] text-xs sm:text-sm font-medium text-[#ded8cb] transition-colors flex items-center justify-center gap-2 cursor-pointer"
+          className="w-full sm:flex-1 min-h-12 px-6 py-3 rounded-xl bg-[#21242c] hover:bg-[#2c303b] border border-(--theme-primary)/40 text-xs sm:text-sm font-medium text-(--theme-primary)/80 transition-colors flex items-center justify-center gap-2 cursor-pointer"
         >
           <ArrowRight className="w-4 h-4" />
-          <span>بازگشت به صفحه معرفی کسب‌وکار</span>
+          <span>بازگشت به صفحه اصلی</span>
         </button>
       </div>
     </div>

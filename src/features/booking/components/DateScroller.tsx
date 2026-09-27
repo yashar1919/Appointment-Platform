@@ -43,7 +43,7 @@ export function DateScroller({
       <div className="relative">
         <div
           ref={containerRef}
-          className="flex items-center gap-2.5 overflow-x-auto no-scrollbar py-2 px-1 -mx-1"
+          className="flex items-center gap-3 overflow-x-auto no-scrollbar py-5 px-4 -mx-1"
           style={{ scrollSnapType: "x mandatory" }}
         >
           {days.map((day) => {
@@ -60,7 +60,7 @@ export function DateScroller({
                 className={cn(
                   "relative flex flex-col items-center justify-between py-3 px-3.5 min-w-19 sm:min-w-21 h-23 rounded-2xl transition-all duration-200 cursor-pointer select-none shrink-0 border text-center",
                   isSelected &&
-                    "bg-(--theme-primary) text-[#0b0c0f] border-(--theme-primary) ring-2 ring-(--theme-primary)/40 shadow-[0_4px_16px_rgb(var(--theme-primary-rgb)/0.3)] scale-[1.03]",
+                    "bg-(--theme-primary) text-[#0b0c0f] border-(--theme-primary) ring-2 ring-(--theme-primary)/40 shadow-[0_4px_16px_rgb(var(--theme-primary-rgb)/0.3)] scale-[1.05]",
                   isAvailable &&
                     !isSelected &&
                     "bg-[#14161c] text-[#ded8cb] border-[#2d313b]/80 hover:border-(--theme-primary)/40 hover:bg-[#1b1e27]",

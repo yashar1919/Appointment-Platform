@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ShieldAlert } from "lucide-react";
+import { ArrowLeft, ArrowRight, ShieldAlert } from "lucide-react";
 import {
   createCustomerFormSchema,
   CustomerFormData,
@@ -129,20 +129,27 @@ export function CustomerForm({
       </div>
 
       {/* Navigation actions */}
-      <div className="pt-2 flex items-center justify-between gap-3">
+      <div className="pt-4 flex items-center justify-between gap-3 border-t border-[#262934]">
         <button
           type="button"
           onClick={onBack}
-          className="min-h-12 px-5 py-2.5 rounded-xl border border-[#2d313b] hover:bg-[#21242c] text-xs sm:text-sm font-medium text-[#ded8cb] transition-colors cursor-pointer"
+          className="min-h-12 px-5 py-2 rounded-xl border border-[#2d313b] hover:bg-[#21242c] text-xs sm:text-sm font-medium text-[#ded8cb] transition-colors cursor-pointer"
         >
-          مرحله قبل (زمان)
+          <span className="flex items-center gap-2">
+            <ArrowRight className="w-4 h-4" />
+            مرحله قبل
+          </span>
         </button>
 
         <button
           type="submit"
-          className="min-h-12 px-7 py-2.5 rounded-xl bg-(--theme-primary) hover:bg-(--theme-primary-light) text-xs sm:text-sm font-bold text-[#0b0c0f] transition-all shadow-[0_4px_16px_rgb(var(--theme-primary-rgb)/0.25)] cursor-pointer"
+          className="min-h-12 px-5 py-2 rounded-xl bg-(--theme-primary) hover:bg-(--theme-primary-light) text-xs sm:text-sm font-bold text-[#0b0c0f] transition-all shadow-[0_4px_16px_rgb(var(--theme-primary-rgb)/0.25)] cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+          disabled={!isValid}
         >
-          بررسی و تایید نهایی
+          <span className="flex items-center gap-2">
+            مرحله بعد
+            <ArrowLeft className="w-4 h-4" />
+          </span>
         </button>
       </div>
     </form>

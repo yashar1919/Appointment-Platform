@@ -3,7 +3,13 @@ import logoImage from "@/src/assets/images/logo256x256-min.png";
 import lipBlushImage from "@/src/assets/images/service_lip_blush_1790400872703.jpg";
 import microbladingImage from "@/src/assets/images/service_microblading_1790400861725.jpg";
 import eyelinerImage from "@/src/assets/images/service_permanent_eyeliner_1790400882769.jpg";
-import yasamanImage from "@/src/assets/images/yasaman1.jpg";
+import yasamanImage from "@/src/assets/images/staff-image/yasaman1.jpg";
+import yasaman2Image from "@/src/assets/images/staff-image/yasaman3.jpeg";
+import nanobrowsImage from "@/src/assets/images/services-image/nano-brows.jpg";
+import pic1Image from "@/src/assets/images/services-image/pic1.jpg";
+import therapy2Image from "@/src/assets/images/services-image/therapy2.jpg";
+import women1Image from "@/src/assets/images/staff-image/women1.jpg";
+import women4Image from "@/src/assets/images/staff-image/women4.jpg";
 
 export const yasamanRaesiConfig: BusinessConfig = {
   id: "tenant-yasaman-raesi-01",
@@ -144,7 +150,7 @@ export const yasamanRaesiConfig: BusinessConfig = {
       price: 4800000,
       isFeatured: true,
       isPopular: false,
-      image: microbladingImage,
+      image: nanobrowsImage,
       includedItems: [
         "مناسب انواع پوست مخصوصاً پوست‌های چرب و منافذدار",
         "بدون ایجاد اسکار و آسیب به ریشه تارهای موی طبیعی",
@@ -160,7 +166,7 @@ export const yasamanRaesiConfig: BusinessConfig = {
       price: 2600000,
       isFeatured: false,
       isPopular: false,
-      image: lipBlushImage,
+      image: pic1Image,
     },
     {
       id: "srv-face-consultation",
@@ -172,7 +178,7 @@ export const yasamanRaesiConfig: BusinessConfig = {
       price: 500000,
       isFeatured: false,
       isPopular: false,
-      image: yasamanImage,
+      image: therapy2Image,
       includedItems: [
         "طراحی غیرماندگار موقت برای مشاهده نتیجه احتمالی",
         "هزینه در صورت انجام خدمت در فاکتور کسر می‌گردد",
@@ -185,7 +191,7 @@ export const yasamanRaesiConfig: BusinessConfig = {
       id: "staff-yasaman",
       name: "یاسمن رئیسی",
       role: "مستر رسمی آکادمی فی اروپا و بنیان‌گذار آکادمی",
-      avatar: yasamanImage,
+      avatar: yasaman2Image,
       bio: "بیش از ۹ سال سابقه تخصصی در زمینه میکروبلیدینگ و میکروپیگمنتیشن با بیش از ۶,۰۰۰ پیگمنت‌گذاری موفق در ایران و دبی.",
       experienceYears: 9,
       rating: 4.98,
@@ -196,7 +202,7 @@ export const yasamanRaesiConfig: BusinessConfig = {
       id: "staff-nastaran",
       name: "نسترن کمالی",
       role: "آرتیست ارشد آرایش دائم و میکروپیگمنتیشن",
-      avatar: microbladingImage,
+      avatar: women4Image,
       bio: "فارغ‌التحصیل آکادمی S-Brows، متخصص در پیاده‌سازی خطوط تار به تار فوق‌العاده ظریف و شیدینگ سایه‌ای.",
       experienceYears: 6,
       rating: 4.92,
@@ -207,7 +213,7 @@ export const yasamanRaesiConfig: BusinessConfig = {
       id: "staff-mona",
       name: "مونا شایسته",
       role: "متخصص شیدینگ و ترکیب رنگ ارگانیک لب",
-      avatar: lipBlushImage,
+      avatar: women1Image,
       bio: "استاد ترکیب رنگ و خنثی‌سازی پیگمنت‌های دودی، طراح لب‌های آمبره طبیعی بدون کادربندی تیز.",
       experienceYears: 5,
       rating: 4.9,
