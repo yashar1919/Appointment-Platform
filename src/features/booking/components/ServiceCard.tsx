@@ -75,19 +75,19 @@ export function ServiceCard({
         <button
           type="button"
           className={cn(
-            "min-h-10 px-3.5 py-1.5 text-xs font-semibold rounded-xl transition-all duration-200 select-none flex items-center gap-1.5 cursor-pointer",
+            "min-h-10 md:min-h-8 px-4 md:px-2 text-sm font-semibold rounded-xl transition-all duration-200 select-none flex items-center gap-2 cursor-pointer",
             isSelected
               ? "bg-(--theme-primary) text-[#0b0c0f]"
-              : "bg-[#21242c] text-[#ded8cb] hover:bg-(--theme-primary) hover:text-[#0b0c0f]",
+              : "bg-[#222530] text-[#ded8cb] hover:bg-(--theme-primary) hover:text-[#0b0c0f] border border-(--theme-primary)/20",
           )}
         >
           {isSelected ? (
             <>
-              <Check className="w-3.5 h-3.5" />
+              <Check className="w-4 h-4" />
               <span>انتخاب شد</span>
             </>
           ) : (
-            <span>انتخاب</span>
+            <span className="px-4">انتخاب</span>
           )}
         </button>
       </div>

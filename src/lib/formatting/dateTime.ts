@@ -79,9 +79,8 @@ export function formatDuration(minutes: number): string {
 
 export function getNextDays(
   count: number = 14,
-  blockedDays: number[] = [5],
+  blockedDays: number[] = [],
 ): AvailableDay[] {
-  // 5 in JS Date getDay() is Friday (جمعه) which is the Iranian weekend
   const days: AvailableDay[] = [];
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -96,7 +95,6 @@ export function getNextDays(
     const dateString = `${year}-${month}-${day}`;
 
     const parts = getJalaliDateParts(d);
-    const isFriday = d.getDay() === 5;
     const isBlocked = blockedDays.includes(d.getDay());
 
     days.push({
@@ -105,7 +103,7 @@ export function getNextDays(
       dayNumber: parts.day,
       monthName: parts.month,
       isToday: i === 0,
-      isAvailable: !isFriday && !isBlocked,
+      isAvailable: !isBlocked,
     });
   }
 

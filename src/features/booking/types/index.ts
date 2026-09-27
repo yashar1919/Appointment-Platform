@@ -27,7 +27,7 @@ export interface BookingState {
 
   // Actions
   setStep: (step: BookingStep) => void;
-  startSession: (tenantSlug: string) => void;
+  startSession: (tenantSlug: string, initialStep?: BookingStep) => void;
   selectService: (service: Service | null) => void;
   selectStaff: (staff: Staff | null, anyStaff?: boolean) => void;
   selectDate: (date: string | null) => void;

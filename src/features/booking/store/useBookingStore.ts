@@ -22,10 +22,10 @@ export const useBookingStore = create<BookingState>((set) => ({
 
   setStep: (step: BookingStep) => set({ currentStep: step }),
 
-  startSession: (tenantSlug: string) =>
+  startSession: (tenantSlug: string, initialStep = "service") =>
     set({
       tenantSlug,
-      currentStep: "service",
+      currentStep: initialStep,
       selectedService: null,
       selectedStaff: null,
       allowAnyStaff: false,

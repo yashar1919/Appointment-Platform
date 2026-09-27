@@ -76,9 +76,12 @@ export function BookingReview({
         <div className="bg-gradient-to-r from-[#21242c] via-[#2a2e3a] to-[#21242c] p-4 border-b border-[#2d313b] flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-(--theme-primary)" />
-            <span className="text-xs sm:text-sm font-bold text-[#f7f4ed]">
-              خلاصه اطلاعات نوبت شما در {business.name}
+            <span className="text-sm font-semibold text-[#f7f4ed]">
+              خلاصه اطلاعات نوبت شما
             </span>
+            {/* <span className="text-xs sm:text-sm font-bold text-[#f7f4ed]">
+              خلاصه اطلاعات نوبت شما در {business.name}
+            </span> */}
           </div>
           <span className="text-xs text-(--theme-primary)">آماده تایید</span>
         </div>
@@ -187,7 +190,7 @@ export function BookingReview({
           </div>
 
           {/* Section 4: Customer Details */}
-          <div className="flex items-start justify-between gap-4 pt-4">
+          <div className="flex items-start justify-between gap-4 pb-5">
             <div className="space-y-2">
               <span className="text-[11px] text-[#8e8779]">مشخصات زیباجو:</span>
               <h4 className="text-sm sm:text-base font-bold text-[#f7f4ed] pt-1">

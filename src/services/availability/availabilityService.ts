@@ -1,22 +1,35 @@
-import { BusinessConfig, AvailableDay, TimeSlot } from "@/src/types/domain";
+import { AvailableDay, TimeSlot } from "@/src/types/domain";
 import {
   getNextDays,
   generateDailyTimeSlots,
 } from "@/src/lib/formatting/dateTime";
-import { appointmentStorage } from "../storage/appointmentStorage";
+import type { AppointmentRepository } from "../appointments/appointmentService";
+import type { TenantRepository } from "../tenant/tenantRepository";
 
 export interface AvailabilityRepository {
-  getAvailableDates(tenant: BusinessConfig, staffId?: string): AvailableDay[];
+  getAvailableDates(
+    tenantSlug: string,
+    staffId?: string,
+  ): Promise<AvailableDay[]>;
   getAvailableTimeSlots(
-    tenant: BusinessConfig,
+    tenantSlug: string,
     dateString: string,
     staffId?: string,
     serviceId?: string,
-  ): TimeSlot[];
+  ): Promise<TimeSlot[]>;
 }
-
 export class DemoAvailabilityRepository implements AvailabilityRepository {
-  getAvailableDates(tenant: BusinessConfig, _staffId?: string): AvailableDay[] {
+  constructor(
+    private readonly tenantRepository: TenantRepository,
+    private readonly appointmentRepository: AppointmentRepository,
+  ) {}
+
+  async getAvailableDates(
+    tenantSlug: string,
+    _staffId?: string,
+  ): Promise<AvailableDay[]> {
+    const tenant = await this.tenantRepository.getTenant(tenantSlug);
+    if (!tenant) return [];
     const maxAdvanceDays = tenant.booking.maxAdvanceDays || 14;
     const blockedDays = [0, 1, 2, 3, 4, 5, 6].filter(
       (day) => !tenant.workingHours.workingDays.includes(day),
@@ -24,12 +37,14 @@ export class DemoAvailabilityRepository implements AvailabilityRepository {
     return getNextDays(maxAdvanceDays, blockedDays);
   }
 
-  getAvailableTimeSlots(
-    tenant: BusinessConfig,
+  async getAvailableTimeSlots(
+    tenantSlug: string,
     dateString: string,
     staffId?: string,
     serviceId?: string,
-  ): TimeSlot[] {
+  ): Promise<TimeSlot[]> {
+    const tenant = await this.tenantRepository.getTenant(tenantSlug);
+    if (!tenant) return [];
     const service = tenant.services.find((item) => item.id === serviceId);
     if (serviceId && !service) return [];
 
@@ -42,9 +57,9 @@ export class DemoAvailabilityRepository implements AvailabilityRepository {
       tenant.workingHours.slotDurationMinutes,
       service?.durationMinutes || tenant.workingHours.slotDurationMinutes,
     );
+    const appointments = await this.appointmentRepository.list(tenant.slug);
     const bookedTimeSlots = new Set(
-      appointmentStorage
-        .getAppointments(tenant.slug)
+      appointments
         .filter(
           (appointment) =>
             appointment.date === dateString &&
@@ -64,6 +79,3 @@ export class DemoAvailabilityRepository implements AvailabilityRepository {
     }));
   }
 }
-
-export const availabilityService: AvailabilityRepository =
-  new DemoAvailabilityRepository();

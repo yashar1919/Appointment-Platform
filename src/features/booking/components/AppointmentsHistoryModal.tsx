@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import { Calendar, Clock, XCircle } from "lucide-react";
 import { Dialog } from "@/src/components/ui/Dialog";
 import { Appointment } from "@/src/types/domain";
-import { appointmentService } from "@/src/services/appointments/appointmentService";
+import { repositories } from "@/src/services/repositories";
 import { formatCurrency } from "@/src/lib/formatting/currency";
+import { toPersianDigits } from "@/src/lib/formatting/persianNumbers";
 
 interface AppointmentsHistoryModalProps {
   isOpen: boolean;
@@ -18,8 +19,8 @@ export function AppointmentsHistoryModal({
 }: AppointmentsHistoryModalProps) {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
 
-  const loadList = () => {
-    const list = appointmentService.list(tenantSlug);
+  const loadList = async () => {
+    const list = await repositories.appointmentRepository.list(tenantSlug);
     setAppointments(list);
   };
 
@@ -31,8 +32,7 @@ export function AppointmentsHistoryModal({
 
   const handleCancel = (id: string) => {
     if (window.confirm("آیا از لغو این نوبت رزرو اطمینان دارید؟")) {
-      appointmentService.cancel(tenantSlug, id);
-      loadList();
+      repositories.appointmentRepository.cancel(tenantSlug, id).then(loadList);
     }
   };
 
@@ -66,7 +66,7 @@ export function AppointmentsHistoryModal({
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div>
-                      <span className="text-[10px] font-mono text-[var(--theme-primary)]">
+                      <span className="text-[10px] font-mono text-(--theme-primary)">
                         کد پیگیری: {apt.referenceCode}
                       </span>
                       <h4 className="text-sm font-bold text-[#f7f4ed]">
@@ -90,13 +90,13 @@ export function AppointmentsHistoryModal({
 
                   <div className="flex items-center gap-3 text-xs text-[#b5ada0] pt-1">
                     <span className="flex items-center gap-1">
-                      <Calendar className="w-3.5 h-3.5 text-[var(--theme-primary)]" />
+                      <Calendar className="w-3.5 h-3.5 text-(--theme-primary)" />
                       {apt.dateFormatted}
                     </span>
                     <span>·</span>
                     <span className="flex items-center gap-1">
-                      <Clock className="w-3.5 h-3.5 text-[var(--theme-primary)]" />
-                      ساعت {apt.timeSlot}
+                      <Clock className="w-3.5 h-3.5 text-(--theme-primary)" />
+                      ساعت {toPersianDigits(apt.timeSlot)}
                     </span>
                   </div>
 

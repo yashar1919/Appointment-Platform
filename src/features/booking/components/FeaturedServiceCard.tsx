@@ -29,19 +29,41 @@ export function FeaturedServiceCard({
     >
       <div className="grid grid-cols-1 md:grid-cols-12 gap-0">
         {/* Visual Slot */}
-        <div className="md:col-span-5 relative aspect-16/10 md:aspect-auto h-52 md:h-full overflow-hidden">
-          <img
-            src={service.image}
-            alt={service.name}
-            referrerPolicy="no-referrer"
-            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-l from-[#151720] via-transparent to-black/20" />
+        <div className="relative p-4 md:col-span-5 md:p-0">
+          <div className="relative w-full aspect-16/10 overflow-hidden rounded-xl md:aspect-auto md:h-full md:rounded-none hidden md:block">
+            <img
+              src={service.image}
+              alt={service.name}
+              referrerPolicy="no-referrer"
+              className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-l from-[#151720] via-transparent to-black/20" />
 
-          {/* Top signature mark (no pill box, clean editorial text with subtle background) */}
-          <div className="absolute top-3 right-3 flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#0b0c0f]/80 backdrop-blur-md border border-(--theme-primary)/30 text-xs font-semibold text-(--theme-primary)">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>خدمت منتخب</span>
+            <div className="absolute top-3 right-3 flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#0b0c0f]/80 backdrop-blur-md border border-(--theme-primary)/30 text-xs font-semibold text-(--theme-primary)">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>خدمت منتخب</span>
+            </div>
+          </div>
+          <div className="relative w-full aspect-16/10 rounded-xl overflow-hidden bg-[#1d202a] block md:hidden">
+            <img
+              src={service.image}
+              alt={service.name}
+              referrerPolicy="no-referrer"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#14161c] via-transparent to-transparent opacity-80" />
+
+            {/* Selection indicator pill/circle */}
+            {isSelected && (
+              <div className="absolute top-2.5 left-2.5 w-6 h-6 rounded-full bg-(--theme-primary) text-[#0b0c0f] flex md:hidden items-center justify-center shadow-lg">
+                <Check className="w-3.5 h-3.5 stroke-3" />
+              </div>
+            )}
+
+            <div className="absolute top-3 right-3 flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#0b0c0f]/80 backdrop-blur-md border border-(--theme-primary)/30 text-xs font-semibold text-(--theme-primary)">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>خدمت منتخب</span>
+            </div>
           </div>
         </div>
 
@@ -53,7 +75,7 @@ export function FeaturedServiceCard({
                 {service.name}
               </h3>
               {isSelected && (
-                <div className="w-7 h-7 rounded-full bg-(--theme-primary) text-[#0b0c0f] flex items-center justify-center shrink-0 shadow-md">
+                <div className="w-7 h-7 rounded-full bg-(--theme-primary) text-[#0b0c0f] hidden md:flex items-center justify-center shrink-0 shadow-md">
                   <Check className="w-4 h-4 stroke-3" />
                 </div>
               )}
@@ -94,7 +116,7 @@ export function FeaturedServiceCard({
             <button
               type="button"
               className={cn(
-                "min-h-11 px-5 py-2 text-xs sm:text-sm font-semibold rounded-xl transition-all duration-200 select-none flex items-center gap-2 cursor-pointer",
+                "min-h-10 md:min-h-8 px-4 md:px-2 text-sm font-semibold rounded-xl transition-all duration-200 select-none flex items-center gap-2 cursor-pointer",
                 isSelected
                   ? "bg-(--theme-primary) text-[#0b0c0f]"
                   : "bg-[#222530] text-[#ded8cb] hover:bg-(--theme-primary) hover:text-[#0b0c0f] border border-(--theme-primary)/20",
@@ -106,7 +128,7 @@ export function FeaturedServiceCard({
                   <span>انتخاب شد</span>
                 </>
               ) : (
-                <span>انتخاب و ادامه</span>
+                <span className="px-4">انتخاب</span>
               )}
             </button>
           </div>

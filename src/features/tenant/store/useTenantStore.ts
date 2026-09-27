@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { BusinessConfig } from "@/src/types/domain";
-import { getTenantBySlug } from "@/src/config/demo";
+import { repositories } from "@/src/services/repositories";
 
 interface TenantState {
   currentTenant: BusinessConfig | null;
@@ -17,8 +17,7 @@ export const useTenantStore = create<TenantState>((set) => ({
   loadTenant: async (slug: string) => {
     set({ currentTenant: null, isLoading: true, error: null });
     try {
-      // In the future this will be: const res = await fetch(`/api/v1/public/${slug}`);
-      const tenant = getTenantBySlug(slug);
+      const tenant = await repositories.tenantRepository.getTenant(slug);
       if (!tenant) {
         set({
           currentTenant: null,

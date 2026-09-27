@@ -88,6 +88,7 @@ export interface TenantBookingConfig {
   minNoticeHours: number;
   maxAdvanceDays: number;
   allowAnyStaff: boolean;
+  phoneValidation?: "iranian" | "international";
   flow?: BookingFlowDefinition;
   customerFields?: CustomerFieldConfig[];
 }
@@ -214,7 +215,7 @@ export interface Appointment {
   staff?: Staff;
   date: string; // YYYY-MM-DD
   dateFormatted: string; // e.g. دوشنبه ۲۸ شهریور ۱۴۰۵
-  timeSlot: string; // e.g. ۱۶:۳۰
+  timeSlot: string; // machine-readable HH:mm; format at the presentation boundary
   customer: Customer;
   createdAt: string;
   status: AppointmentStatus;

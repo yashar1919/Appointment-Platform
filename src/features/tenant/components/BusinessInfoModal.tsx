@@ -21,7 +21,7 @@ export function BusinessInfoModal({
   onClose,
   business,
 }: BusinessInfoModalProps) {
-  const location = business.locations[0];
+  //const location = business.locations[0];
 
   return (
     <Dialog
@@ -41,11 +41,11 @@ export function BusinessInfoModal({
             <p className="text-xs leading-relaxed text-[#b5ada0]">
               {business.address}
             </p>
-            {location?.directions && (
+            {/* {location?.directions && (
               <p className="text-[11px] text-[#8e8779] mt-1">
                 {location.directions}
               </p>
-            )}
+            )} */}
           </div>
         </div>
 
@@ -90,7 +90,6 @@ export function BusinessInfoModal({
           >
             <Phone className="w-4 h-4 text-(--theme-primary)" />
             <span className="flex items-center gap-1">
-              تماس:
               <span dir="ltr" className="inline-block">
                 {business.phoneDisplay}
               </span>

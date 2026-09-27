@@ -65,6 +65,7 @@ export const luxuryCutConfig: BusinessConfig = {
     minNoticeHours: 12,
     maxAdvanceDays: 21,
     allowAnyStaff: true,
+    phoneValidation: "international",
     flow: {
       showServiceSelection: true,
       showStaffSelection: true,

@@ -1,7 +1,11 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ShieldAlert } from "lucide-react";
-import { customerFormSchema, CustomerFormData } from "../schemas/bookingSchema";
+import {
+  createCustomerFormSchema,
+  CustomerFormData,
+} from "../schemas/bookingSchema";
 import { Input } from "@/src/components/ui/Input";
 import { Textarea } from "@/src/components/ui/Textarea";
 import { Customer } from "@/src/types/domain";
@@ -10,19 +14,24 @@ interface CustomerFormProps {
   initialData?: Customer | null;
   onSubmitCustomer: (customer: Customer) => void;
   onBack: () => void;
+  phoneValidation?: "iranian" | "international";
+  onValidityChange?: (isValid: boolean) => void;
 }
 
 export function CustomerForm({
   initialData,
   onSubmitCustomer,
   onBack,
+  phoneValidation = "iranian",
+  onValidityChange,
 }: CustomerFormProps) {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<CustomerFormData>({
-    resolver: zodResolver(customerFormSchema),
+    resolver: zodResolver(createCustomerFormSchema(phoneValidation)),
+    mode: "onChange",
     defaultValues: {
       fullName: initialData?.fullName || "",
       phone: initialData?.phone || "",
@@ -30,6 +39,10 @@ export function CustomerForm({
       notes: initialData?.notes || "",
     },
   });
+
+  useEffect(() => {
+    onValidityChange?.(isValid);
+  }, [isValid, onValidityChange]);
 
   const onSubmit = (data: CustomerFormData) => {
     onSubmitCustomer({
@@ -41,7 +54,11 @@ export function CustomerForm({
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 text-right">
+    <form
+      id="customer-details-form"
+      onSubmit={handleSubmit(onSubmit)}
+      className="space-y-6 text-right"
+    >
       <div className="space-y-1">
         <h2 className="text-xl sm:text-2xl font-bold text-[#f7f4ed]">
           مشخصات تماس و رزرو
@@ -103,7 +120,7 @@ export function CustomerForm({
         </div>
 
         <div className="flex items-start gap-2.5 p-3 rounded-xl bg-[#1b1e28] text-xs text-[#a09a8e]">
-          <ShieldAlert className="w-4 h-4 text-[var(--theme-primary)] shrink-0 mt-0.5" />
+          <ShieldAlert className="w-4 h-4 text-(--theme-primary) shrink-0 mt-0.5" />
           <p className="leading-relaxed">
             اطلاعات شما کاملاً محرمانه بوده و تنها برای هماهنگی و مشاوره نوبت
             استفاده خواهد شد.
@@ -123,7 +140,7 @@ export function CustomerForm({
 
         <button
           type="submit"
-          className="min-h-12 px-7 py-2.5 rounded-xl bg-[var(--theme-primary)] hover:bg-[var(--theme-primary-light)] text-xs sm:text-sm font-bold text-[#0b0c0f] transition-all shadow-[0_4px_16px_rgb(var(--theme-primary-rgb)_/_0.25)] cursor-pointer"
+          className="min-h-12 px-7 py-2.5 rounded-xl bg-(--theme-primary) hover:bg-(--theme-primary-light) text-xs sm:text-sm font-bold text-[#0b0c0f] transition-all shadow-[0_4px_16px_rgb(var(--theme-primary-rgb)/0.25)] cursor-pointer"
         >
           بررسی و تایید نهایی
         </button>

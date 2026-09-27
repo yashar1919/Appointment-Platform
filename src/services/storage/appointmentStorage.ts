@@ -51,6 +51,8 @@ export const appointmentStorage = {
   cancelAppointment(id: string, tenantSlug: string): boolean {
     try {
       const appointments = appointmentStorage.getAppointments(tenantSlug);
+      const appointment = appointments.find((item) => item.id === id);
+      if (!appointment) return false;
       const updated = appointments.map((a) =>
         a.id === id ? { ...a, status: "cancelled" as const } : a,
       );

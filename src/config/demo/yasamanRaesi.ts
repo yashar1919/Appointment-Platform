@@ -40,6 +40,7 @@ export const yasamanRaesiConfig: BusinessConfig = {
     minNoticeHours: 12,
     maxAdvanceDays: 30,
     allowAnyStaff: true,
+    phoneValidation: "iranian",
   },
 
   categories: [
@@ -231,7 +232,7 @@ export const yasamanRaesiConfig: BusinessConfig = {
   workingHours: {
     openTime: "10:00",
     closeTime: "20:00",
-    workingDays: [0, 1, 2, 3, 4, 6], // All days except Friday (5)
+    workingDays: [0, 1, 2, 3, 4, 6],
     slotDurationMinutes: 60,
   },
 };

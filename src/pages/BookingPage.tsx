@@ -1,5 +1,6 @@
-import { useEffect, useState, useMemo, useRef } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { ArrowLeft } from "lucide-react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useTenantStore } from "@/src/features/tenant/store/useTenantStore";
 import { useBookingStore } from "@/src/features/booking/store/useBookingStore";
 import { BusinessHeader } from "@/src/components/shared/BusinessHeader";
@@ -13,14 +14,17 @@ import { CustomerForm } from "@/src/features/booking/components/CustomerForm";
 import { BookingReview } from "@/src/features/booking/components/BookingReview";
 import { MobileStickyBar } from "@/src/features/booking/components/MobileStickyBar";
 import { AppointmentsHistoryModal } from "@/src/features/booking/components/AppointmentsHistoryModal";
-import { availabilityService } from "@/src/services/availability/availabilityService";
-import { appointmentService } from "@/src/services/appointments/appointmentService";
-import { Service, Customer } from "@/src/types/domain";
+import { repositories } from "@/src/services/repositories";
+import { Customer, Service } from "@/src/types/domain";
+import {
+  getFirstBookingStep,
+  getNextBookingStep,
+  isFlowStepEnabled,
+} from "@/src/features/booking/lib/bookingFlow";
 
 export function BookingPage() {
   const { tenantSlug } = useParams<{ tenantSlug: string }>();
   const navigate = useNavigate();
-
   const { currentTenant, isLoading, loadTenant } = useTenantStore();
   const {
     currentStep,
@@ -41,53 +45,56 @@ export function BookingPage() {
     setSubmitting,
     setLastConfirmedAppointment,
   } = useBookingStore();
-
   const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
+  const [isCustomerFormValid, setIsCustomerFormValid] = useState(false);
+  const [availableDates, setAvailableDates] = useState<
+    Awaited<
+      ReturnType<typeof repositories.availabilityRepository.getAvailableDates>
+    >
+  >([]);
+  const [timeSlots, setTimeSlots] = useState<
+    Awaited<
+      ReturnType<
+        typeof repositories.availabilityRepository.getAvailableTimeSlots
+      >
+    >
+  >([]);
+  const [isAvailabilityLoading, setIsAvailabilityLoading] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const previousScrollRestoration = window.history.scrollRestoration;
+    window.history.scrollRestoration = "manual";
+    window.scrollTo(0, 0);
+
+    return () => {
+      window.history.scrollRestoration = previousScrollRestoration;
+    };
+  }, []);
+
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentStep]);
 
   useEffect(() => {
     if (!tenantSlug) return;
-    startSession(tenantSlug);
-    loadTenant(tenantSlug);
+    loadTenant(tenantSlug).then((tenant) => {
+      if (tenant) startSession(tenantSlug, getFirstBookingStep(tenant));
+    });
   }, [tenantSlug, loadTenant, startSession]);
 
   useEffect(() => {
     if (!currentTenant) return;
-    const localization = currentTenant.localization;
     document.documentElement.lang =
-      localization?.locale || currentTenant.locale;
-    document.documentElement.dir = localization?.direction || "rtl";
+      currentTenant.localization?.locale || currentTenant.locale;
+    document.documentElement.dir =
+      currentTenant.localization?.direction || "rtl";
     document.title = currentTenant.name;
   }, [currentTenant]);
 
-  const availableDates = useMemo(() => {
-    if (!currentTenant) return [];
-    return availabilityService.getAvailableDates(
-      currentTenant,
-      selectedStaff?.id,
-    );
-  }, [currentTenant, selectedStaff]);
-
-  // Default select first available date if none selected
-  useEffect(() => {
-    if (availableDates.length > 0 && !selectedDate) {
-      const firstAvailable = availableDates.find((d) => d.isAvailable);
-      if (firstAvailable) {
-        selectDate(firstAvailable.dateString);
-      }
-    }
-  }, [availableDates, selectedDate, selectDate]);
-
-  const timeSlots = useMemo(() => {
-    if (!currentTenant || !selectedDate) return [];
-    return availabilityService.getAvailableTimeSlots(
-      currentTenant,
-      selectedDate,
-      selectedStaff?.id,
-      selectedService?.id,
-    );
-  }, [selectedDate, selectedStaff, selectedService]);
-
+  const flow = currentTenant?.booking.flow;
+  const showDateSelection = flow?.showDateSelection !== false;
+  const showTimeSelection = flow?.showTimeSelection !== false;
   const activeServices = useMemo(
     () =>
       currentTenant?.services.filter((service) => service.active !== false) ||
@@ -96,40 +103,109 @@ export function BookingPage() {
   );
 
   useEffect(() => {
+    if (!currentTenant) return;
+    setIsAvailabilityLoading(true);
+    repositories.availabilityRepository
+      .getAvailableDates(currentTenant.slug, selectedStaff?.id)
+      .then(setAvailableDates)
+      .finally(() => setIsAvailabilityLoading(false));
+  }, [currentTenant, selectedStaff]);
+
+  useEffect(() => {
+    if (!currentTenant || !selectedDate) {
+      setTimeSlots([]);
+      return;
+    }
+    setIsAvailabilityLoading(true);
+    repositories.availabilityRepository
+      .getAvailableTimeSlots(
+        currentTenant.slug,
+        selectedDate,
+        selectedStaff?.id,
+        selectedService?.id,
+      )
+      .then(setTimeSlots)
+      .finally(() => setIsAvailabilityLoading(false));
+  }, [currentTenant, selectedDate, selectedStaff, selectedService]);
+
+  useEffect(() => {
+    if (availableDates.length > 0 && !selectedDate) {
+      selectDate(
+        availableDates.find((day) => day.isAvailable)?.dateString || null,
+      );
+    }
+  }, [availableDates, selectedDate, selectDate]);
+
+  useEffect(() => {
+    if (!showTimeSelection && timeSlots.length > 0 && !selectedTimeSlot) {
+      selectTimeSlot(timeSlots.find((slot) => slot.isAvailable) || null);
+    }
+  }, [showTimeSelection, timeSlots, selectedTimeSlot, selectTimeSlot]);
+
+  const allowAnyStaffOption = currentTenant?.booking.allowAnyStaff === true;
+  const requireStaff = Boolean(
+    currentTenant?.booking.flow?.showStaffSelection !== false &&
+    currentTenant?.booking.requireStaffSelection &&
+    currentTenant.staff.filter(
+      (staff) =>
+        staff.active !== false &&
+        (!selectedService?.staffIds ||
+          selectedService.staffIds.includes(staff.id)),
+    ).length > 1,
+  );
+
+  const eligibleStaff =
+    currentTenant?.staff.filter(
+      (staff) =>
+        staff.active !== false &&
+        (!selectedService?.staffIds ||
+          selectedService.staffIds.includes(staff.id)),
+    ) || [];
+
+  useEffect(() => {
     if (
       !currentTenant ||
       currentStep !== "service" ||
       activeServices.length !== 1
-    ) {
+    )
       return;
-    }
     selectService(activeServices[0]);
-    setStep(
-      currentTenant.booking.flow?.showStaffSelection !== false &&
-        currentTenant.booking.requireStaffSelection &&
-        currentTenant.staff.length > 1
-        ? "staff"
-        : "datetime",
-    );
+    setStep(getNextBookingStep(currentTenant, "service") || "review");
   }, [activeServices, currentStep, currentTenant, selectService, setStep]);
+
+  useEffect(() => {
+    if (
+      !currentTenant ||
+      currentStep !== "service" ||
+      isFlowStepEnabled(flow, "service")
+    )
+      return;
+    if (activeServices.length > 0 && !selectedService)
+      selectService(activeServices[0]);
+    setStep(getNextBookingStep(currentTenant, "service") || "review");
+  }, [
+    activeServices,
+    currentStep,
+    currentTenant,
+    flow,
+    selectedService,
+    selectService,
+    setStep,
+  ]);
+
+  useEffect(() => {
+    if (
+      currentTenant &&
+      !isFlowStepEnabled(flow, "service") &&
+      activeServices.length > 0 &&
+      !selectedService
+    ) {
+      selectService(activeServices[0]);
+    }
+  }, [activeServices, currentTenant, flow, selectedService, selectService]);
 
   const handleSelectService = (service: Service) => {
     selectService(service);
-    if (
-      currentTenant?.booking.flow?.showStaffSelection !== false &&
-      currentTenant?.booking.requireStaffSelection &&
-      currentTenant.staff.filter(
-        (staff) =>
-          staff.active !== false &&
-          (!service.staffIds || service.staffIds.includes(staff.id)),
-      ).length > 1
-    ) {
-      setStep("staff");
-    } else {
-      setStep("datetime");
-    }
-    // Smooth scroll down to progress area
-    window.scrollTo({ top: 400, behavior: "smooth" });
   };
 
   const handleConfirmBooking = () => {
@@ -139,26 +215,24 @@ export function BookingPage() {
       !selectedDate ||
       !selectedTimeSlot ||
       !customer
-    ) {
+    )
       return;
-    }
-
     setSubmitting(true);
-
-    setTimeout(() => {
-      const newAppointment = appointmentService.create({
-        tenant: currentTenant,
-        service: selectedService,
-        staff: selectedStaff,
-        allowAnyStaff,
+    repositories.appointmentRepository
+      .create({
+        tenantSlug: currentTenant.slug,
+        serviceId: selectedService.id,
+        staffId: allowAnyStaff ? undefined : selectedStaff?.id,
+        locationId: currentTenant.locations[0]?.id,
         date: selectedDate,
-        timeSlot: selectedTimeSlot,
+        time: selectedTimeSlot.id,
         customer,
-      });
-      setLastConfirmedAppointment(newAppointment);
-      setSubmitting(false);
-      navigate(`/booking/${currentTenant.slug}/success/${newAppointment.id}`);
-    }, 600);
+      })
+      .then((appointment) => {
+        setLastConfirmedAppointment(appointment);
+        navigate(`/booking/${currentTenant.slug}/success/${appointment.id}`);
+      })
+      .finally(() => setSubmitting(false));
   };
 
   if (isLoading) {
@@ -194,43 +268,25 @@ export function BookingPage() {
     );
   }
 
-  const requireStaff =
-    currentTenant.booking.flow?.showStaffSelection !== false &&
-    currentTenant.booking.requireStaffSelection &&
-    currentTenant.staff.filter(
-      (staff) =>
-        staff.active !== false &&
-        (!selectedService?.staffIds ||
-          selectedService.staffIds.includes(staff.id)),
-    ).length > 1;
-
-  const eligibleStaff = currentTenant.staff.filter(
-    (staff) =>
-      staff.active !== false &&
-      (!selectedService?.staffIds ||
-        selectedService.staffIds.includes(staff.id)),
-  );
-
-  // Determine if mobile sticky button can advance
   const canAdvance =
     (currentStep === "service" && selectedService !== null) ||
-    (currentStep === "staff" && (selectedStaff !== null || allowAnyStaff)) ||
+    (currentStep === "staff" &&
+      (selectedStaff !== null || (allowAnyStaffOption && allowAnyStaff))) ||
     (currentStep === "datetime" &&
       selectedDate !== null &&
       selectedTimeSlot !== null) ||
-    (currentStep === "customer" && customer !== null);
+    (currentStep === "customer" && isCustomerFormValid);
 
   const handleMobileAdvance = () => {
-    if (currentStep === "service") {
-      if (requireStaff) setStep("staff");
-      else setStep("datetime");
-    } else if (currentStep === "staff") {
-      setStep("datetime");
-    } else if (currentStep === "datetime") {
-      setStep("customer");
-    } else if (currentStep === "customer") {
-      setStep("review");
+    if (currentStep === "customer") {
+      const customerForm = document.getElementById(
+        "customer-details-form",
+      ) as HTMLFormElement | null;
+      customerForm?.requestSubmit();
+      return;
     }
+    const nextStep = getNextBookingStep(currentTenant, currentStep);
+    if (nextStep) setStep(nextStep);
   };
 
   return (
@@ -239,61 +295,85 @@ export function BookingPage() {
       data-theme={currentTenant.theme.palette ?? "gold"}
       className="min-h-screen bg-[#0b0c0f] text-[#f7f4ed] pb-24 sm:pb-16 selection:bg-(--theme-primary)/25"
     >
-      {/* Universal Top Bar */}
       <BusinessHeader
         business={currentTenant}
         onViewAppointments={() => setIsHistoryModalOpen(true)}
       />
-
-      {/* Hero Section shown on the initial discovery step */}
       {currentStep === "service" && (
         <BusinessHero
           business={currentTenant}
-          onExploreServices={() => {
-            const el = document.getElementById("booking-flow-container");
-            el?.scrollIntoView({ behavior: "smooth" });
-          }}
+          onExploreServices={() =>
+            document
+              .getElementById("booking-flow-container")
+              ?.scrollIntoView({ behavior: "smooth" })
+          }
         />
       )}
-
-      {/* Booking Flow Progress */}
       <BookingProgress
         currentStep={currentStep}
         requireStaff={requireStaff}
+        flow={flow}
         onStepClick={(step) => setStep(step)}
       />
-
-      {/* Main Booking Content */}
       <main
         id="booking-flow-container"
         className="max-w-4xl mx-auto px-4 sm:px-6 pt-6 sm:pt-10"
       >
-        {/* Step 1: Service Selection */}
         {currentStep === "service" && (
-          <ServiceGrid
-            categories={currentTenant.categories}
-            services={activeServices}
-            selectedService={selectedService}
-            onSelectService={handleSelectService}
-            currency={currentTenant.currency}
-            title={currentTenant.content?.labels?.servicesTitle}
-            description={currentTenant.content?.labels?.servicesDescription}
-          />
+          <>
+            <ServiceGrid
+              categories={currentTenant.categories}
+              services={activeServices}
+              selectedService={selectedService}
+              onSelectService={handleSelectService}
+              currency={currentTenant.currency}
+              title={currentTenant.content?.labels?.servicesTitle}
+              description={currentTenant.content?.labels?.servicesDescription}
+            />
+            <div className="hidden sm:flex mt-8 items-center justify-between gap-6 rounded-2xl border border-[#2d313b] bg-[#14161c] p-4 sm:p-5">
+              <div className="min-w-0 text-right">
+                {selectedService ? (
+                  <>
+                    <p className="text-[11px] text-[#8e8779]">
+                      خدمت انتخاب‌شده
+                    </p>
+                    <p className="mt-1 truncate text-sm font-bold text-[#f7f4ed]">
+                      {selectedService.name}
+                    </p>
+                  </>
+                ) : (
+                  <p className="text-xs text-[#8e8779]">
+                    برای ادامه، ابتدا یکی از خدمات را انتخاب کنید.
+                  </p>
+                )}
+              </div>
+              <button
+                type="button"
+                disabled={!selectedService}
+                onClick={handleMobileAdvance}
+                className="min-h-12 shrink-0 rounded-xl bg-(--theme-primary) px-6 py-2.5 text-xs font-bold text-[#0b0c0f] shadow-[0_4px_16px_rgb(var(--theme-primary-rgb)/0.25)] transition-all hover:bg-(--theme-primary-light) disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                <span>انتخاب متخصص</span>
+                <ArrowLeft className="mr-2 inline-block h-4 w-4 align-middle" />
+              </button>
+            </div>
+          </>
         )}
-
-        {/* Step 2: Staff Selection */}
         {currentStep === "staff" && (
           <StaffSelector
             staffList={eligibleStaff}
             selectedStaff={selectedStaff}
             allowAnyStaff={allowAnyStaff}
-            onSelectStaff={(staff, anyStaff) => selectStaff(staff, anyStaff)}
-            onContinue={() => setStep("datetime")}
-            onBack={() => setStep("service")}
+            allowAnyStaffOption={allowAnyStaffOption}
+            onSelectStaff={(staff, anyStaff) =>
+              selectStaff(staff, anyStaff && allowAnyStaffOption)
+            }
+            onContinue={() =>
+              setStep(getNextBookingStep(currentTenant, "staff") || "review")
+            }
+            onBack={() => setStep(getFirstBookingStep(currentTenant))}
           />
         )}
-
-        {/* Step 3: Date and Time Selection */}
         {currentStep === "datetime" && (
           <div className="space-y-8 animate-in fade-in duration-300">
             <div className="space-y-1 text-right">
@@ -304,33 +384,41 @@ export function BookingPage() {
                 روز و بازه زمانی دلخواه خود را جهت دریافت خدمت انتخاب نمایید.
               </p>
             </div>
-
-            <DateScroller
-              days={availableDates}
-              selectedDate={selectedDate}
-              onSelectDate={(d) => selectDate(d)}
-            />
-
-            <TimeSlotPicker
-              slots={timeSlots}
-              selectedSlot={selectedTimeSlot}
-              onSelectSlot={(slot) => selectTimeSlot(slot)}
-            />
-
-            {/* Navigation buttons */}
+            {showDateSelection && (
+              <DateScroller
+                days={availableDates}
+                selectedDate={selectedDate}
+                onSelectDate={selectDate}
+              />
+            )}
+            {showTimeSelection && (
+              <TimeSlotPicker
+                slots={timeSlots}
+                selectedSlot={selectedTimeSlot}
+                onSelectSlot={selectTimeSlot}
+              />
+            )}
+            {isAvailabilityLoading && (
+              <p className="text-xs text-[#8e8779] text-center">
+                در حال بررسی زمان‌های آزاد...
+              </p>
+            )}
             <div className="pt-4 flex items-center justify-between gap-3 border-t border-[#262934]">
               <button
                 type="button"
-                onClick={() => setStep(requireStaff ? "staff" : "service")}
+                onClick={() => setStep(getFirstBookingStep(currentTenant))}
                 className="min-h-12 px-5 py-2.5 rounded-xl border border-[#2d313b] hover:bg-[#21242c] text-xs sm:text-sm font-medium text-[#ded8cb] transition-colors cursor-pointer"
               >
                 مرحله قبل
               </button>
-
               <button
                 type="button"
                 disabled={!selectedDate || !selectedTimeSlot}
-                onClick={() => setStep("customer")}
+                onClick={() =>
+                  setStep(
+                    getNextBookingStep(currentTenant, "datetime") || "review",
+                  )
+                }
                 className="min-h-12 px-7 py-2.5 rounded-xl bg-(--theme-primary) hover:bg-(--theme-primary-light) disabled:opacity-40 disabled:cursor-not-allowed text-xs sm:text-sm font-bold text-[#0b0c0f] transition-all shadow-[0_4px_16px_rgb(var(--theme-primary-rgb)/0.25)] cursor-pointer"
               >
                 ثبت اطلاعات تماس
@@ -338,20 +426,20 @@ export function BookingPage() {
             </div>
           </div>
         )}
-
-        {/* Step 4: Customer Details Form */}
         {currentStep === "customer" && (
           <CustomerForm
             initialData={customer}
+            phoneValidation={currentTenant.booking.phoneValidation}
+            onValidityChange={setIsCustomerFormValid}
             onSubmitCustomer={(data: Customer) => {
               setCustomer(data);
-              setStep("review");
+              setStep(
+                getNextBookingStep(currentTenant, "customer") || "review",
+              );
             }}
             onBack={() => setStep("datetime")}
           />
         )}
-
-        {/* Step 5: Review and Confirmation */}
         {currentStep === "review" &&
           selectedService &&
           selectedDate &&
@@ -372,8 +460,6 @@ export function BookingPage() {
             />
           )}
       </main>
-
-      {/* Mobile Sticky Booking Bar */}
       <MobileStickyBar
         currentStep={currentStep}
         service={selectedService}
@@ -381,8 +467,6 @@ export function BookingPage() {
         onContinue={handleMobileAdvance}
         currency={currentTenant.currency}
       />
-
-      {/* Appointments History Modal */}
       <AppointmentsHistoryModal
         isOpen={isHistoryModalOpen}
         onClose={() => setIsHistoryModalOpen(false)}

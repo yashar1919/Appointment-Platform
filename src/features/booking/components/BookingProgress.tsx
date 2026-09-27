@@ -1,5 +1,6 @@
 import { Check } from "lucide-react";
 import { BookingStep } from "../types";
+import { BookingFlowDefinition } from "@/src/types/domain";
 import { cn } from "@/src/lib/utils/cn";
 
 interface StepItem {
@@ -10,20 +11,43 @@ interface StepItem {
 interface BookingProgressProps {
   currentStep: BookingStep;
   requireStaff: boolean;
+  flow?: BookingFlowDefinition;
   onStepClick?: (step: BookingStep) => void;
 }
 
 export function BookingProgress({
   currentStep,
   requireStaff,
+  flow,
   onStepClick,
 }: BookingProgressProps) {
+  const show = (step: BookingStep) => {
+    if (step === "service") return flow?.showServiceSelection !== false;
+    if (step === "staff")
+      return requireStaff && flow?.showStaffSelection !== false;
+    if (step === "datetime") {
+      return (
+        flow?.showDateSelection !== false || flow?.showTimeSelection !== false
+      );
+    }
+    if (step === "customer") return flow?.showCustomerDetails !== false;
+    return flow?.showReview !== false;
+  };
+
   const steps: StepItem[] = [
-    { id: "service", label: "انتخاب خدمت" },
-    ...(requireStaff ? [{ id: "staff" as BookingStep, label: "متخصص" }] : []),
-    { id: "datetime", label: "تاریخ و ساعت" },
-    { id: "customer", label: "مشخصات شما" },
-    { id: "review", label: "تایید نهایی" },
+    ...(show("service")
+      ? [{ id: "service" as BookingStep, label: "انتخاب خدمت" }]
+      : []),
+    ...(show("staff") ? [{ id: "staff" as BookingStep, label: "متخصص" }] : []),
+    ...(show("datetime")
+      ? [{ id: "datetime" as BookingStep, label: "تاریخ و ساعت" }]
+      : []),
+    ...(show("customer")
+      ? [{ id: "customer" as BookingStep, label: "مشخصات شما" }]
+      : []),
+    ...(show("review")
+      ? [{ id: "review" as BookingStep, label: "تایید نهایی" }]
+      : []),
   ];
 
   const currentIndex = steps.findIndex((s) => s.id === currentStep);
@@ -34,7 +58,7 @@ export function BookingProgress({
         {/* Mobile View: Clean compact step counter & title */}
         <div className="flex sm:hidden items-center justify-between text-xs">
           <div className="flex items-center gap-2">
-            <span className="w-5 h-5 rounded-full bg-[var(--theme-primary)] text-[#0b0c0f] font-bold flex items-center justify-center text-[10px]">
+            <span className="w-5 h-5 rounded-full bg-(--theme-primary) text-[#0b0c0f] font-bold flex items-center justify-center text-[10px]">
               {currentIndex + 1}
             </span>
             <span className="font-semibold text-[#f7f4ed]">
@@ -49,7 +73,7 @@ export function BookingProgress({
         {/* Mobile thin progress line */}
         <div className="w-full bg-[#21242c] h-1 rounded-full mt-2 sm:hidden overflow-hidden">
           <div
-            className="h-full bg-gradient-to-l from-[var(--theme-primary)] to-[var(--theme-primary-light)] transition-all duration-300"
+            className="h-full bg-gradient-to-l from-(--theme-primary) to-(--theme-primary-light) transition-all duration-300"
             style={{ width: `${((currentIndex + 1) / steps.length) * 100}%` }}
           />
         </div>
@@ -80,9 +104,9 @@ export function BookingProgress({
                   <div
                     className={cn(
                       "w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-all shrink-0",
-                      isCompleted && "bg-[var(--theme-primary)] text-[#0b0c0f]",
+                      isCompleted && "bg-(--theme-primary) text-[#0b0c0f]",
                       isCurrent &&
-                        "bg-[var(--theme-primary)] text-[#0b0c0f] ring-4 ring-[var(--theme-primary)]/20 shadow-[0_0_12px_rgb(var(--theme-primary-rgb)_/_0.5)]",
+                        "bg-(--theme-primary) text-[#0b0c0f] ring-4 ring-(--theme-primary)/20 shadow-[0_0_12px_rgb(var(--theme-primary-rgb)/0.5)]",
                       !isCompleted &&
                         !isCurrent &&
                         "bg-[#21242c] text-[#717786] border border-[#2d313b]",
@@ -112,7 +136,9 @@ export function BookingProgress({
                   <div
                     className={cn(
                       "flex-1 h-[1.5px] mx-3 transition-colors",
-                      index < currentIndex ? "bg-[var(--theme-primary)]/80" : "bg-[#21242c]",
+                      index < currentIndex
+                        ? "bg-(--theme-primary)/80"
+                        : "bg-[#21242c]",
                     )}
                   />
                 )}

@@ -65,6 +65,7 @@ export const novaClinicConfig: BusinessConfig = {
     minNoticeHours: 24,
     maxAdvanceDays: 30,
     allowAnyStaff: true,
+    phoneValidation: "international",
     flow: {
       showServiceSelection: true,
       showStaffSelection: false,

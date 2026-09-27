@@ -1,6 +1,7 @@
 import { ArrowDown, MapPin, Sparkles, Star } from "lucide-react";
 import { BusinessConfig } from "@/src/types/domain";
 import { toPersianDigits } from "@/src/lib/formatting/persianNumbers";
+import { Button } from "@/src/components/ui/Button";
 
 interface BusinessHeroProps {
   business: BusinessConfig;
@@ -50,17 +51,20 @@ export function BusinessHero({
                 </span>
               </div>
               <span className="flex flex-1 items-center justify-center border-r px-3">
-                {toPersianDigits(business.reviewsCount)} تجربه ثبت‌شده
+                {toPersianDigits(business.reviewsCount)} تجربه موفق
+              </span>
+              <span className="flex flex-1 items-center justify-center border-r px-3 text-(--theme-primary)">
+                رنگ‌های ایمن
               </span>
             </div>
             <div className="pt-2 sm:pt-4 flex flex-wrap items-center gap-3">
-              <button
+              <Button
                 onClick={onExploreServices}
-                className="inline-flex w-full lg:w-9/10 items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-(--theme-primary) text-[#0b0c0f] font-bold text-sm transition-all"
+                className="inline-flex w-full items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-(--theme-primary) text-[#0b0c0f] font-bold text-sm transition-all"
               >
                 <span>{hero?.ctaLabel || "انتخاب خدمت و رزرو"}</span>
-                <ArrowDown className="w-4 h-4" />
-              </button>
+                <ArrowDown className="w-4 h-4 animate-bounce" />
+              </Button>
               {hero?.availabilityLabel && (
                 <span className="text-xs text-[#8e8779]">
                   {hero.availabilityLabel}
@@ -73,7 +77,7 @@ export function BusinessHero({
               <img
                 src={business.coverImage}
                 alt={business.name}
-                className="w-full h-full object-cover object-center"
+                className="w-full sm:h-full object-cover object-center"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0b0c0f] via-transparent to-black/20" />
               <div className="absolute bottom-3 right-3 left-3 p-3 rounded-xl bg-[#0b0c0f]/80 backdrop-blur-md border border-(--theme-primary)/20">

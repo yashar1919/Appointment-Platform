@@ -124,3 +124,28 @@ theme: {
 - عملیات نوبت از طریق `appointmentService` و repositoryهای جداشده انجام می‌شود.
 - availability دمو از طریق `AvailabilityRepository` به تنظیمات همان مستأجر وابسته است.
 - در فاز بعدی، repositoryهای دمو می‌توانند با adapterهای FastAPI جایگزین شوند بدون تغییر کامپوننت‌های UI.
+
+## ۸. سخت‌سازی پیش از Backend
+
+وابستگی داده‌ای برنامه از مسیر زیر عبور می‌کند:
+
+```text
+UI
+↓
+Booking/Tenant application stores
+↓
+Repository interfaces
+↓
+Demo repositories
+```
+
+`TenantRepository`، `AppointmentRepository` و `AvailabilityRepository` همگی Promise-based هستند؛ بنابراین جایگزینی Demo repository با FastAPI repository به تغییر در UI رزرو نیاز ندارد.
+
+- صفحه موفقیت فقط با `tenantSlug` و `appointmentId` موجود در URL lookup می‌کند و از `lastConfirmedAppointment` به‌عنوان منبع معتبر استفاده نمی‌کند.
+- availability مستقیماً به `localStorage` وابسته نیست و رزروهای موجود را از `AppointmentRepository` می‌خواند.
+- ایجاد appointment با شناسه‌ها، تاریخ، زمان و اطلاعات مشتری انجام می‌شود؛ کل `BusinessConfig` از این مرز عبور نمی‌کند.
+- روزهای کاری از `workingHours.workingDays` tenant خوانده می‌شوند و جمعه به‌صورت سراسری بسته فرض نمی‌شود.
+- اعتبارسنجی تلفن با `booking.phoneValidation` قابل تنظیم است؛ Yasaman ایرانی و دموهای انگلیسی بین‌المللی هستند.
+- فلگ‌های اصلی `BookingFlowDefinition` برای نمایش یا رد کردن مراحل رزرو اعمال می‌شوند و `allowAnyStaff` از تنظیم tenant تبعیت می‌کند.
+
+موارد عمداً deferred هستند: timezone کامل، تقویم چندمنطقه‌ای، i18n کامل، multi-location scheduling، API repository واقعی، احراز هویت، پرداخت و test runner. در حال حاضر test runner در پروژه وجود ندارد؛ type diagnostics ادیتور و production build برای validation موجود استفاده می‌شوند.

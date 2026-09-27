@@ -3,6 +3,7 @@ import { Service } from "@/src/types/domain";
 import { formatCurrency } from "@/src/lib/formatting/currency";
 import { formatDuration } from "@/src/lib/formatting/dateTime";
 import { BookingStep } from "../types";
+import { Button } from "@/src/components/ui/Button";
 
 interface MobileStickyBarProps {
   currentStep: BookingStep;
@@ -60,15 +61,16 @@ export function MobileStickyBar({
         </div>
 
         {/* CTA Button */}
-        <button
+        <Button
           type="button"
           disabled={!canContinue}
           onClick={onContinue}
-          className="h-11 px-5 rounded-xl bg-(--theme-primary) hover:bg-(--theme-primary-light) disabled:opacity-40 disabled:pointer-events-none text-xs font-bold text-[#0b0c0f] flex items-center gap-1.5 shrink-0 shadow-[0_2px_12px_rgb(var(--theme-primary-rgb)/0.3)] cursor-pointer active:scale-95 transition-all"
+          // className="h-11 px-5 rounded-xl bg-(--theme-primary) hover:bg-(--theme-primary-light) disabled:opacity-40 disabled:pointer-events-none text-xs font-bold text-[#0b0c0f] flex items-center gap-1.5 shrink-0 shadow-[0_2px_12px_rgb(var(--theme-primary-rgb)/0.3)] cursor-pointer active:scale-95 transition-all"
+          className="gap-2 mb-4 mt-1"
         >
           <span>{getActionLabel()}</span>
           <ArrowLeft className="w-3.5 h-3.5" />
-        </button>
+        </Button>
       </div>
     </div>
   );
