@@ -37,7 +37,7 @@ export function StaffSelector({
       </div>
 
       {/* Any Staff Option Card */}
-      {allowAnyStaffOption && (
+      {/* {allowAnyStaffOption && (
         <div
           onClick={() => onSelectStaff(null, true)}
           className={cn(
@@ -67,7 +67,7 @@ export function StaffSelector({
             </div>
           )}
         </div>
-      )}
+      )} */}
 
       {/* Individual Staff Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

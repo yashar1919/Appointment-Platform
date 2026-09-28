@@ -118,6 +118,10 @@
   display: none;
 }
 
+#demo{
+  scrollbar-width: none !important;
+}
+
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;

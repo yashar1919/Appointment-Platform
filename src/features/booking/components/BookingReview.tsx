@@ -250,11 +250,15 @@ export function BookingReview({
         </div>
 
         {/* Guarantee Banner */}
-        <div className="p-3.5 bg-[#171a22] border-t border-[#262934] flex items-center gap-2 text-xs text-[#ded8cb]">
+        <div className="p-3.5 bg-[#171a22] border-t border-[#262934] flex items-center gap-2 text-[11px] text-[#ded8cb]">
           <ShieldCheck className="w-4 h-4 text-(--theme-primary) shrink-0" />
-          <span>
+          {/* <span>
             امکان لغو یا تغییر زمان نوبت تا {business.booking.minNoticeHours}{" "}
             ساعت قبل از طریق پیامک یا تماس امکان‌پذیر است.
+          </span> */}
+          <span>
+            امکان لغو یا تغییر زمان نوبت تا 24 ساعت قبل از طریق پنل کاربری یا تماس
+            امکان‌پذیر است.
           </span>
         </div>
       </div>
@@ -266,7 +270,7 @@ export function BookingReview({
           onClick={onBack}
           className="min-h-12 px-5 py-2.5 rounded-xl border border-[#2d313b] hover:bg-[#21242c] text-xs sm:text-sm font-medium text-[#ded8cb] transition-colors cursor-pointer"
         >
-         <span className="flex items-center gap-2">
+          <span className="flex items-center gap-2">
             <ArrowRight className="w-4 h-4" />
             مرحله قبل
           </span>

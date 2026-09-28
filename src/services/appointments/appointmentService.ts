@@ -1,6 +1,7 @@
 import { Appointment, Customer, Service, Staff } from "@/src/types/domain";
 import { fetchApi } from "../api/httpClient";
 import type { TenantRepository } from "@/src/services/tenant/tenantRepository";
+import { formatFullJalaliDate } from "@/src/lib/formatting/dateTime";
 
 export interface CreateAppointmentInput {
   tenantSlug: string;
@@ -89,7 +90,7 @@ function mapBackendToDomainAppointment(
     service: service as Service,
     staff: staff as Staff | undefined,
     date: dateStr,
-    dateFormatted: dateStr,
+    dateFormatted: formatFullJalaliDate(dateStr),
     timeSlot: timeStr,
     customer,
     createdAt: backendData.created_at || new Date().toISOString(),
@@ -250,7 +251,7 @@ export class HttpAppointmentRepository implements AppointmentRepository {
           ? ({ name: responseData.staff_name } as any)
           : undefined,
         date: dateStr,
-        dateFormatted: dateStr,
+        dateFormatted: formatFullJalaliDate(dateStr),
         timeSlot: timeStr,
         customer: {
           fullName: responseData.customer_name || "مشتری",

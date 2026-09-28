@@ -29,8 +29,16 @@ export class HttpAvailabilityRepository implements AvailabilityRepository {
     if (!tenant) return [];
 
     const maxAdvanceDays = tenant.booking.maxAdvanceDays || 14;
-    // فرض بر این است که تابع getNextDays دارید. اگر نه، باید پیاده‌سازی شود.
-    return getNextDays(maxAdvanceDays, []);
+    const availableDays = getNextDays(maxAdvanceDays, []);
+
+    return availableDays.map((day) => {
+      const dayOfWeek = new Date(`${day.dateString}T00:00:00`).getDay();
+
+      return {
+        ...day,
+        isAvailable: tenant.workingHours.workingDays.includes(dayOfWeek),
+      };
+    });
   }
 
   async getAvailableTimeSlots(
@@ -66,18 +74,6 @@ export class HttpAvailabilityRepository implements AvailabilityRepository {
           is_available: slot.is_available,
         })),
       );
-
-      const timeFormatter = new Intl.DateTimeFormat("fa-IR", {
-        timeZone: tenant?.timezone,
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-      });
-      const hourFormatter = new Intl.DateTimeFormat("en-US", {
-        timeZone: tenant?.timezone,
-        hour: "numeric",
-        hour12: false,
-      });
 
       console.log(
         "Current browser timezone:",

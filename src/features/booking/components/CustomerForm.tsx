@@ -86,9 +86,8 @@ export function CustomerForm({
             label="شماره تلفن همراه (جهت دریافت پیامک تایید)"
             required
             type="tel"
-            dir="ltr"
             placeholder="09121234567"
-            className="text-left font-mono"
+            className=" font-mono"
             error={errors.phone?.message}
             {...register("phone")}
           />
@@ -99,9 +98,7 @@ export function CustomerForm({
           <Input
             label="آدرس ایمیل (اختیاری)"
             type="email"
-            dir="ltr"
             placeholder="name@example.com"
-            className="text-left"
             error={errors.email?.message}
             helperText="جهت دریافت فاکتور رسمی و فایل نکات مراقبتی"
             {...register("email")}

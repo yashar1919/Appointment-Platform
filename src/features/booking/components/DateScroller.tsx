@@ -56,7 +56,9 @@ export function DateScroller({
                 ref={isSelected ? activeBtnRef : null}
                 type="button"
                 disabled={!isAvailable}
-                onClick={() => onSelectDate(day.dateString)}
+                onClick={() => {
+                  if (isAvailable) onSelectDate(day.dateString);
+                }}
                 className={cn(
                   "relative flex flex-col items-center justify-between py-3 px-3.5 min-w-19 sm:min-w-21 h-23 rounded-2xl transition-all duration-200 cursor-pointer select-none shrink-0 border text-center",
                   isSelected &&
