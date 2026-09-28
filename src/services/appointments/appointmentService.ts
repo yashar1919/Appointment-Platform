@@ -24,7 +24,7 @@ export interface AppointmentRepository {
     referenceCode: string,
     phone: string,
   ): Promise<Appointment | null>;
-  cancel(tenantSlug: string, appointmentId: string): Promise<boolean>;
+  cancel(tenantSlug: string, appointment: Appointment): Promise<boolean>;
 }
 
 function cleanupLocalStorage(): void {
@@ -274,33 +274,35 @@ export class HttpAppointmentRepository implements AppointmentRepository {
     }
   }
 
-  async cancel(tenantSlug: string, appointmentId: string): Promise<boolean> {
+  async cancel(tenantSlug: string, appointment: Appointment): Promise<boolean> {
     try {
-      await fetchApi<any>(
-        `/${tenantSlug}/appointments/${appointmentId}/cancel`,
-        {
-          method: "POST", // یا PATCH بسته به پیاده‌سازی بک‌اند
-        },
-      );
+      await fetchApi<any>(`/${tenantSlug}/appointments/cancel`, {
+        method: "POST",
+        body: JSON.stringify({
+          reference_code: appointment.referenceCode,
+          customer_phone: appointment.customer.phone,
+        }),
+      });
 
-      // حذف از کش محلی پس از لغو موفق
+      // Keep the appointment in history while reflecting its cancelled status.
       const localData = localStorage.getItem("local_appointments_cache");
       if (localData) {
         const localAppointments = JSON.parse(localData);
-        const filtered = localAppointments.filter(
-          (a: any) =>
-            a.id !== appointmentId && a.referenceCode !== appointmentId,
+        const updatedAppointments = localAppointments.map((cached: any) =>
+          cached.referenceCode === appointment.referenceCode
+            ? { ...cached, status: "cancelled" }
+            : cached,
         );
         localStorage.setItem(
           "local_appointments_cache",
-          JSON.stringify(filtered),
+          JSON.stringify(updatedAppointments),
         );
       }
 
       return true;
-    } catch (e) {
-      console.error("Failed to cancel appointment", e);
-      return false;
+    } catch (error) {
+      console.error("Failed to cancel appointment", error);
+      throw error;
     }
   }
 }

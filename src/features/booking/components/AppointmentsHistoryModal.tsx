@@ -12,6 +12,22 @@ interface AppointmentsHistoryModalProps {
   tenantSlug: string;
 }
 
+type AppointmentWithStart = Appointment & {
+  starts_at?: string;
+};
+
+function getAppointmentStart(appointment: Appointment): Date | null {
+  const appointmentWithStart = appointment as AppointmentWithStart;
+  const startsAt =
+    appointmentWithStart.starts_at ||
+    `${appointment.date}T${appointment.timeSlot.replace(/[۰-۹]/g, (digit) =>
+      String("۰۱۲۳۴۵۶۷۸۹".indexOf(digit)),
+    )}`;
+  const parsedDate = new Date(startsAt);
+
+  return Number.isNaN(parsedDate.getTime()) ? null : parsedDate;
+}
+
 export function AppointmentsHistoryModal({
   isOpen,
   onClose,
@@ -28,6 +44,7 @@ export function AppointmentsHistoryModal({
   const [lookupPhone, setLookupPhone] = useState("");
   const [isLookingUp, setIsLookingUp] = useState(false);
   const [lookupError, setLookupError] = useState("");
+  const [cancelError, setCancelError] = useState("");
 
   const loadList = async () => {
     const list = await repositories.appointmentRepository.list(tenantSlug);
@@ -39,6 +56,7 @@ export function AppointmentsHistoryModal({
       loadList();
       setShowLookupForm(false);
       setLookupError("");
+      setCancelError("");
     } else {
       setPendingCancellationId(null);
       setLookupCode("");
@@ -46,16 +64,29 @@ export function AppointmentsHistoryModal({
     }
   }, [isOpen, tenantSlug]);
 
-  const handleCancel = async (id: string) => {
-    const success = await repositories.appointmentRepository.cancel(
-      tenantSlug,
-      id,
-    );
-    if (success) {
+  const handleCancel = async (appointment: Appointment) => {
+    setCancelError("");
+
+    try {
+      const success = await repositories.appointmentRepository.cancel(
+        tenantSlug,
+        appointment,
+      );
+
+      if (!success) {
+        throw new Error("Cancellation rejected");
+      }
+
       setPendingCancellationId(null);
       await loadList();
-    } else {
-      alert("خطا در لغو نوبت. لطفاً مجدداً تلاش کنید.");
+    } catch (error) {
+      setPendingCancellationId(null);
+      const message =
+        error instanceof Error
+          ? error.message
+          : "لغو این نوبت امکان‌پذیر نیست.";
+      setCancelError(message);
+      alert(message);
     }
   };
 
@@ -102,6 +133,16 @@ export function AppointmentsHistoryModal({
       description="تاریخچه و وضعیت نوبت‌های رزرو شده در این کسب‌وکار"
     >
       <div className="space-y-4 text-right">
+        {cancelError && (
+          <div
+            role="alert"
+            className="flex items-center gap-2 rounded-lg bg-red-900/20 p-3 text-xs text-red-300"
+          >
+            <AlertCircle className="h-4 w-4 shrink-0" />
+            <span>{cancelError}</span>
+          </div>
+        )}
+
         {/* بخش پیگیری با کد رهگیری */}
         {!showLookupForm ? (
           <button
@@ -187,6 +228,26 @@ export function AppointmentsHistoryModal({
           <div className="space-y-3 max-h-[60vh] overflow-y-auto no-scrollbar">
             {appointments.map((apt) => {
               const isCancelled = apt.status === "cancelled";
+              const appointmentStart = getAppointmentStart(apt);
+              const now = new Date();
+              const isPast = appointmentStart ? appointmentStart < now : false;
+              const isWithin24Hours = appointmentStart
+                ? appointmentStart <=
+                  new Date(now.getTime() + 24 * 60 * 60 * 1000)
+                : false;
+              const canCancel = !isCancelled && !isPast;
+              const cancellationRequiresPhone = canCancel && isWithin24Hours;
+              const appointmentStatus = isCancelled
+                ? "لغو شده"
+                : isPast
+                  ? "انجام شده"
+                  : "تایید شده";
+              const statusClass = isCancelled
+                ? "bg-red-900/30 text-red-300 border-red-800/40"
+                : isPast
+                  ? "bg-emerald-950/40 text-emerald-300 border-emerald-800/40"
+                  : "bg-sky-950/40 text-sky-300 border-sky-800/40";
+
               return (
                 <div
                   key={apt.id}
@@ -205,9 +266,9 @@ export function AppointmentsHistoryModal({
                       </p>
                     </div>
                     <span
-                      className={`text-[11px] px-2.5 py-0.5 rounded-full font-medium ${isCancelled ? "bg-red-900/30 text-red-300 border border-red-800/40" : "bg-emerald-950/40 text-emerald-300 border border-emerald-800/40"}`}
+                      className={`text-[11px] px-2.5 py-0.5 rounded-full border font-medium ${statusClass}`}
                     >
-                      {isCancelled ? "لغو شده" : "تایید شده"}
+                      {appointmentStatus}
                     </span>
                   </div>
 
@@ -228,7 +289,20 @@ export function AppointmentsHistoryModal({
                       {formatCurrency(apt.totalPrice, apt.currency)}
                     </span>
 
-                    {!isCancelled &&
+                    {canCancel && cancellationRequiresPhone && (
+                      <button
+                        type="button"
+                        disabled
+                        title={`برای لغو نوبت‌های کمتر از ۲۴ ساعت، لطفاً با شماره ${apt.businessPhone} تماس بگیرید.`}
+                        className="flex cursor-not-allowed items-center gap-1 text-red-300 opacity-50"
+                      >
+                        <XCircle className="h-3.5 w-3.5" />
+                        <span>لغو نوبت</span>
+                      </button>
+                    )}
+
+                    {canCancel &&
+                      !cancellationRequiresPhone &&
                       (pendingCancellationId === apt.id ? (
                         <div className="flex flex-wrap items-center justify-end gap-2">
                           <span className="text-[11px] text-[#ded8cb]">
@@ -243,7 +317,7 @@ export function AppointmentsHistoryModal({
                           </button>
                           <button
                             type="button"
-                            onClick={() => handleCancel(apt.id)}
+                            onClick={() => handleCancel(apt)}
                             className="rounded-lg bg-red-900/50 px-3 py-1.5 text-[11px] font-semibold text-red-200 hover:bg-red-900/70 flex items-center gap-1"
                           >
                             تایید لغو
