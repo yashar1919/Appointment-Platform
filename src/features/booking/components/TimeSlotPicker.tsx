@@ -41,7 +41,14 @@ export function TimeSlotPicker({
                 key={slot.id}
                 type="button"
                 disabled={!isAvailable}
-                onClick={() => onSelectSlot(slot)}
+                onClick={() => {
+                  if (isAvailable) onSelectSlot(slot);
+                }}
+                title={!isAvailable ? "این زمان رزرو شده است" : undefined}
+                aria-label={`${slot.time} - ${
+                  isAvailable ? "زمان خالی" : "این زمان رزرو شده است"
+                }`}
+                aria-disabled={!isAvailable}
                 className={cn(
                   "h-12 min-h-11 px-3 rounded-xl flex items-center justify-between text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer select-none border",
                   isSelected &&

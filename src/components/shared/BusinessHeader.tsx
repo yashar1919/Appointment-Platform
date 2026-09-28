@@ -27,7 +27,7 @@ export function BusinessHeader({
             />
             <a
               href={`/booking/${business.slug}`}
-              className="hidden lg:block text-base sm:text-lg font-bold tracking-tight text-[#f7f4ed] hover:text-(--theme-primary) transition-colors whitespace-nowrap"
+              className="hidden lg:block text-base font-light tracking-tight text-[#f7f4ed] hover:text-(--theme-primary) transition-colors whitespace-nowrap"
             >
               {business.name}
             </a>

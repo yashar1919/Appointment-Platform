@@ -1,14 +1,14 @@
 import {
   AppointmentRepository,
-  DemoAppointmentRepository,
+  HttpAppointmentRepository,
 } from "@/src/services/appointments/appointmentService";
 import {
   AvailabilityRepository,
-  DemoAvailabilityRepository,
+  HttpAvailabilityRepository,
 } from "@/src/services/availability/availabilityService";
 import {
-  DemoTenantRepository,
   TenantRepository,
+  HttpTenantRepository,
 } from "@/src/services/tenant/tenantRepository";
 
 export interface AppRepositories {
@@ -18,12 +18,11 @@ export interface AppRepositories {
 }
 
 export function createRepositories(): AppRepositories {
-  const tenantRepository = new DemoTenantRepository();
-  const appointmentRepository = new DemoAppointmentRepository(tenantRepository);
-  const availabilityRepository = new DemoAvailabilityRepository(
+  const tenantRepository = new HttpTenantRepository(); // <-- تغییر اینجا
+  const appointmentRepository = new HttpAppointmentRepository(tenantRepository); // <-- تغییر اینجا
+  const availabilityRepository = new HttpAvailabilityRepository(
     tenantRepository,
-    appointmentRepository,
-  );
+  ); // <-- تغییر اینجا
 
   return {
     tenantRepository,

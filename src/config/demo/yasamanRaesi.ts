@@ -3,7 +3,6 @@ import logoImage from "@/src/assets/images/logo256x256-min.png";
 import lipBlushImage from "@/src/assets/images/service_lip_blush_1790400872703.jpg";
 import microbladingImage from "@/src/assets/images/service_microblading_1790400861725.jpg";
 import eyelinerImage from "@/src/assets/images/service_permanent_eyeliner_1790400882769.jpg";
-import yasamanImage from "@/src/assets/images/staff-image/yasaman1.jpg";
 import yasaman2Image from "@/src/assets/images/staff-image/yasaman3.jpeg";
 import yasaman4Image from "@/src/assets/images/staff-image/yasaman4.jpg";
 import nanobrowsImage from "@/src/assets/images/services-image/nano-brows.jpg";
@@ -44,7 +43,7 @@ export const yasamanRaesiConfig: BusinessConfig = {
     allowCustomerNotes: true,
     allowCancellation: true,
     allowRescheduling: true,
-    minNoticeHours: 12,
+    minNoticeHours: 0,
     maxAdvanceDays: 30,
     allowAnyStaff: true,
     phoneValidation: "iranian",

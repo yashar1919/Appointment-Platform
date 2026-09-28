@@ -123,6 +123,7 @@ export function BookingPage() {
         selectedDate,
         selectedStaff?.id,
         selectedService?.id,
+        currentTenant.locations[0]?.id,
       )
       .then(setTimeSlots)
       .finally(() => setIsAvailabilityLoading(false));
@@ -225,12 +226,15 @@ export function BookingPage() {
         staffId: allowAnyStaff ? undefined : selectedStaff?.id,
         locationId: currentTenant.locations[0]?.id,
         date: selectedDate,
-        time: selectedTimeSlot.id,
+        time: selectedTimeSlot.time,
         customer,
       })
       .then((appointment) => {
         setLastConfirmedAppointment(appointment);
         navigate(`/booking/${currentTenant.slug}/success/${appointment.id}`);
+      })
+      .catch((error) => {
+        alert(`خطا در رزرو: ${error.message}`);
       })
       .finally(() => setSubmitting(false));
   };

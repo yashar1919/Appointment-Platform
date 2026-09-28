@@ -1,10 +1,6 @@
 import { AvailableDay, TimeSlot } from "@/src/types/domain";
-import {
-  getNextDays,
-  generateDailyTimeSlots,
-  getCurrentTimeInTimeZone,
-} from "@/src/lib/formatting/dateTime";
-import type { AppointmentRepository } from "../appointments/appointmentService";
+import { getNextDays } from "@/src/lib/formatting/dateTime"; // فرض بر این است که این تابع را دارید
+import { fetchApi } from "../api/httpClient";
 import type { TenantRepository } from "../tenant/tenantRepository";
 
 export interface AvailabilityRepository {
@@ -17,25 +13,24 @@ export interface AvailabilityRepository {
     dateString: string,
     staffId?: string,
     serviceId?: string,
+    locationId?: string, // اضافه شده برای تطابق با بک‌اند
   ): Promise<TimeSlot[]>;
 }
-export class DemoAvailabilityRepository implements AvailabilityRepository {
-  constructor(
-    private readonly tenantRepository: TenantRepository,
-    private readonly appointmentRepository: AppointmentRepository,
-  ) {}
+
+export class HttpAvailabilityRepository implements AvailabilityRepository {
+  constructor(private readonly tenantRepository: TenantRepository) {}
 
   async getAvailableDates(
     tenantSlug: string,
     _staffId?: string,
   ): Promise<AvailableDay[]> {
+    // فعلاً تاریخ‌ها را محلی تولید می‌کنیم، چون بک‌اند فقط اسلات‌های یک روز خاص را می‌دهد
     const tenant = await this.tenantRepository.getTenant(tenantSlug);
     if (!tenant) return [];
+
     const maxAdvanceDays = tenant.booking.maxAdvanceDays || 14;
-    const blockedDays = [0, 1, 2, 3, 4, 5, 6].filter(
-      (day) => !tenant.workingHours.workingDays.includes(day),
-    );
-    return getNextDays(maxAdvanceDays, blockedDays);
+    // فرض بر این است که تابع getNextDays دارید. اگر نه، باید پیاده‌سازی شود.
+    return getNextDays(maxAdvanceDays, []);
   }
 
   async getAvailableTimeSlots(
@@ -43,49 +38,102 @@ export class DemoAvailabilityRepository implements AvailabilityRepository {
     dateString: string,
     staffId?: string,
     serviceId?: string,
+    locationId?: string,
   ): Promise<TimeSlot[]> {
+    if (!serviceId || !locationId) return [];
+
     const tenant = await this.tenantRepository.getTenant(tenantSlug);
-    if (!tenant) return [];
-    const service = tenant.services.find((item) => item.id === serviceId);
-    if (serviceId && !service) return [];
+    const defaultLocationId = locationId || tenant?.locations[0]?.id;
+    if (!defaultLocationId) return [];
 
-    const eligibleStaff = service?.staffIds;
-    if (staffId && eligibleStaff && !eligibleStaff.includes(staffId)) return [];
+    let url = `/${tenantSlug}/availability?service_id=${serviceId}&location_id=${defaultLocationId}&day=${dateString}`;
+    if (staffId) url += `&staff_id=${staffId}`;
 
-    const slots = generateDailyTimeSlots(
-      tenant.workingHours.openTime,
-      tenant.workingHours.closeTime,
-      tenant.workingHours.slotDurationMinutes,
-      service?.durationMinutes || tenant.workingHours.slotDurationMinutes,
-    );
-    const currentTime = getCurrentTimeInTimeZone(tenant.timezone);
-    const isToday = currentTime.dateString === dateString;
-    const appointments = await this.appointmentRepository.list(tenant.slug);
-    const bookedTimeSlots = new Set(
-      appointments
-        .filter(
-          (appointment) =>
-            appointment.date === dateString &&
-            appointment.status !== "cancelled",
-        )
-        .filter(
-          (appointment) =>
-            !staffId || !appointment.staff || appointment.staff.id === staffId,
-        )
-        .map((appointment) => appointment.timeSlot),
-    );
+    try {
+      const slotsData = await fetchApi<
+        Array<{
+          starts_at: string;
+          ends_at: string;
+          is_available: boolean;
+        }>
+      >(url);
 
-    return slots.map((slot) => ({
-      ...slot,
-      isAvailable:
-        (!isToday || getSlotMinutes(slot.id) > currentTime.minutes) &&
-        !bookedTimeSlots.has(slot.id) &&
-        !bookedTimeSlots.has(slot.time),
-    }));
+      console.log(
+        "Raw slots from API:",
+        slotsData.map((slot) => ({
+          starts_at: slot.starts_at,
+          ends_at: slot.ends_at,
+          is_available: slot.is_available,
+        })),
+      );
+
+      const timeFormatter = new Intl.DateTimeFormat("fa-IR", {
+        timeZone: tenant?.timezone,
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      });
+      const hourFormatter = new Intl.DateTimeFormat("en-US", {
+        timeZone: tenant?.timezone,
+        hour: "numeric",
+        hour12: false,
+      });
+
+      console.log(
+        "Current browser timezone:",
+        Intl.DateTimeFormat().resolvedOptions().timeZone,
+      );
+      console.log("Tenant timezone:", tenant?.timezone);
+
+      // const mappedSlots = slotsData.map((slot, index) => {
+      //   const slotDate = new Date(slot.starts_at);
+      //   const timeStr = timeFormatter.format(slotDate);
+      //   const hour = Number(hourFormatter.format(slotDate));
+      //   let period: "morning" | "afternoon" | "evening" = "morning";
+      //   if (hour >= 12 && hour < 17) period = "afternoon";
+      //   else if (hour >= 17) period = "evening";
+
+      //   return {
+      //     id: `slot-${index}`,
+      //     time: timeStr,
+      //     period,
+      //     isAvailable: slot.is_available,
+      //   };
+      // });
+
+      const mappedSlots = slotsData.map((slot, index) => {
+        // ✅ استفاده از toTimeString برای اطمینان از فرمت انگلیسی "HH:mm"
+        const slotDate = new Date(slot.starts_at);
+        const timeStr = slotDate.toTimeString().slice(0, 5); // همیشه "10:00" برمی‌گرداند
+
+        const hour = slotDate.getHours();
+        let period: "morning" | "afternoon" | "evening" = "morning";
+        if (hour >= 12 && hour < 17) period = "afternoon";
+        else if (hour >= 17) period = "evening";
+
+        return {
+          id: `slot-${index}`,
+          time: timeStr, // ✅ حالا مطمئنیم که "10:00" است
+          period: period,
+          isAvailable: slot.is_available,
+          _rawStartsAt: slotDate,
+          _rawEndsAt: new Date(slot.ends_at),
+        };
+      });
+
+      console.log(
+        "Parsed slots in tenant timezone:",
+        mappedSlots.map((slot) => ({
+          time: slot.time,
+          period: slot.period,
+          isAvailable: slot.isAvailable,
+        })),
+      );
+
+      return mappedSlots;
+    } catch (error) {
+      console.error("Error fetching availability:", error);
+      return [];
+    }
   }
-}
-
-function getSlotMinutes(slotId: string): number {
-  const [hours, minutes] = slotId.split(":").map(Number);
-  return hours * 60 + minutes;
 }
