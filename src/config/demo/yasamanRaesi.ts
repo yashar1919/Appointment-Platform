@@ -5,6 +5,7 @@ import microbladingImage from "@/src/assets/images/service_microblading_17904008
 import eyelinerImage from "@/src/assets/images/service_permanent_eyeliner_1790400882769.jpg";
 import yasamanImage from "@/src/assets/images/staff-image/yasaman1.jpg";
 import yasaman2Image from "@/src/assets/images/staff-image/yasaman3.jpeg";
+import yasaman4Image from "@/src/assets/images/staff-image/yasaman4.jpg";
 import nanobrowsImage from "@/src/assets/images/services-image/nano-brows.jpg";
 import pic1Image from "@/src/assets/images/services-image/pic1.jpg";
 import therapy2Image from "@/src/assets/images/services-image/therapy2.jpg";
@@ -19,7 +20,7 @@ export const yasamanRaesiConfig: BusinessConfig = {
   description:
     "ما با به‌روزترین متدهای جهانی، چهره‌ای طبیعی و ماندگار برای شما خلق می‌کنیم.",
   logo: logoImage,
-  coverImage: yasamanImage,
+  coverImage: yasaman4Image,
   phone: "09128777749",
   phoneDisplay: "۰۹۱۲ ۸۷۷ ۷۷۷۴۹",
   instagram: "yasamanraesi.beauty",
