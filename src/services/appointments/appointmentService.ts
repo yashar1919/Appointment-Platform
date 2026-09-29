@@ -82,7 +82,7 @@ function mapBackendToDomainAppointment(
   return {
     // استفاده از reference به عنوان id موقت برای جلوگیری از کرش صفحه Success
     id: backendData.id || backendData.reference,
-    referenceCode: backendData.reference,
+    referenceCode: backendData.reference_code || backendData.reference,
     tenantSlug: input?.tenantSlug || tenantData?.slug,
     businessName: tenantData?.name || "Business",
     businessPhone: tenantData?.phone || "",
@@ -236,7 +236,7 @@ export class HttpAppointmentRepository implements AppointmentRepository {
 
       return {
         id: responseData.id || responseData.reference,
-        referenceCode: responseData.reference,
+        referenceCode: responseData.reference_code || responseData.reference,
         tenantSlug: tenantSlug,
         businessName: tenantData?.name || "Business",
         businessPhone: tenantData?.phone || "",

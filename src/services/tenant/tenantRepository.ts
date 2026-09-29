@@ -1,6 +1,7 @@
 import { BusinessConfig } from "@/src/types/domain";
-import { fetchApi } from "../api/httpClient";
+import { fetchApi, USE_MOCK_DATA } from "../api/httpClient";
 import { getTenantConfig } from "@/src/config/tenantConfigs";
+import { mockTenant } from "@/src/mocks/data";
 
 export interface TenantRepository {
   getTenant(slug: string): Promise<BusinessConfig | null>;
@@ -42,15 +43,23 @@ export class HttpTenantRepository implements TenantRepository {
     const staticConfig = getTenantConfig(slug);
     if (!staticConfig) return null;
 
+    const baseConfig = USE_MOCK_DATA
+      ? {
+          ...staticConfig,
+          ...mockTenant,
+          phoneDisplay: mockTenant.phone,
+        }
+      : staticConfig;
+
     try {
       const [services, staff, locations] = await Promise.all([
-        fetchApi<ApiService[]>(`/${staticConfig.slug}/services`),
-        fetchApi<ApiStaff[]>(`/${staticConfig.slug}/staff`),
-        fetchApi<ApiLocation[]>(`/${staticConfig.slug}/locations`),
+        fetchApi<ApiService[]>(`/${baseConfig.slug}/services`),
+        fetchApi<ApiStaff[]>(`/${baseConfig.slug}/staff`),
+        fetchApi<ApiLocation[]>(`/${baseConfig.slug}/locations`),
       ]);
 
       const mappedServices = services.map((apiService) => {
-        const localService = staticConfig.services.find(
+        const localService = baseConfig.services.find(
           (service) =>
             normalizeName(service.name) === normalizeName(apiService.name),
         );
@@ -98,7 +107,7 @@ export class HttpTenantRepository implements TenantRepository {
       });
 
       const mappedStaff = staff.map((apiStaff) => {
-        const localStaff = staticConfig.staff.find(
+        const localStaff = baseConfig.staff.find(
           (member) =>
             normalizeName(member.name) === normalizeName(apiStaff.name),
         );
@@ -122,7 +131,7 @@ export class HttpTenantRepository implements TenantRepository {
       });
 
       const mappedLocations = locations.map((apiLocation) => {
-        const localLocation = staticConfig.locations.find(
+        const localLocation = baseConfig.locations.find(
           (location) =>
             normalizeName(location.name) === normalizeName(apiLocation.name),
         );
@@ -155,7 +164,7 @@ export class HttpTenantRepository implements TenantRepository {
       );
 
       return {
-        ...staticConfig,
+        ...baseConfig,
         services: mappedServices,
         staff: mappedStaff,
         locations: mappedLocations,

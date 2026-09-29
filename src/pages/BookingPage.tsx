@@ -15,6 +15,7 @@ import { BookingReview } from "@/src/features/booking/components/BookingReview";
 import { MobileStickyBar } from "@/src/features/booking/components/MobileStickyBar";
 import { AppointmentsHistoryModal } from "@/src/features/booking/components/AppointmentsHistoryModal";
 import { repositories } from "@/src/services/repositories";
+import { USE_MOCK_DATA } from "@/src/services/api/httpClient";
 import { Customer, Service } from "@/src/types/domain";
 import {
   getFirstBookingStep,
@@ -231,6 +232,11 @@ export function BookingPage() {
       })
       .then((appointment) => {
         setLastConfirmedAppointment(appointment);
+        if (USE_MOCK_DATA) {
+          alert(
+            `پیامک تایید به صورت شبیه‌سازی شده ارسال شد (کد رهگیری: ${appointment.referenceCode})`,
+          );
+        }
         navigate(`/booking/${currentTenant.slug}/success/${appointment.id}`);
       })
       .catch((error) => {
