@@ -18,7 +18,8 @@ export default defineConfig(() => {
           description: "رزرو آنلاین خدمات با تجربه‌ای ساده و حرفه‌ای",
           lang: "fa",
           dir: "rtl",
-          start_url: "/booking/yasaman-raesi",
+          // Subdomain routing support
+          start_url: "/",
           scope: "/",
           display: "standalone",
           theme_color: "#cbb38d",

@@ -18,11 +18,11 @@ export interface AppRepositories {
 }
 
 export function createRepositories(): AppRepositories {
-  const tenantRepository = new HttpTenantRepository(); // <-- تغییر اینجا
-  const appointmentRepository = new HttpAppointmentRepository(tenantRepository); // <-- تغییر اینجا
+  const tenantRepository = new HttpTenantRepository();
+  const appointmentRepository = new HttpAppointmentRepository(tenantRepository);
   const availabilityRepository = new HttpAvailabilityRepository(
     tenantRepository,
-  ); // <-- تغییر اینجا
+  );
 
   return {
     tenantRepository,

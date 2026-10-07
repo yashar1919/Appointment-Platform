@@ -7,12 +7,12 @@ import { Appointment } from "@/src/types/domain";
 import { BookingSuccessView } from "@/src/features/booking/components/BookingSuccessView";
 import { BusinessHeader } from "@/src/components/shared/BusinessHeader";
 import { AlertCircle } from "lucide-react";
+import { getTenantSlugFromHostname } from "@/src/lib/tenantResolver";
 
 export function BookingSuccessPage() {
-  const { tenantSlug, appointmentId } = useParams<{
-    tenantSlug: string;
-    appointmentId: string;
-  }>();
+  const { id: appointmentId } = useParams<{ id: string }>();
+  // Subdomain routing support
+  const tenantSlug = getTenantSlugFromHostname();
   const navigate = useNavigate();
 
   const { currentTenant, loadTenant } = useTenantStore();
@@ -43,12 +43,12 @@ export function BookingSuccessPage() {
 
   const handleStartAgain = () => {
     resetBooking();
-    navigate(`/booking/${tenantSlug}`);
+    navigate("/");
   };
 
   const handleGoHome = () => {
     resetBooking();
-    navigate(`/booking/${tenantSlug}`);
+    navigate("/");
   };
 
   if (isLoading) {
@@ -74,7 +74,7 @@ export function BookingSuccessPage() {
             ممکن است این نوبت منقضی شده یا در این دستگاه ثبت نشده باشد.
           </p>
           <button
-            onClick={() => navigate(`/booking/${tenantSlug}`)}
+            onClick={() => navigate("/")}
             className="w-full h-11 rounded-xl bg-(--theme-primary) text-[#0b0c0f] font-bold text-xs cursor-pointer hover:bg-(--theme-primary-light) transition-colors"
           >
             بازگشت به صفحه رزرو نوبت

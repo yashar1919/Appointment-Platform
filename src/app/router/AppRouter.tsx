@@ -2,16 +2,17 @@ import { Routes, Route } from "react-router-dom";
 import { BookingPage } from "@/src/pages/BookingPage";
 import { BookingSuccessPage } from "@/src/pages/BookingSuccessPage";
 import { TenantNotFoundPage } from "@/src/pages/TenantNotFoundPage";
+import { getTenantSlugFromHostname } from "@/src/lib/tenantResolver";
 
 export function AppRouter() {
   return (
     <Routes>
-      <Route path="/" element={<TenantNotFoundPage />} />
-      <Route path="/booking/:tenantSlug" element={<BookingPage />} />
+      {/* Subdomain routing support */}
       <Route
-        path="/booking/:tenantSlug/success/:appointmentId"
-        element={<BookingSuccessPage />}
+        path="/"
+        element={<BookingPage tenantSlug={getTenantSlugFromHostname()} />}
       />
+      <Route path="/success/:id" element={<BookingSuccessPage />} />
       <Route path="*" element={<TenantNotFoundPage />} />
     </Routes>
   );

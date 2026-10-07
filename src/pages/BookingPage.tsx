@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
+import { getTenantSlugFromHostname } from "@/src/lib/tenantResolver";
 import { useTenantStore } from "@/src/features/tenant/store/useTenantStore";
 import { useBookingStore } from "@/src/features/booking/store/useBookingStore";
 import { BusinessHeader } from "@/src/components/shared/BusinessHeader";
@@ -23,8 +24,14 @@ import {
   isFlowStepEnabled,
 } from "@/src/features/booking/lib/bookingFlow";
 
-export function BookingPage() {
-  const { tenantSlug } = useParams<{ tenantSlug: string }>();
+interface BookingPageProps {
+  tenantSlug?: string;
+}
+
+export function BookingPage({ tenantSlug: propSlug }: BookingPageProps) {
+  const { tenantSlug: urlSlug } = useParams();
+  // Subdomain routing support
+  const tenantSlug = propSlug || urlSlug || getTenantSlugFromHostname();
   const navigate = useNavigate();
   const { currentTenant, isLoading, loadTenant } = useTenantStore();
   const {
@@ -237,7 +244,7 @@ export function BookingPage() {
             `پیامک تایید به صورت شبیه‌سازی شده ارسال شد (کد رهگیری: ${appointment.referenceCode})`,
           );
         }
-        navigate(`/booking/${currentTenant.slug}/success/${appointment.id}`);
+        navigate(`/success/${appointment.id}`);
       })
       .catch((error) => {
         alert(`خطا در رزرو: ${error.message}`);

@@ -10,7 +10,7 @@ export function TenantNotFoundPage() {
           نشانی را بررسی کنید یا از لینک رزرو صحیح استفاده نمایید.
         </p>
         <Link
-          to="/booking/yasaman-raesi"
+          to="/"
           className="inline-flex min-h-11 items-center justify-center px-5 rounded-xl bg-(--theme-primary) text-[#0b0c0f] font-bold text-xs"
         >
           مشاهده دمو
