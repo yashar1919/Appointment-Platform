@@ -2,7 +2,6 @@ import { ArrowDown, BookOpen, MapPin, Sparkles, Star } from "lucide-react";
 import { BusinessConfig } from "@/src/types/domain";
 import { toPersianDigits } from "@/src/lib/formatting/persianNumbers";
 import { Button } from "@/src/components/ui/Button";
-import { Link } from "react-router-dom";
 
 interface BusinessHeroProps {
   business: BusinessConfig;
