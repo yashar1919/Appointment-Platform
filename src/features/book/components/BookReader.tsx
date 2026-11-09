@@ -1,5 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight, Download, FileText } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Download,
+  ExternalLink,
+  FileText,
+} from "lucide-react";
 import { Document, Page, pdfjs } from "react-pdf";
 import { Button } from "@/src/components/ui/Button";
 import {
@@ -27,6 +33,10 @@ function normalizeDigits(value: string): string {
 
 export function BookReader() {
   const readerRef = useRef<HTMLDivElement>(null);
+  const isIOS =
+    typeof navigator !== "undefined" &&
+    (/iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1));
   const [readerWidth, setReaderWidth] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
   const [pageInput, setPageInput] = useState("1");
@@ -119,7 +129,29 @@ export function BookReader() {
         ref={readerRef}
         className="flex min-h-[60vh] w-full justify-center overflow-x-auto rounded-2xl border border-[#2d313b] bg-[#14161c] p-3 shadow-2xl sm:p-6"
       >
-        {loadError ? (
+        {isIOS ? (
+          <div className="flex min-h-[50vh] w-full max-w-md flex-col items-center justify-center gap-5 px-4 text-center">
+            <FileText className="h-12 w-12 text-(--theme-primary)" />
+            <div className="space-y-2">
+              <h2 className="text-base font-bold text-[#f7f4ed]">
+                مطالعه کتاب در آیفون
+              </h2>
+              <p className="text-sm leading-7 text-[#a09a8e]">
+                برای نمایش پایدار در Safari و Chrome آیفون، کتاب را در نمایشگر
+                PDF خود دستگاه باز کنید.
+              </p>
+            </div>
+            <a
+              href={YASAMAN_BOOK_PDF_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-(--theme-primary) px-5 py-3 text-sm font-bold text-[#0b0c0f] transition-colors hover:bg-(--theme-primary-light)"
+            >
+              <ExternalLink className="h-4 w-4" />
+              <span>باز کردن کتاب</span>
+            </a>
+          </div>
+        ) : loadError ? (
           <div className="flex min-h-[50vh] items-center justify-center text-center text-sm leading-7 text-red-300">
             بارگذاری کتاب انجام نشد. لطفاً دوباره تلاش کنید یا فایل PDF را
             دانلود کنید.
