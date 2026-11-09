@@ -3,30 +3,20 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { BookReader } from "@/src/features/book/components/BookReader";
 import { YASAMAN_TENANT_SLUG } from "@/src/features/book/constants/bookConstants";
-import { getTenantSlugFromHostname } from "@/src/lib/tenantResolver";
-import { TenantNotFoundPage } from "@/src/pages/TenantNotFoundPage";
 import { useTenantStore } from "@/src/features/tenant/store/useTenantStore";
 
 export default function YasamanBookPage() {
-  const tenantSlug = getTenantSlugFromHostname();
+  const slug = YASAMAN_TENANT_SLUG;
   const { currentTenant, isLoading, loadTenant } = useTenantStore();
 
-  const effectiveSlug = tenantSlug || YASAMAN_TENANT_SLUG;
-
   useEffect(() => {
-    if (effectiveSlug === YASAMAN_TENANT_SLUG) {
-      void loadTenant(effectiveSlug);
-    }
-  }, [effectiveSlug, loadTenant]);
-
-  if (effectiveSlug !== YASAMAN_TENANT_SLUG) {
-    return <TenantNotFoundPage />;
-  }
+    void loadTenant(slug);
+  }, [slug, loadTenant]);
 
   if (isLoading || !currentTenant) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-[#0b0c0f] px-4 text-sm text-[#c5baa9]">
-        در حال بارگذاری اطلاعات کسب‌وکار...
+        در حال بارگذاری کتاب...
       </main>
     );
   }
