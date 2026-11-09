@@ -44,15 +44,14 @@
 //   );
 // }
 
-import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { BookReader } from "@/src/features/book/components/BookReader";
 
 export default function YasamanBookPage() {
   return (
     <main className="min-h-screen bg-[#0b0c0f] text-[#f7f4ed]" dir="rtl">
       <div className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 sm:py-10">
-        {/* دکمه بازگشت */}
         <div className="mb-6">
           <Link
             to="/"
@@ -63,7 +62,6 @@ export default function YasamanBookPage() {
           </Link>
         </div>
 
-        {/* نمایش مستقیم کتاب بدون وابستگی به بک‌اند */}
         <BookReader />
       </div>
     </main>
