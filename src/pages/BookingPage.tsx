@@ -334,7 +334,7 @@ export function BookingPage({ tenantSlug: propSlug }: BookingPageProps) {
       />
       <main
         id="booking-flow-container"
-        className="max-w-4xl mx-auto px-4 sm:px-6 pt-6 sm:pt-10"
+        className="max-w-7xl mx-auto px-4 sm:px-6 pt-6 sm:pt-10"
       >
         {currentStep === "service" && (
           <>

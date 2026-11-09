@@ -1,7 +1,8 @@
-import { ArrowDown, MapPin, Sparkles, Star } from "lucide-react";
+import { ArrowDown, BookOpen, MapPin, Sparkles, Star } from "lucide-react";
 import { BusinessConfig } from "@/src/types/domain";
 import { toPersianDigits } from "@/src/lib/formatting/persianNumbers";
 import { Button } from "@/src/components/ui/Button";
+import { Link } from "react-router-dom";
 
 interface BusinessHeroProps {
   business: BusinessConfig;
@@ -17,7 +18,7 @@ export function BusinessHero({
   return (
     <section className="relative overflow-hidden pt-4 pb-8 sm:pt-8 sm:pb-14 border-b border-[#2d313b]/40">
       <div className="absolute top-0 right-1/4 -translate-y-1/2 w-96 h-96 bg-(--theme-primary)/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           <div className="lg:col-span-7 space-y-4 sm:space-y-6 text-right">
             <div className="flex justify-between lg:justify-start items-center gap-2 text-xs text-[#c5baa9] tracking-wide">
@@ -57,7 +58,7 @@ export function BusinessHero({
                 رنگ‌های ایمن
               </span>
             </div>
-            <div className="pt-2 sm:pt-4 flex flex-wrap items-center gap-3">
+            <div className="pt-2 sm:pt-4 flex flex-col sm:flex-row items-center gap-3">
               <Button
                 onClick={onExploreServices}
                 className="inline-flex w-full items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-(--theme-primary) text-[#0b0c0f] font-bold text-sm transition-all"
@@ -65,12 +66,23 @@ export function BusinessHero({
                 <span>{hero?.ctaLabel || "انتخاب خدمت و رزرو"}</span>
                 <ArrowDown className="w-4 h-4 animate-bounce" />
               </Button>
-              {hero?.availabilityLabel && (
-                <span className="text-xs text-[#8e8779]">
-                  {hero.availabilityLabel}
-                </span>
+              {business.slug === "yasaman-raesi" && (
+                <Button
+                  className="inline-flex shadow-none w-full items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-transparent text-(--theme-primary) border border-(--theme-primary) text-[14px] font-light transition-all hover:bg-transparent hover:text-(--theme-primary-light)/50 hover:border-(--theme-primary-light)/50"
+                  onClick={() => {
+                    window.location.href = "/book";
+                  }}
+                >
+                  <span>مطالعه کتاب یاسمن رئیسی</span>
+                  <BookOpen className="w-4 h-4" />
+                </Button>
               )}
             </div>
+            {hero?.availabilityLabel && (
+              <span className="text-xs text-[#8e8779]">
+                {hero.availabilityLabel}
+              </span>
+            )}
           </div>
           <div className="lg:col-span-5 relative">
             <div className="relative mx-auto rounded-2xl overflow-hidden border border-(--theme-primary)/20 bg-[#161820] shadow-[0_16px_40px_-10px_rgba(0,0,0,0.8)] aspect-16/10 sm:aspect-4/3">

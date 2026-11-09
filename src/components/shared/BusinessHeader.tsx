@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { BusinessConfig } from "@/src/types/domain";
 import { BusinessInfoModal } from "@/src/features/tenant/components/BusinessInfoModal";
-import { CalendarCheck, Info, Phone } from "lucide-react";
+import { CalendarCheck, Gem, Info, Phone } from "lucide-react";
 
 interface BusinessHeaderProps {
   business: BusinessConfig;
@@ -17,41 +17,43 @@ export function BusinessHeader({
   return (
     <>
       <header className="sticky top-0 z-30 w-full bg-[#0b0c0f]/90 backdrop-blur-md border-b border-[#2d313b]/60 transition-all">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           {/* Zone 1: Single text wordmark */}
-          <div className="flex items-center gap-3">
+          <a className="flex items-center gap-3" href="/">
             <img
               src={business.logo}
               alt={business.name}
               className="w-14 h-14 object-cover rounded-full"
             />
-            <a
-              href="/"
+            <span
               className="hidden lg:block text-base font-light tracking-tight text-[#f7f4ed] hover:text-(--theme-primary) transition-colors whitespace-nowrap"
             >
               {business.name}
-            </a>
-          </div>
+            </span>
+          </a>
 
           {/* Zone 2: Clean single-line text links */}
-          <nav className="hidden md:flex items-center gap-6 text-xs sm:text-sm font-medium text-[#c5baa9]">
+          <nav className="hidden md:flex items-center gap-10 text-xs sm:text-[13px] font-medium text-[#c5baa9]">
             <a
               href="#services"
-              className="hover:text-[#f7f4ed] transition-colors whitespace-nowrap"
+              className="hover:text-(--theme-primary) transition-colors whitespace-nowrap flex items-center gap-2"
             >
-              خدمات تخصصی
+              <Gem className="w-4 h-4" />
+              <span>خدمات تخصصی</span>
             </a>
             <button
               onClick={() => setIsInfoOpen(true)}
-              className="hover:text-[#f7f4ed] transition-colors whitespace-nowrap cursor-pointer"
+              className="hover:text-(--theme-primary) transition-colors whitespace-nowrap cursor-pointer flex items-center gap-2"
             >
-              اطلاعات کسب‌وکار و ساعت کاری
+              <Info className="w-4 h-4" />
+              <span>اطلاعات و ساعت کاری</span>
             </button>
             <a
               href={`tel:${business.phone}`}
-              className="hover:text-[#f7f4ed] transition-colors whitespace-nowrap"
+              className="hover:text-(--theme-primary) transition-colors whitespace-nowrap flex items-center gap-2"
             >
-              تماس مستقیم
+              <Phone className="w-4 h-4" />
+              <span>تماس مستقیم</span>
             </a>
           </nav>
 

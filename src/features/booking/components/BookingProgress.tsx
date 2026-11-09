@@ -54,7 +54,7 @@ export function BookingProgress({
 
   return (
     <div className="w-full bg-[#12141a]/80 border-b border-[#2d313b]/60 py-3 px-4 sticky top-16 z-20 backdrop-blur-md">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         {/* Mobile View: Clean compact step counter & title */}
         <div className="flex sm:hidden items-center justify-between text-xs">
           <div className="flex items-center gap-2">
