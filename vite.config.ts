@@ -39,6 +39,10 @@ export default defineConfig(() => {
         },
         workbox: {
           globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2,jpg,jpeg}"],
+          navigateFallbackDenylist: [
+            /^\/books\/.*\.pdf$/i,
+            /\/[^/?]+\.[^/]+$/i,
+          ],
         },
         devOptions: {
           enabled: true,
