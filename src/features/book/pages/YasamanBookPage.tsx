@@ -11,13 +11,15 @@ export default function YasamanBookPage() {
   const tenantSlug = getTenantSlugFromHostname();
   const { currentTenant, isLoading, loadTenant } = useTenantStore();
 
-  useEffect(() => {
-    if (tenantSlug === YASAMAN_TENANT_SLUG) {
-      void loadTenant(tenantSlug);
-    }
-  }, [tenantSlug, loadTenant]);
+  const effectiveSlug = tenantSlug || YASAMAN_TENANT_SLUG;
 
-  if (tenantSlug !== YASAMAN_TENANT_SLUG) {
+  useEffect(() => {
+    if (effectiveSlug === YASAMAN_TENANT_SLUG) {
+      void loadTenant(effectiveSlug);
+    }
+  }, [effectiveSlug, loadTenant]);
+
+  if (effectiveSlug !== YASAMAN_TENANT_SLUG) {
     return <TenantNotFoundPage />;
   }
 
