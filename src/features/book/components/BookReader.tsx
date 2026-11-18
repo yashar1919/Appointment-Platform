@@ -1,12 +1,5 @@
 import { useEffect, useRef, useState, type RefObject } from "react";
-import {
-  Download,
-  ExternalLink,
-  FileText,
-  Minus,
-  Plus,
-  RotateCcw,
-} from "lucide-react";
+import { Download, ExternalLink, FileText, Minus, Plus } from "lucide-react";
 import { Document, Page, pdfjs } from "react-pdf";
 import { Button } from "@/src/components/ui/Button";
 import {
@@ -34,12 +27,6 @@ interface BookReaderProps {
 
 interface PdfLoadResult {
   numPages: number;
-}
-
-function normalizeDigits(value: string): string {
-  return value
-    .replace(/[۰-۹]/g, (digit) => String(digit.charCodeAt(0) - 1776))
-    .replace(/[٠-٩]/g, (digit) => String(digit.charCodeAt(0) - 1632));
 }
 
 interface LazyPageProps {
@@ -141,7 +128,7 @@ export function BookReader({ fileUrl, downloadName }: BookReaderProps) {
   const [containerWidth, setContainerWidth] = useState(0);
   const [numPages, setNumPages] = useState<number | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageInput, setPageInput] = useState("1");
+  const [, setPageInput] = useState("1");
   const [scale, setScale] = useState(DEFAULT_ZOOM);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -233,26 +220,6 @@ export function BookReader({ fileUrl, downloadName }: BookReaderProps) {
     );
   };
 
-  const goToPage = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (!numPages) return;
-
-    const requestedPage = Number.parseInt(normalizeDigits(pageInput), 10);
-    if (
-      !Number.isInteger(requestedPage) ||
-      requestedPage < 1 ||
-      requestedPage > numPages
-    ) {
-      setPageInput(String(currentPage));
-      return;
-    }
-
-    pageRefs.current[requestedPage]?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  };
-
   return (
     <section aria-label="خواندن کتاب" className="w-full space-y-4" dir="rtl">
       <header className="rounded-2xl border border-[#2d313b] bg-[#14161c] p-4 sm:p-6">
@@ -263,112 +230,86 @@ export function BookReader({ fileUrl, downloadName }: BookReaderProps) {
                 <FileText className="h-6 w-6 text-(--theme-primary)" />
               </div>
               <div>
-                <h1 className="text-lg font-bold text-[#f7f4ed]">
-                  کتاب یاسمن رئیسی
+                <h1 className="text-sm min-[310px]:text-lg font-bold text-[#f7f4ed]">
+                  پوست، از شناخت تا درمان
                 </h1>
-                <p className="mt-1 text-xs text-[#a09a8e]">
-                  برای مطالعه، صفحات را اسکرول کنید.
+                <p className="mt-1 text-xs text-[#a09a8e] flex flex-col gap-1">
+                  نویسنده: یاسمن رئیسی
+                  <span className="text-mist-500 text-[10px]">
+                    برای مطالعه، صفحات را اسکرول کنید.
+                  </span>
                 </p>
               </div>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <a
-                href={fileUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="باز کردن در تب جدید"
-                title="باز کردن در تب جدید"
-                className="flex min-h-11 min-w-11 items-center justify-center rounded-xl border border-[#2d313b] text-[#c5baa9] transition-colors hover:bg-[#21242c] hover:text-[#f7f4ed]"
-              >
-                <ExternalLink className="h-4 w-4" />
-              </a>
-              <a
-                href={fileUrl}
-                download={downloadName}
-                aria-label="دانلود PDF"
-                title="دانلود PDF"
-                className="flex min-h-11 min-w-11 items-center justify-center rounded-xl bg-(--theme-primary) text-[#0b0c0f] transition-colors hover:bg-(--theme-primary-light)"
-              >
-                <Download className="h-4 w-4" />
-              </a>
             </div>
           </div>
 
           <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[#2d313b] pt-3">
-            <div className="flex items-center gap-2" dir="ltr">
+            <div className="flex flex-col min-[380px]:flex-row items-center gap-2 w-full md:w-1/2">
+              <a
+                href={fileUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="مشاهده در مرورگر"
+                title="مشاهده در مرورگر"
+                className="flex min-h-11 px-3 min-w-11 w-full items-center justify-center rounded-xl border border-[#2d313b] text-[#c5baa9] transition-colors hover:bg-[#21242c] hover:text-[#f7f4ed]"
+              >
+                <div className="flex gap-2">
+                  <span className="text-sm">مشاهده در مرورگر</span>
+                  <ExternalLink className="h-4 w-4" />
+                </div>
+              </a>
+              <a
+                href={fileUrl}
+                download={downloadName}
+                aria-label="دانلود فایل کتاب"
+                title="دانلود فایل کتاب"
+                className="flex min-h-11 px-3 min-w-11 w-full items-center justify-center rounded-xl bg-(--theme-primary) text-[#0b0c0f] transition-colors hover:bg-(--theme-primary-light)"
+              >
+                <div className="flex gap-2">
+                  <span className="text-sm">دانلود فایل کتاب</span>
+                  <Download className="h-4 w-4" />
+                </div>
+              </a>
+            </div>
+            <div
+              className="flex items-center justify-between w-full md:w-1/3 gap-2 border-t border-[#2d313b] md:border-none md:pt-0 pt-3"
+              dir="ltr"
+            >
               <Button
                 type="button"
                 variant="secondary"
-                size="icon"
-                className="min-h-11 min-w-11"
+                //size="icon"
+                className="min-h-8 min-w-11 max-w-20 w-1/4 rounded-xl h-10 bg-stone-800/20 hover:bg-stone-900"
                 aria-label="کوچک‌نمایی"
                 title="کوچک‌نمایی"
                 disabled={scale === MIN_ZOOM}
                 onClick={() => changeZoom(-1)}
               >
-                <Minus className="h-4 w-4" />
+                <Minus className="h-5.5 w-5.5 text-stone-300" />
               </Button>
               <Button
                 type="button"
                 variant="ghost"
                 size="icon"
-                className="min-h-11 min-w-11 text-xs"
+                className="min-h-8 min-w-11 text-xl font-light tracking-widest w-1/3"
                 aria-label="بازنشانی زوم"
                 title="بازنشانی زوم"
                 onClick={() => setScale(DEFAULT_ZOOM)}
               >
-                {Math.round(scale * 100)}%
+                {Math.round(scale * 100)} %
               </Button>
               <Button
                 type="button"
                 variant="secondary"
-                size="icon"
-                className="min-h-11 min-w-11"
+                //size="icon"
+                className="min-h-8 min-w-11 max-w-20 w-1/4 rounded-xl h-10 bg-stone-800/20 hover:bg-stone-900"
                 aria-label="بزرگ‌نمایی"
                 title="بزرگ‌نمایی"
                 onClick={() => changeZoom(1)}
               >
-                <Plus className="h-4 w-4" />
+                <Plus className="h-5.5 w-5.5 text-stone-300" />
               </Button>
-              <button
-                type="button"
-                className="flex min-h-11 min-w-11 items-center justify-center rounded-xl text-[#c5baa9] transition-colors hover:bg-[#21242c] hover:text-[#f7f4ed]"
-                aria-label="بازنشانی صفحه"
-                title="بازنشانی صفحه"
-                onClick={() => {
-                  setScale(DEFAULT_ZOOM);
-                  scrollContainerRef.current?.scrollTo({
-                    top: 0,
-                    behavior: "smooth",
-                  });
-                }}
-              >
-                <RotateCcw className="h-4 w-4" />
-              </button>
             </div>
-
-            {numPages !== null && (
-              <form className="flex items-center gap-2" onSubmit={goToPage}>
-                <label
-                  htmlFor="book-page-number"
-                  className="text-xs text-[#a09a8e]"
-                >
-                  رفتن به صفحه
-                </label>
-                <input
-                  id="book-page-number"
-                  value={pageInput}
-                  onChange={(event) => setPageInput(event.target.value)}
-                  inputMode="numeric"
-                  className="h-11 w-14 rounded-xl border border-[#2d313b] bg-[#0b0c0f] text-center text-sm text-[#f7f4ed] outline-none focus:border-(--theme-primary)"
-                  aria-label="شماره صفحه"
-                />
-                <span className="text-xs text-[#a09a8e]">
-                  از {toPersianNumber(numPages)}
-                </span>
-              </form>
-            )}
           </div>
         </div>
       </header>
@@ -470,7 +411,7 @@ export function BookReader({ fileUrl, downloadName }: BookReaderProps) {
         {numPages !== null && !error && !isLoading && (
           <div
             dir="rtl"
-            className="pointer-events-none absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 items-center justify-center whitespace-nowrap rounded-2xl border border-[#2d313b]/80 bg-[#14161c]/90 px-4 py-2 text-sm text-[#f7f4ed] shadow-xl backdrop-blur-md pb-[env(safe-area-inset-bottom)]"
+            className="pointer-events-none absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 items-center justify-center whitespace-nowrap rounded-2xl border border-[#2d313b]/80 bg-[#14161c]/90 px-4 py-2 text-sm text-[#f7f4ed] shadow-xl backdrop-blur-md pb-1"
           >
             صفحه {toPersianNumber(currentPage)} از {toPersianNumber(numPages)}
           </div>
