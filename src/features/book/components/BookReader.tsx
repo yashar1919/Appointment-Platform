@@ -1,5 +1,12 @@
 import { useEffect, useRef, useState, type RefObject } from "react";
-import { Download, ExternalLink, FileText, Minus, Plus } from "lucide-react";
+import {
+  BookOpen,
+  Download,
+  ExternalLink,
+  FileText,
+  Minus,
+  Plus,
+} from "lucide-react";
 import { Document, Page, pdfjs } from "react-pdf";
 import { Button } from "@/src/components/ui/Button";
 import {
@@ -40,6 +47,15 @@ interface LazyPageProps {
 
 function toPersianNumber(value: number): string {
   return value.toLocaleString("fa-IR");
+}
+
+function isIOSDevice(): boolean {
+  if (typeof navigator === "undefined") return false;
+
+  return (
+    /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
+  );
 }
 
 function SkeletonPage({ height }: { height: number }) {
@@ -123,6 +139,7 @@ function LazyPage({
 }
 
 export function BookReader({ fileUrl, downloadName }: BookReaderProps) {
+  const [isIOS] = useState(isIOSDevice);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const pageRefs = useRef<Record<number, HTMLDivElement | null>>({});
   const [containerWidth, setContainerWidth] = useState(0);
@@ -219,6 +236,59 @@ export function BookReader({ fileUrl, downloadName }: BookReaderProps) {
       ),
     );
   };
+
+  if (isIOS) {
+    return (
+      <section
+        aria-label="دسترسی به کتاب"
+        className="relative overflow-hidden rounded-3xl border border-[#3b3a36] bg-[linear-gradient(145deg,#191a1d_0%,#111216_55%,#191611_100%)] p-6 text-center shadow-2xl sm:p-10"
+        dir="rtl"
+      >
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -left-20 -top-20 h-48 w-48 rounded-full bg-(--theme-primary)/10 blur-3xl"
+        />
+        <div className="relative mx-auto flex max-w-xl flex-col items-center">
+          <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-2xl border border-(--theme-primary)/25 bg-(--theme-primary)/10 text-(--theme-primary)">
+            <BookOpen className="h-8 w-8" strokeWidth={1.6} />
+          </div>
+          {/* <p className="mb-2 text-xs font-medium tracking-[0.18em] text-(--theme-primary)">
+            کتاب الکترونیکی
+          </p> */}
+          <h1 className="text-xl font-bold text-[#f7f4ed] sm:text-2xl">
+            پوست، از شناخت تا درمان
+          </h1>
+          <p className="mt-1 text-xs font-medium text-(--theme-primary)">
+            <span className="text-stone-500">نویسنده:</span> یاسمن رئیسی
+          </p>
+          <p className="mt-3 max-w-md text-sm leading-7 text-[#b8b2a7]">
+            برای مطالعه راحت‌تر در آیفون یا آیپد، کتاب را در مرورگر باز کنید یا
+            فایل آن را دریافت کنید.
+          </p>
+
+          <div className="mt-8 grid w-full gap-3 sm:grid-cols-2">
+            <a
+              href={fileUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-(--theme-primary) px-5 text-sm font-bold text-[#101114] transition-colors hover:bg-(--theme-primary-light)"
+            >
+              <BookOpen className="h-4 w-4" />
+              مشاهده کتاب در مرورگر
+            </a>
+            <a
+              href={fileUrl}
+              download={downloadName}
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-[#484640] px-5 text-sm font-medium text-[#eee9df] transition-colors hover:border-(--theme-primary)/60 hover:bg-[#25241f]"
+            >
+              <Download className="h-4 w-4" />
+              دانلود کتاب
+            </a>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section aria-label="خواندن کتاب" className="w-full space-y-4" dir="rtl">
