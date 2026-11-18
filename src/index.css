@@ -118,13 +118,44 @@
   display: none;
 }
 
-#demo{
+#demo {
   scrollbar-width: none !important;
 }
 
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+.book-scroll-container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.book-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .book-scroll-container {
+    -ms-overflow-style: auto;
+    scrollbar-width: auto;
+  }
+
+  .book-scroll-container::-webkit-scrollbar {
+    display: block;
+    height: 8px;
+    width: 8px;
+  }
+
+  .book-scroll-container::-webkit-scrollbar-track {
+    background: #14161c;
+  }
+
+  .book-scroll-container::-webkit-scrollbar-thumb {
+    background: #2d313b;
+    border-radius: 999px;
+  }
 }
 
 .luxury-glow {

@@ -25,7 +25,7 @@ export function BusinessHero({
                 <Sparkles className="w-3.5 h-3.5" />
                 {hero?.eyebrow || business.name}
               </span>
-              <span aria-hidden="true" className="text-[#5a6070]">
+              <span aria-hidden="true" className="text-[#5a6070] sm:block hidden">
                 ·
               </span>
               <span className="flex items-center gap-1">
