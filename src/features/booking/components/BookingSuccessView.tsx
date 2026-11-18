@@ -3,7 +3,6 @@ import {
   Calendar,
   MapPin,
   Sparkles,
-  RefreshCw,
   ArrowRight,
 } from "lucide-react";
 import { Appointment } from "@/src/types/domain";
