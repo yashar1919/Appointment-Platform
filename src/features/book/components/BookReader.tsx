@@ -271,18 +271,26 @@ export function BookReader({ fileUrl, downloadName }: BookReaderProps) {
               href={fileUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-(--theme-primary) px-5 text-sm font-bold text-[#101114] transition-colors hover:bg-(--theme-primary-light)"
+              aria-label="مشاهده در مرورگر"
+              title="مشاهده در مرورگر"
+              className="flex min-h-11 px-3 min-w-11 w-full items-center justify-center rounded-xl border border-[#2d313b] text-[#c5baa9] transition-colors hover:bg-[#21242c] hover:text-[#f7f4ed]"
             >
-              <BookOpen className="h-4 w-4" />
-              مشاهده کتاب در مرورگر
+              <div className="flex gap-2">
+                <span className="text-sm">مشاهده در مرورگر</span>
+                <ExternalLink className="h-4 w-4" />
+              </div>
             </a>
             <a
               href={fileUrl}
               download={downloadName}
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-[#484640] px-5 text-sm font-medium text-[#eee9df] transition-colors hover:border-(--theme-primary)/60 hover:bg-[#25241f]"
+              aria-label="دانلود فایل کتاب"
+              title="دانلود فایل کتاب"
+              className="flex min-h-11 px-3 min-w-11 w-full items-center justify-center rounded-xl bg-(--theme-primary) text-[#0b0c0f] transition-colors hover:bg-(--theme-primary-light)"
             >
-              <Download className="h-4 w-4" />
-              دانلود کتاب
+              <div className="flex gap-2">
+                <span className="text-sm">دانلود فایل کتاب</span>
+                <Download className="h-4 w-4" />
+              </div>
             </a>
           </div>
         </div>
